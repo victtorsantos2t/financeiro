@@ -93,9 +93,17 @@ export function TransactionForm({ className, transaction, onSuccess, onCancel }:
     const [categories, setCategories] = useState<Category[]>([]);
     const [wallets, setWallets] = useState<Wallet[]>([]);
     const [loading, setLoading] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
 
     const router = useRouter();
     const supabase = createClient();
+
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth < 768);
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
 
     useEffect(() => {
         fetchOptions();
@@ -337,32 +345,72 @@ export function TransactionForm({ className, transaction, onSuccess, onCancel }:
                             <Label htmlFor="wallet" className="text-[10px] font-bold text-slate-300 uppercase tracking-widest ml-1">
                                 Carteira
                             </Label>
-                            <Select value={walletId} onValueChange={setWalletId}>
-                                <SelectTrigger className="h-14 rounded-2xl bg-white border-slate-100 shadow-sm transition-all text-[14px] px-6">
-                                    <SelectValue placeholder="Onde?" />
-                                </SelectTrigger>
-                                <SelectContent className="rounded-[28px] border-slate-100 shadow-2xl p-2 bg-white/98 backdrop-blur-xl">
+                            {isMobile ? (
+                                <select
+                                    id="wallet"
+                                    value={walletId}
+                                    onChange={(e) => setWalletId(e.target.value)}
+                                    className="h-14 w-full rounded-2xl bg-white border border-slate-100 shadow-sm transition-all text-[14px] px-6 appearance-none"
+                                    style={{
+                                        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23cbd5e1'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
+                                        backgroundRepeat: 'no-repeat',
+                                        backgroundPosition: 'right 1.5rem center',
+                                        backgroundSize: '1.25rem'
+                                    }}
+                                >
+                                    <option value="">Onde?</option>
                                     {wallets.map((wallet) => (
-                                        <SelectItem key={wallet.id} value={wallet.id} className="rounded-xl py-3 focus:bg-slate-50 cursor-pointer">{wallet.name}</SelectItem>
+                                        <option key={wallet.id} value={wallet.id}>{wallet.name}</option>
                                     ))}
-                                </SelectContent>
-                            </Select>
+                                </select>
+                            ) : (
+                                <Select value={walletId} onValueChange={setWalletId}>
+                                    <SelectTrigger className="h-14 rounded-2xl bg-white border-slate-100 shadow-sm transition-all text-[14px] px-6">
+                                        <SelectValue placeholder="Onde?" />
+                                    </SelectTrigger>
+                                    <SelectContent className="rounded-[28px] border-slate-100 shadow-2xl p-2 bg-white/98 backdrop-blur-xl">
+                                        {wallets.map((wallet) => (
+                                            <SelectItem key={wallet.id} value={wallet.id} className="rounded-xl py-3 focus:bg-slate-50 cursor-pointer">{wallet.name}</SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            )}
                         </div>
 
                         <div className="space-y-3">
                             <Label htmlFor="category" className="text-[10px] font-bold text-slate-300 uppercase tracking-widest ml-1">
                                 Categoria
                             </Label>
-                            <Select value={categoryId} onValueChange={setCategoryId}>
-                                <SelectTrigger className="h-14 rounded-2xl bg-white border-slate-100 shadow-sm transition-all text-[14px] px-6">
-                                    <SelectValue placeholder="O quê?" />
-                                </SelectTrigger>
-                                <SelectContent className="rounded-[28px] border-slate-100 shadow-2xl p-2 bg-white/98 backdrop-blur-xl">
+                            {isMobile ? (
+                                <select
+                                    id="category"
+                                    value={categoryId}
+                                    onChange={(e) => setCategoryId(e.target.value)}
+                                    className="h-14 w-full rounded-2xl bg-white border border-slate-100 shadow-sm transition-all text-[14px] px-6 appearance-none"
+                                    style={{
+                                        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23cbd5e1'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
+                                        backgroundRepeat: 'no-repeat',
+                                        backgroundPosition: 'right 1.5rem center',
+                                        backgroundSize: '1.25rem'
+                                    }}
+                                >
+                                    <option value="">O quê?</option>
                                     {categories.map((category) => (
-                                        <SelectItem key={category.id} value={category.id} className="rounded-xl py-3 focus:bg-slate-50 cursor-pointer">{category.name}</SelectItem>
+                                        <option key={category.id} value={category.id}>{category.name}</option>
                                     ))}
-                                </SelectContent>
-                            </Select>
+                                </select>
+                            ) : (
+                                <Select value={categoryId} onValueChange={setCategoryId}>
+                                    <SelectTrigger className="h-14 rounded-2xl bg-white border-slate-100 shadow-sm transition-all text-[14px] px-6">
+                                        <SelectValue placeholder="O quê?" />
+                                    </SelectTrigger>
+                                    <SelectContent className="rounded-[28px] border-slate-100 shadow-2xl p-2 bg-white/98 backdrop-blur-xl">
+                                        {categories.map((category) => (
+                                            <SelectItem key={category.id} value={category.id} className="rounded-xl py-3 focus:bg-slate-50 cursor-pointer">{category.name}</SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            )}
                         </div>
                     </div>
 
