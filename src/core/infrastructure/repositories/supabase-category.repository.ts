@@ -9,6 +9,8 @@ export class SupabaseCategoryRepository implements ICategoryRepository {
     private supabase = createClient();
 
     async list(type?: 'income' | 'expense'): Promise<Category[]> {
+        console.log('[CategoryRepo] Iniciando list(), type:', type);
+
         let query = this.supabase
             .from("categories")
             .select("*")
@@ -19,7 +21,13 @@ export class SupabaseCategoryRepository implements ICategoryRepository {
         }
 
         const { data, error } = await query;
-        if (error) throw error;
+
+        if (error) {
+            console.error('[CategoryRepo] Erro ao buscar categorias:', error);
+            throw error;
+        }
+
+        console.log('[CategoryRepo] Categorias carregadas:', data?.length || 0);
         return data as Category[];
     }
 }
