@@ -15,6 +15,9 @@ import { EarningsDonut } from "@/components/dashboard/earnings-donut";
 import { FinancialHealthScorecard } from "@/components/dashboard/financial-health-scorecard";
 import { AddTransactionModal } from "@/components/dashboard/add-transaction-modal";
 import { ImportTransactionsModal } from "@/components/dashboard/import-transactions-modal";
+import { PayableAccounts } from "@/components/dashboard/payable-accounts";
+import { CashFlowForecast } from "@/components/dashboard/cash-flow-forecast";
+import { CreditCard } from "@/components/dashboard/credit-card";
 import { createClient } from "@/lib/supabase/client";
 import { services } from "@/core/application/services/services.factory";
 import { Button } from "@/components/ui/button";
@@ -49,6 +52,12 @@ export default function DraggableDashboard() {
             case 'transactions-table': return <TransactionsTable />;
             case 'monthly-chart': return <MonthlyEarningsChart />;
             case 'earnings-donut': return <EarningsDonut />;
+            case 'payable-accounts': return <PayableAccounts />;
+            case 'cash-flow-forecast': return <CashFlowForecast />;
+            case 'credit-card':
+                // CreditCard component requires wallet prop
+                // For now, we'll render null - user should add this via the full dashboard
+                return null;
             default: return null;
         }
     };
@@ -62,6 +71,17 @@ export default function DraggableDashboard() {
                     <p className="text-sm font-medium text-slate-400 tracking-wide">Desempenho financeiro consolidado.</p>
                 </div>
                 <div className="hidden md:flex gap-3">
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => {
+                            localStorage.removeItem('widget-layout');
+                            window.location.reload();
+                        }}
+                        className="text-slate-600"
+                    >
+                        Resetar Layout
+                    </Button>
                     <ImportTransactionsModal />
                     <AddTransactionModal />
                 </div>
