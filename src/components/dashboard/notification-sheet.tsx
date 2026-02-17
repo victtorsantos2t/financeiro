@@ -1,0 +1,361 @@
+"use client";
+
+import { createClient } from "@/lib/supabase/client";
+import {
+    Bell,
+    AlertCircle,
+    CheckCircle2,
+    ArrowRight,
+    Calendar,
+    Zap,
+    X,
+    MoreHorizontal,
+    Check
+} from "lucide-react";
+import { useEffect, useState } from "react";
+import {
+    Sheet,
+    SheetContent,
+    SheetHeader,
+    SheetTitle,
+    SheetTrigger,
+    SheetClose
+} from "@/components/ui/sheet";
+import { cn } from "@/lib/utils";
+import { Skeleton } from "@/components/ui/skeleton";
+import { formatDistanceToNow } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import { toast } from "sonner";
+
+interface Notification {
+    id: string;
+    type: 'payment' | 'alert' | 'success';
+    title: string;
+    description: string;
+    date: string;
+    amount?: number;
+    isRead: boolean;
+    subIcon?: any;
+}
+
+import { motion, AnimatePresence } from "framer-motion";
+import { APPLE_SPRING, APPLE_SOFT_SPRING } from "@/lib/utils";
+
+export function NotificationSheet() {
+    const [notifications, setNotifications] = useState<Notification[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [activeTab, setActiveTab] = useState<'all' | 'unread'>('all');
+    const [isMobile, setIsMobile] = useState(false);
+    const [showBanner, setShowBanner] = useState(true);
+    const supabase = createClient();
+
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth < 768);
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        fetchNotifications();
+
+        // Listen for transaction changes to update notifications in real-time
+        const channel = supabase
+            .channel('notification_updates')
+            .on(
+                'postgres_changes',
+                { event: '*', schema: 'public', table: 'transactions' },
+                () => fetchNotifications()
+            )
+            .subscribe();
+
+        return () => {
+            window.removeEventListener('resize', checkMobile);
+            supabase.removeChannel(channel);
+        };
+    }, []);
+
+    const fetchNotifications = async () => {
+        setLoading(true);
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) return;
+
+        const { data: pendingTx } = await supabase
+            .from("transactions")
+            .select("id, description, amount, date")
+            .eq("user_id", user.id)
+            .eq("status", "pending")
+            .order("date", { ascending: false })
+            .limit(10);
+
+        const txNotifications: Notification[] = (pendingTx || []).map(tx => ({
+            id: tx.id,
+            type: 'payment',
+            title: "Pagamento Pendente",
+            description: `Vencimento de ${tx.description}`,
+            amount: tx.amount,
+            date: tx.date,
+            isRead: false,
+            subIcon: Calendar
+        }));
+
+        const systemAlerts: Notification[] = [
+            {
+                id: 'ai-brain',
+                type: 'alert',
+                title: "IA Brain v2.0",
+                description: "Seu dashboard está otimizado e monitorando anomalias.",
+                date: new Date().toISOString(),
+                isRead: false,
+                subIcon: Zap
+            },
+            {
+                id: 'system-update',
+                type: 'success',
+                title: "Sistema Atualizado",
+                description: "Sua interface agora conta com a nova versão Ultra Premium.",
+                date: new Date(Date.now() - 3600000 * 2).toISOString(),
+                isRead: true,
+                subIcon: CheckCircle2
+            }
+        ];
+
+        setNotifications([...txNotifications, ...systemAlerts]);
+        setLoading(false);
+    };
+
+    const markAsRead = (id: string) => {
+        setNotifications(prev => prev.map(n => n.id === id ? { ...n, isRead: true } : n));
+        toast.success("Notificação marcada como lida");
+    };
+
+    const markAllAsRead = () => {
+        const unreadCount = notifications.filter(n => !n.isRead).length;
+        if (unreadCount === 0) {
+            toast.info("Todas as notificações já estão lidas!");
+            return;
+        }
+
+        setNotifications(prev => prev.map(n => ({ ...n, isRead: true })));
+        toast.success(`${unreadCount} notificações marcadas como lidas`);
+    };
+
+    const enablePush = () => {
+        setShowBanner(false);
+        toast.info("Notificações Push ativadas com sucesso!");
+    };
+
+    const filteredNotifications = activeTab === 'all'
+        ? notifications
+        : notifications.filter(n => !n.isRead);
+
+    const hasUnread = notifications.some(n => !n.isRead);
+
+    return (
+        <Sheet>
+            <SheetTrigger asChild>
+                <motion.button
+                    whileTap={{ scale: 0.96 }}
+                    className="p-2 md:p-2.5 rounded-2xl bg-white border border-slate-100/50 hover:bg-slate-50 transition-all text-slate-400 hover:text-blue-500 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.02)] relative group"
+                >
+                    <Bell className="h-5 w-5 transition-transform group-hover:rotate-12" />
+                    {hasUnread && (
+                        <span className="absolute top-2.5 right-2.5 h-2 w-2 bg-blue-500 rounded-full border-2 border-white animate-pulse"></span>
+                    )}
+                </motion.button>
+            </SheetTrigger>
+            <SheetContent
+                side={isMobile ? "bottom" : "right"}
+                className={cn(
+                    "p-0 border-none bg-white",
+                    isMobile
+                        ? "h-[90vh] rounded-t-[40px]"
+                        : "h-[calc(100vh-32px)] w-[420px] m-4 rounded-[32px] shadow-[0_32px_80px_-20px_rgba(0,0,0,0.12)]"
+                )}
+                showCloseButton={false}
+            >
+                <div className="h-full flex flex-col relative">
+                    {isMobile && (
+                        <div className="absolute top-3 left-1/2 -translate-x-1/2 w-12 h-1.5 bg-slate-100/60 rounded-full z-10" />
+                    )}
+
+                    <SheetHeader className="p-10 pb-2 space-y-6">
+                        <div className="flex items-center justify-between">
+                            <SheetTitle className="text-2xl font-semibold text-slate-900 tracking-tight">Notificações</SheetTitle>
+                            <div className="flex items-center gap-2">
+                                <button className="p-2 text-slate-300 hover:text-slate-600 active:scale-90 transition-all">
+                                    <MoreHorizontal className="h-5 w-5" />
+                                </button>
+                                <SheetClose asChild>
+                                    <button className="p-2 text-slate-300 hover:text-slate-900 md:hidden">
+                                        <X className="h-5 w-5" />
+                                    </button>
+                                </SheetClose>
+                            </div>
+                        </div>
+
+                        {/* Tabs Style from Image */}
+                        <div className="flex gap-2">
+                            <button
+                                onClick={() => setActiveTab('all')}
+                                className={cn(
+                                    "px-6 py-2.5 rounded-full text-xs font-semibold tracking-wide transition-all",
+                                    activeTab === 'all' ? "bg-slate-900 text-white" : "bg-slate-50 text-slate-400 hover:bg-slate-100"
+                                )}
+                            >
+                                Tudo
+                            </button>
+                            <button
+                                onClick={() => setActiveTab('unread')}
+                                className={cn(
+                                    "px-6 py-2.5 rounded-full text-xs font-semibold tracking-wide transition-all",
+                                    activeTab === 'unread' ? "bg-slate-900 text-white" : "bg-slate-50 text-slate-400 hover:bg-slate-100"
+                                )}
+                            >
+                                Não lidas
+                            </button>
+                        </div>
+                    </SheetHeader>
+
+                    <div className="flex-1 overflow-y-auto px-10 py-6 space-y-8 custom-scrollbar">
+                        <AnimatePresence>
+                            {showBanner && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: -20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, scale: 0.95 }}
+                                    transition={APPLE_SOFT_SPRING as any}
+                                    className="p-8 bg-slate-50/50 border border-slate-100/50 rounded-[32px] relative overflow-hidden"
+                                >
+                                    <button
+                                        onClick={() => setShowBanner(false)}
+                                        className="absolute top-6 right-6 text-slate-300 hover:text-slate-600 transition-all"
+                                    >
+                                        <X className="h-4 w-4" />
+                                    </button>
+                                    <h4 className="font-semibold text-slate-900 mb-2 pr-6 text-[15px] tracking-tight">Alertas em Tempo Real</h4>
+                                    <p className="text-[13px] text-slate-500 mb-6 leading-relaxed">
+                                        Ative as notificações para receber atualizações instantâneas sobre seus gastos e metas.
+                                    </p>
+                                    <div className="flex gap-3">
+                                        <button
+                                            onClick={enablePush}
+                                            className="flex-1 py-3 bg-blue-500 text-white rounded-2xl text-[11px] font-semibold uppercase tracking-wider hover:bg-blue-600 transition-all active:scale-95"
+                                        >
+                                            Ativar
+                                        </button>
+                                        <button
+                                            onClick={() => setShowBanner(false)}
+                                            className="flex-1 py-3 bg-white border border-slate-100 text-slate-500 rounded-2xl text-[11px] font-semibold uppercase tracking-wider hover:bg-slate-50 transition-all active:scale-95"
+                                        >
+                                            Ignorar
+                                        </button>
+                                    </div>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+
+                        <div className="space-y-6">
+                            <div className="flex justify-between items-center px-1">
+                                <h3 className="font-semibold text-slate-400 text-[11px] uppercase tracking-[0.2em]">Recentes</h3>
+                                <button
+                                    onClick={() => setActiveTab('all')}
+                                    className="text-[11px] font-semibold text-blue-500 hover:text-blue-600 transition-colors uppercase tracking-wider"
+                                >
+                                    Limpar tudo
+                                </button>
+                            </div>
+
+                            <div className="space-y-2 pb-10">
+                                {loading ? (
+                                    Array(3).fill(0).map((_, i) => (
+                                        <div key={i} className="flex gap-4 p-4 items-center">
+                                            <Skeleton className="h-12 w-12 rounded-full shrink-0" />
+                                            <div className="flex-1 space-y-2">
+                                                <Skeleton className="h-4 w-3/4" />
+                                                <Skeleton className="h-3 w-1/2" />
+                                            </div>
+                                        </div>
+                                    ))
+                                ) : filteredNotifications.length === 0 ? (
+                                    <motion.div
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        className="text-center py-20"
+                                    >
+                                        <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                                            <Check className="h-8 w-8 text-slate-200" />
+                                        </div>
+                                        <p className="text-slate-400 text-sm font-medium">Você está em dia</p>
+                                    </motion.div>
+                                ) : (
+                                    <AnimatePresence mode="popLayout">
+                                        {filteredNotifications.map((n, index) => (
+                                            <motion.div
+                                                layout
+                                                key={n.id}
+                                                initial={{ opacity: 0, x: 20 }}
+                                                animate={{ opacity: 1, x: 0 }}
+                                                exit={{ opacity: 0, scale: 0.95 }}
+                                                transition={{ ...APPLE_SOFT_SPRING, delay: index * 0.05 } as any}
+                                                onClick={() => markAsRead(n.id)}
+                                                className={cn(
+                                                    "flex gap-5 p-5 rounded-[24px] hover:bg-slate-50/80 transition-all group relative cursor-pointer active:scale-[0.98]",
+                                                    !n.isRead ? "bg-white" : "opacity-40 grayscale"
+                                                )}
+                                            >
+                                                <div className="relative shrink-0">
+                                                    <div className="w-12 h-12 rounded-[18px] bg-slate-50 border border-slate-100/50 flex items-center justify-center overflow-hidden">
+                                                        {n.type === 'payment' ? (
+                                                            <Calendar className="h-5 w-5 text-orange-400" />
+                                                        ) : n.type === 'alert' ? (
+                                                            <Zap className="h-5 w-5 text-blue-500" />
+                                                        ) : (
+                                                            <CheckCircle2 className="h-5 w-5 text-emerald-500" />
+                                                        )}
+                                                    </div>
+                                                </div>
+
+                                                <div className="flex-1 min-w-0">
+                                                    <p className="text-[14px] font-medium text-slate-900 leading-snug mb-1">
+                                                        <span className="font-semibold">{n.title}</span> {n.description}
+                                                    </p>
+                                                    <div className="flex items-center gap-3">
+                                                        <span className="text-[11px] font-bold text-slate-300 uppercase tracking-tight">
+                                                            {formatDistanceToNow(new Date(n.date), { addSuffix: false, locale: ptBR })}
+                                                        </span>
+                                                        {n.amount && (
+                                                            <span className="text-[12px] font-semibold text-slate-900/80">
+                                                                R$ {n.amount.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                                                            </span>
+                                                        )}
+                                                    </div>
+                                                </div>
+
+                                                {!n.isRead && (
+                                                    <div className="flex items-center pr-1">
+                                                        <div className="w-1.5 h-1.5 bg-blue-500 rounded-full" />
+                                                    </div>
+                                                )}
+                                            </motion.div>
+                                        ))}
+                                    </AnimatePresence>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Final Action Button */}
+                    <div className="p-10 pt-6 bg-white/80 backdrop-blur-xl border-t border-slate-50/50">
+                        <SheetClose asChild>
+                            <motion.button
+                                whileTap={{ scale: 0.98 }}
+                                onClick={markAllAsRead}
+                                className="w-full py-4.5 bg-slate-900 text-white rounded-[20px] font-semibold text-[13px] uppercase tracking-[0.15em] shadow-[0_12px_32px_-8px_rgba(0,0,0,0.12)] hover:bg-slate-800 transition-all"
+                            >
+                                Marcar tudo como lido
+                            </motion.button>
+                        </SheetClose>
+                    </div>
+                </div>
+            </SheetContent>
+        </Sheet>
+    );
+}
+
