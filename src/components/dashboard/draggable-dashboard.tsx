@@ -26,6 +26,8 @@ import { GripVertical } from "lucide-react";
 export default function DraggableDashboard() {
     const { layout, setLayout } = useWidgetStore();
     const [mounted, setMounted] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
+
     const sensors = useSensors(
         useSensor(PointerSensor),
         useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
@@ -33,6 +35,14 @@ export default function DraggableDashboard() {
 
     // Evita hydration mismatch
     useEffect(() => { setMounted(true); }, []);
+
+    // Detecta mobile
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth < 768);
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
 
     const handleDragEnd = (event: any) => {
         const { active, over } = event;
@@ -43,7 +53,7 @@ export default function DraggableDashboard() {
         }
     };
 
-    if (!mounted) return <div className="p-8">Carregando Dashboard Personalizado...</div>;
+    if (!mounted) return <div className="p-8 text-center text-slate-400">Carregando Dashboard...</div>;
 
     const renderWidget = (id: string) => {
         switch (id) {
@@ -61,6 +71,31 @@ export default function DraggableDashboard() {
             default: return null;
         }
     };
+
+    // Versão Mobile (sem drag & drop)
+    if (isMobile) {
+        return (
+            <div className="space-y-6 max-w-[1440px] mx-auto pb-24 px-4">
+                <div className="flex flex-col gap-1 px-0">
+                    <h1 className="text-3xl font-semibold text-slate-900 tracking-tight">Visão Geral</h1>
+                    <p className="text-sm font-medium text-slate-400">Desempenho financeiro consolidado.</p>
+                </div>
+
+                <div className="flex gap-3 overflow-x-auto pb-2">
+                    <ImportTransactionsModal />
+                    <AddTransactionModal />
+                </div>
+
+                <div className="flex flex-col gap-6">
+                    {layout.filter(id => renderWidget(id) !== null).map((id) => (
+                        <div key={id}>
+                            {renderWidget(id)}
+                        </div>
+                    ))}
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="space-y-8 max-w-[1440px] mx-auto pb-12 px-2 md:px-0">

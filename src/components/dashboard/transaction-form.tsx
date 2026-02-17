@@ -341,7 +341,7 @@ export function TransactionForm({ className, transaction, onSuccess, onCancel }:
                                 <SelectTrigger className="h-14 rounded-2xl bg-white border-slate-100 shadow-sm transition-all text-[14px] px-6">
                                     <SelectValue placeholder="Onde?" />
                                 </SelectTrigger>
-                                <SelectContent className="rounded-[28px] border-slate-100 shadow-2xl p-2 bg-white/98 backdrop-blur-xl">
+                                <SelectContent modal={false} className="rounded-[28px] border-slate-100 shadow-2xl p-2 bg-white/98 backdrop-blur-xl z-[200]">
                                     {wallets.map((wallet) => (
                                         <SelectItem key={wallet.id} value={wallet.id} className="rounded-xl py-3 focus:bg-slate-50 cursor-pointer">{wallet.name}</SelectItem>
                                     ))}
@@ -357,7 +357,7 @@ export function TransactionForm({ className, transaction, onSuccess, onCancel }:
                                 <SelectTrigger className="h-14 rounded-2xl bg-white border-slate-100 shadow-sm transition-all text-[14px] px-6">
                                     <SelectValue placeholder="O quê?" />
                                 </SelectTrigger>
-                                <SelectContent className="rounded-[28px] border-slate-100 shadow-2xl p-2 bg-white/98 backdrop-blur-xl">
+                                <SelectContent modal={false} className="rounded-[28px] border-slate-100 shadow-2xl p-2 bg-white/98 backdrop-blur-xl z-[200]">
                                     {categories.map((category) => (
                                         <SelectItem key={category.id} value={category.id} className="rounded-xl py-3 focus:bg-slate-50 cursor-pointer">{category.name}</SelectItem>
                                     ))}
@@ -375,7 +375,7 @@ export function TransactionForm({ className, transaction, onSuccess, onCancel }:
                                 <SelectTrigger className="h-14 rounded-2xl bg-white border-slate-100 shadow-sm transition-all text-[14px] px-6">
                                     <SelectValue placeholder="Como?" />
                                 </SelectTrigger>
-                                <SelectContent className="rounded-[28px] border-slate-100 shadow-2xl p-2 bg-white/98 backdrop-blur-xl">
+                                <SelectContent modal={false} className="rounded-[28px] border-slate-100 shadow-2xl p-2 bg-white/98 backdrop-blur-xl z-[200]">
                                     <SelectItem value="pix" className="rounded-xl py-3 focus:bg-slate-50 cursor-pointer">PIX</SelectItem>
                                     <SelectItem value="boleto" className="rounded-xl py-3 focus:bg-slate-50 cursor-pointer">Boleto</SelectItem>
                                     <SelectItem value="card" className="rounded-xl py-3 focus:bg-slate-50 cursor-pointer">Cartão</SelectItem>
