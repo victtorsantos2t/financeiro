@@ -35,7 +35,9 @@ export function Header() {
                             <ReportActions currentDate={currentDate} />
                         </div>
                         {/* Mobile: Show simple Greeting or Title? */}
-                        <div className="md:hidden">
+                        {/* Mobile: Show nothing if selector is visible, or keep title if wanted. 
+                            Let's hide it to make room for MonthSelector in absolute center. */}
+                        <div className="hidden md:block">
                             <h1 className="text-lg font-bold text-slate-900 tracking-tight">Dashboard</h1>
                         </div>
                     </div>
@@ -66,7 +68,7 @@ export function Header() {
                 Actually, on mobile, the absolute centering might overlap with left/right elements if they are wide.
             */}
             {isDashboard && (
-                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 animate-in fade-in zoom-in-95 duration-500 hidden md:block">
+                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 animate-in fade-in zoom-in-95 duration-500 flex scale-90 md:scale-100 transition-transform">
                     <MonthSelector currentDate={currentDate} onMonthChange={setCurrentDate} />
                 </div>
             )}
