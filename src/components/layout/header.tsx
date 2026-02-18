@@ -68,7 +68,7 @@ export function Header() {
                 Actually, on mobile, the absolute centering might overlap with left/right elements if they are wide.
             */}
             {isDashboard && (
-                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 animate-in fade-in zoom-in-95 duration-500 flex scale-90 md:scale-100 transition-transform">
+                <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 animate-in fade-in zoom-in-95 duration-500 hidden md:block">
                     <MonthSelector currentDate={currentDate} onMonthChange={setCurrentDate} />
                 </div>
             )}

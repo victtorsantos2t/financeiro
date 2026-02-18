@@ -23,12 +23,14 @@ import { createClient } from "@/lib/supabase/client";
 import { services } from "@/core/application/services/services.factory";
 import { Button } from "@/components/ui/button";
 import { GripVertical } from "lucide-react";
+import { MonthSelector } from "@/components/dashboard/month-selector";
 
 export default function DraggableDashboard() {
     const { layout, setLayout } = useWidgetStore();
-    const { currentDate } = useDashboard();
+    const { currentDate, setCurrentDate } = useDashboard();
     const [mounted, setMounted] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
+
 
     const sensors = useSensors(
         useSensor(PointerSensor),
@@ -97,9 +99,8 @@ export default function DraggableDashboard() {
                     <p className="text-sm font-medium text-slate-400">Desempenho financeiro consolidado.</p>
                 </div>
 
-                <div className="flex gap-3 overflow-x-auto pb-2">
-                    <ImportTransactionsModal />
-                    <AddTransactionModal />
+                <div className="flex items-center justify-center p-2 bg-slate-50/50 rounded-[24px] border border-slate-100/50">
+                    <MonthSelector currentDate={currentDate} onMonthChange={setCurrentDate} />
                 </div>
 
                 <div className="flex flex-col gap-6">
