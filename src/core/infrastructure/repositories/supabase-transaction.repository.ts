@@ -14,7 +14,20 @@ export class SupabaseTransactionRepository implements ITransactionRepository {
             query = query.eq("wallet_id", filters.walletId);
         }
 
-        const { data, error } = await query.order("date", { ascending: false });
+        if (filters?.startDate) {
+            query = query.gte("date", filters.startDate);
+        }
+
+        if (filters?.endDate) {
+            query = query.lte("date", filters.endDate);
+        }
+
+        if (filters?.types && filters.types.length > 0) {
+            query = query.in("type", filters.types);
+        }
+
+        const ascending = filters?.sortOrder === 'asc';
+        const { data, error } = await query.order("date", { ascending });
         if (error) throw error;
         return data as Transaction[];
     }

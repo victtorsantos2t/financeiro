@@ -4,8 +4,8 @@ import { Transaction } from "../../domain/entities/finance";
 export class TransactionAppService {
     constructor(private readonly transactionRepo: ITransactionRepository) { }
 
-    async getHistory(walletId?: string) {
-        return this.transactionRepo.list({ walletId });
+    async getHistory(filters?: any) {
+        return this.transactionRepo.list(filters);
     }
 
     async registerTransaction(data: Partial<Transaction>) {

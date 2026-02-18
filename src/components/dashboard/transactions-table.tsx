@@ -82,13 +82,12 @@ export function TransactionsTable({
     const fetchTransactions = async () => {
         setLoading(true);
         try {
-            const data = await services.transactions.getHistory(externalFilters?.walletId);
+            // Now passing the full externalFilters object which includes dates, types, walletId, etc.
+            const data = await services.transactions.getHistory(externalFilters);
 
-            // Simulação de filtragem externa para manter compatibilidade com o drawer antigo
-            // Idealmente, o TransactionService deveria aceitar todos os filtros
             let filtered = data;
 
-            // Filter by Tab
+            // Simple tab filtering if date logic in repo doesn't cover activeTab explicitly
             const todayStr = new Date().toISOString().split('T')[0];
             if (activeTab === 'recentes') {
                 filtered = filtered.filter(t => t.date.split('T')[0] <= todayStr);
