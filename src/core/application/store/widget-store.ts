@@ -8,6 +8,7 @@ interface WidgetLayoutState {
 }
 
 const DEFAULT_LAYOUT = [
+    'smart-insights',
     'wallet-summary',
     'financial-health',
     'payable-accounts',
@@ -29,9 +30,15 @@ export const useWidgetStore = create<WidgetLayoutState>()(
         {
             name: 'widget-layout', // chave padronizada
             onRehydrateStorage: () => (state) => {
-                // Se o layout estiver vazio ou inválido, força DEFAULT_LAYOUT
-                if (state && (!state.layout || state.layout.length === 0)) {
-                    state.layout = DEFAULT_LAYOUT;
+                if (state) {
+                    // Se o layout estiver vazio ou inválido, força DEFAULT_LAYOUT
+                    if (!state.layout || state.layout.length === 0) {
+                        state.layout = DEFAULT_LAYOUT;
+                    }
+                    // Se o 'smart-insights' estiver faltando no layout existente (usuário antigo), adiciona no topo
+                    else if (!state.layout.includes('smart-insights')) {
+                        state.layout = ['smart-insights', ...state.layout];
+                    }
                 }
             }
         }

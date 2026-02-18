@@ -201,7 +201,7 @@ export function TransactionsTable({
                                                 "text-base font-bold mb-1 capitalize",
                                                 isFuture ? "text-rose-600" : "text-slate-900"
                                             )}>
-                                                {format(new Date(date), "d 'de' MMMM 'de' yyyy", { locale: ptBR })}
+                                                {format(new Date(date + 'T00:00:00'), "d 'de' MMMM 'de' yyyy", { locale: ptBR })}
                                                 {isFuture && <span className="ml-2 text-[10px] uppercase tracking-wider bg-rose-50 text-rose-500 px-2 py-0.5 rounded-full">Agendado</span>}
                                             </h4>
                                             {!isFuture && (

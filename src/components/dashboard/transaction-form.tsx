@@ -28,6 +28,7 @@ import {
     Trash2
 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
@@ -85,7 +86,7 @@ export function TransactionForm({ className, transaction, onSuccess, onCancel }:
         ? transaction.amount.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
         : "");
     const [type, setType] = useState<"income" | "expense" | "transfer">(transaction?.type as any || "expense");
-    const [date, setDate] = useState(transaction?.date?.split("T")[0] || new Date().toISOString().split("T")[0]);
+    const [date, setDate] = useState(transaction?.date?.split("T")[0] || format(new Date(), "yyyy-MM-dd"));
     const [categoryId, setCategoryId] = useState(transaction?.category_id || "");
     const [walletId, setWalletId] = useState(transaction?.wallet_id || "");
     const [destinationWalletId, setDestinationWalletId] = useState(transaction?.destination_wallet_id || "");
@@ -207,7 +208,7 @@ export function TransactionForm({ className, transaction, onSuccess, onCancel }:
             if (!transaction) {
                 setDescription("");
                 setAmount("");
-                setDate(new Date().toISOString().split("T")[0]);
+                setDate(format(new Date(), "yyyy-MM-dd"));
                 setCategoryId("");
                 setWalletId("");
                 setDestinationWalletId("");

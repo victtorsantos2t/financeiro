@@ -24,6 +24,7 @@ import { services } from "@/core/application/services/services.factory";
 import { Button } from "@/components/ui/button";
 import { GripVertical } from "lucide-react";
 import { MonthSelector } from "@/components/dashboard/month-selector";
+import { DashboardInsights } from "@/components/dashboard/dashboard-insights";
 
 export default function DraggableDashboard() {
     const { layout, setLayout } = useWidgetStore();
@@ -75,6 +76,7 @@ export default function DraggableDashboard() {
 
     const renderWidget = (id: string) => {
         switch (id) {
+            case 'smart-insights': return <DashboardInsights currentDate={currentDate} />;
             case 'wallet-summary': return <Wallet />;
             case 'financial-health': return <FinancialHealthScorecard />;
             case 'transactions-table': return <TransactionsTable />;
@@ -132,7 +134,7 @@ export default function DraggableDashboard() {
                 <SortableContext items={layout} strategy={rectSortingStrategy}>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {layout.map((id) => (
-                            <div key={id} className={id === 'transactions-table' ? 'md:col-span-2 lg:col-span-3' : ''}>
+                            <div key={id} className={id === 'transactions-table' || id === 'smart-insights' ? 'md:col-span-2 lg:col-span-3' : ''}>
                                 <SortableWidget id={id} className="h-full relative group">
                                     <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 cursor-grab z-10 p-1 bg-white/80 rounded-md backdrop-blur-sm transition-opacity">
                                         <GripVertical className="w-4 h-4 text-slate-400" />
