@@ -8,8 +8,7 @@ export class SupabaseTransactionRepository implements ITransactionRepository {
     async list(filters?: any): Promise<Transaction[]> {
         let query = this.supabase
             .from("transactions")
-            .select("*, category:categories(name), wallet:wallets(name)")
-            .is("deleted_at", null);
+            .select("*, category:categories(name), wallet:wallets(name)");
 
         if (filters?.walletId) {
             query = query.eq("wallet_id", filters.walletId);
@@ -32,7 +31,8 @@ export class SupabaseTransactionRepository implements ITransactionRepository {
             p_payment_method: data.payment_method,
             p_status: data.status,
             p_is_recurring: data.is_recurring,
-            p_recurrence_interval: data.recurrence_interval
+            p_recurrence_interval: data.recurrence_interval,
+            p_destination_wallet_id: data.destination_wallet_id
         });
 
         if (error) throw error;

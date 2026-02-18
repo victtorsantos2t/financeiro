@@ -53,18 +53,18 @@ export default function WalletPage() {
             <div>
                 <h2 className="text-xl font-semibold mb-6 tracking-tight text-slate-900">Meus Cartões</h2>
 
-                <div className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide -mx-8 px-8 pb-10 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                     {loading ? (
                         [1, 2, 3].map(i => (
-                            <div key={i} className="flex-none w-[85%] md:w-[400px] h-56 rounded-3xl bg-slate-100/50 animate-pulse-luxury"></div>
+                            <div key={i} className="w-full h-56 rounded-3xl bg-slate-100/50 animate-pulse-luxury"></div>
                         ))
                     ) : wallets.length === 0 ? (
-                        <div className="flex-1 text-center py-20 text-slate-400 font-semibold italic border-2 border-dashed border-slate-100 rounded-3xl mx-8">
+                        <div className="col-span-full text-center py-20 text-slate-400 font-semibold italic border-2 border-dashed border-slate-100 rounded-3xl">
                             Nenhuma carteira configurada.
                         </div>
                     ) : (
                         wallets.map((wallet) => (
-                            <div key={wallet.id} className="flex-none w-[85%] md:w-[400px] snap-center">
+                            <div key={wallet.id} className="w-full">
                                 <CreditCard wallet={wallet} onUpdate={fetchWallets} />
                             </div>
                         ))

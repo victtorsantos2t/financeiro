@@ -19,7 +19,7 @@ export interface Transaction {
     status: 'completed' | 'pending';
     is_recurring: boolean;
     recurrence_interval?: string;
-    deleted_at?: string;
+    destination_wallet_id?: string;
 }
 
 export interface Wallet {

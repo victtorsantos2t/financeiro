@@ -44,6 +44,20 @@ export default function DraggableDashboard() {
         return () => window.removeEventListener('resize', checkMobile);
     }, []);
 
+    // Trigger Daily Yield Update
+    useEffect(() => {
+        const updateYields = async () => {
+            const supabase = createClient();
+            try {
+                const { error } = await supabase.rpc('calculate_wallet_yields');
+                if (error) console.error("Error updating yields:", error);
+            } catch (err) {
+                console.error("Failed to update yields:", err);
+            }
+        };
+        updateYields();
+    }, []);
+
     const handleDragEnd = (event: any) => {
         const { active, over } = event;
         if (active.id !== over.id) {

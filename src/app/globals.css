@@ -169,9 +169,31 @@
     @apply border-border outline-ring/50;
   }
 
-  body {
-    @apply bg-background text-foreground;
+  html {
+    @apply h-full w-full overflow-hidden;
   }
+
+  body {
+    @apply h-full w-full overflow-hidden bg-background text-foreground antialiased;
+    /* Prevent pull-to-refresh on mobile if not desired, or just ensure proper height */
+    overscroll-behavior-y: none;
+  }
+}
+
+@utility pt-safe {
+  padding-top: env(safe-area-inset-top);
+}
+
+@utility pb-safe {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+@utility h-dvh {
+  height: 100dvh;
+}
+
+@utility min-h-dvh {
+  min-height: 100dvh;
 }
 
 @keyframes luxury-pulse {

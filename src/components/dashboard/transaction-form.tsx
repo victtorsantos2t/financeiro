@@ -32,6 +32,7 @@ import { useEffect, useState } from "react";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { useDashboard } from "@/context/dashboard-context";
 import {
     AlertDialog,
     AlertDialogAction,
@@ -68,6 +69,7 @@ export interface Transaction {
     payment_method: string;
     is_recurring?: boolean;
     recurrence_interval?: string;
+    destination_wallet_id?: string;
 }
 
 interface TransactionFormProps {
@@ -79,11 +81,14 @@ interface TransactionFormProps {
 
 export function TransactionForm({ className, transaction, onSuccess, onCancel }: TransactionFormProps) {
     const [description, setDescription] = useState(transaction?.description || "");
-    const [amount, setAmount] = useState(transaction?.amount?.toString() || "");
-    const [type, setType] = useState<"income" | "expense">(transaction?.type || "expense");
+    const [amount, setAmount] = useState(transaction?.amount
+        ? transaction.amount.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+        : "");
+    const [type, setType] = useState<"income" | "expense" | "transfer">(transaction?.type as any || "expense");
     const [date, setDate] = useState(transaction?.date?.split("T")[0] || new Date().toISOString().split("T")[0]);
     const [categoryId, setCategoryId] = useState(transaction?.category_id || "");
     const [walletId, setWalletId] = useState(transaction?.wallet_id || "");
+    const [destinationWalletId, setDestinationWalletId] = useState(transaction?.destination_wallet_id || "");
     const [paymentMethod, setPaymentMethod] = useState<string>(transaction?.payment_method || "card");
     const [status, setStatus] = useState<"completed" | "pending">(transaction?.status || "completed");
 
@@ -112,7 +117,7 @@ export function TransactionForm({ className, transaction, onSuccess, onCancel }:
     useEffect(() => {
         if (transaction) {
             setDescription(transaction.description);
-            setAmount(transaction.amount.toString());
+            setAmount(transaction.amount.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
             setType(transaction.type);
             setDate(transaction.date.split("T")[0]);
             setCategoryId(transaction.category_id);
@@ -147,27 +152,45 @@ export function TransactionForm({ className, transaction, onSuccess, onCancel }:
         }
     };
 
+    const { refreshData } = useDashboard();
+
     const handleSave = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
 
-        if (!walletId || !categoryId || !amount || !description) {
+        const isTransfer = type === 'transfer';
+
+        if (!walletId || (!categoryId && !isTransfer) || !amount || !description) {
             toast.error("Preencha todos os campos obrigatórios");
             setLoading(false);
             return;
         }
 
-        const value = parseFloat(amount);
+        if (isTransfer && !destinationWalletId) {
+            toast.error("Selecione a conta de destino");
+            setLoading(false);
+            return;
+        }
+
+        if (isTransfer && walletId === destinationWalletId) {
+            toast.error("A conta de destino não pode ser a mesma de origem");
+            setLoading(false);
+            return;
+        }
+
+        // Convert formatted string "1.234,56" back to number 1234.56
+        const value = parseFloat(amount.replace(/\./g, '').replace(',', '.'));
 
         const transactionData = {
             description,
             amount: value,
             type,
             date,
-            category_id: categoryId,
+            category_id: isTransfer ? null : categoryId, // Allow null for transfer
             wallet_id: walletId,
+            destination_wallet_id: isTransfer ? destinationWalletId : null,
             payment_method: paymentMethod,
-            status: type === 'income' ? 'completed' : status,
+            status: (type === 'income' || type === 'transfer') ? 'completed' : status,
             is_recurring: isRecurring,
             recurrence_interval: isRecurring ? recurrenceInterval : null as any,
         };
@@ -179,7 +202,7 @@ export function TransactionForm({ className, transaction, onSuccess, onCancel }:
                 await services.transactions.registerTransaction(transactionData as any);
             }
 
-            toast.success(transaction ? "Transação atualizada!" : "Transação criada!");
+            toast.success(transaction ? "Transação atualizada!" : isTransfer ? "Transferência Realizada!" : "Transação criada!");
 
             if (!transaction) {
                 setDescription("");
@@ -187,12 +210,15 @@ export function TransactionForm({ className, transaction, onSuccess, onCancel }:
                 setDate(new Date().toISOString().split("T")[0]);
                 setCategoryId("");
                 setWalletId("");
+                setDestinationWalletId("");
                 setIsRecurring(false);
             }
 
+            refreshData(); // Trigger global refresh
             router.refresh();
             if (onSuccess) onSuccess();
         } catch (error: any) {
+            console.error(error);
             toast.error("Erro ao salvar transação: " + error.message);
         } finally {
             setLoading(false);
@@ -206,6 +232,7 @@ export function TransactionForm({ className, transaction, onSuccess, onCancel }:
         try {
             await services.transactions.cancelTransaction(transaction.id);
             toast.success("Transação excluída!");
+            refreshData(); // Trigger global refresh
             router.refresh();
             if (onSuccess) onSuccess();
         } catch (error: any) {
@@ -230,18 +257,42 @@ export function TransactionForm({ className, transaction, onSuccess, onCancel }:
                     </Label>
                     <div className="relative group flex items-center justify-center w-full max-w-[300px]">
                         <span className={cn(
-                            "absolute left-0 text-3xl font-medium transition-colors duration-500",
-                            type === 'income' ? 'text-blue-500' : 'text-slate-900'
+                            "absolute left-4 text-3xl font-medium transition-colors duration-500",
+                            type === 'income' ? 'text-blue-500' :
+                                type === 'transfer' ? 'text-violet-500' : 'text-slate-900',
+                            !amount && "opacity-50"
                         )}>R$</span>
                         <input
                             id="amount"
-                            type="number"
+                            type="text"
+                            inputMode="numeric"
                             value={amount}
-                            onChange={(e) => setAmount(e.target.value)}
+                            onChange={(e) => {
+                                let value = e.target.value;
+                                // Remove everything that is not a digit
+                                value = value.replace(/\D/g, "");
+
+                                if (value === "") {
+                                    setAmount("");
+                                    return;
+                                }
+
+                                // Convert to number and divide by 100 to get decimal
+                                const numericValue = parseFloat(value) / 100;
+
+                                // Format to locale string
+                                const formatted = numericValue.toLocaleString('pt-BR', {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2
+                                });
+
+                                setAmount(formatted);
+                            }}
                             placeholder="0,00"
                             className={cn(
-                                "w-full bg-transparent border-none text-center text-6xl font-semibold tracking-tighter focus:ring-0 placeholder:text-slate-100 transition-colors duration-500",
-                                type === 'income' ? 'text-blue-600' : 'text-slate-900'
+                                "w-full bg-transparent border-none text-center text-6xl font-semibold tracking-tighter focus:ring-0 placeholder:text-slate-100 transition-colors duration-500 pl-12", // Added padding-left to avoid overlap with R$
+                                type === 'income' ? 'text-blue-600' :
+                                    type === 'transfer' ? 'text-violet-600' : 'text-slate-900'
                             )}
                         />
                     </div>
@@ -254,11 +305,12 @@ export function TransactionForm({ className, transaction, onSuccess, onCancel }:
                         {/* Animated Background Indicator */}
                         <motion.div
                             className={cn(
-                                "absolute top-1.5 bottom-1.5 left-1.5 w-[calc(50%-6px)] rounded-[18px] shadow-sm z-0",
-                                type === 'income' ? 'bg-blue-600' : 'bg-slate-900'
+                                "absolute top-1.5 bottom-1.5 left-1.5 w-[calc(33.33%-4px)] rounded-[18px] shadow-sm z-0",
+                                type === 'income' ? 'bg-blue-600' :
+                                    type === 'expense' ? 'bg-slate-900' : 'bg-violet-600'
                             )}
                             initial={false}
-                            animate={{ x: type === 'income' ? '100%' : '0%' }}
+                            animate={{ x: type === 'income' ? '200%' : type === 'transfer' ? '100%' : '0%' }}
                             transition={{ type: "spring", stiffness: 300, damping: 30 }}
                         />
                         <button
@@ -270,6 +322,16 @@ export function TransactionForm({ className, transaction, onSuccess, onCancel }:
                             )}
                         >
                             Despesa
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => setType('transfer')}
+                            className={cn(
+                                "flex-1 py-3 px-4 rounded-[18px] text-[13px] font-semibold tracking-tight transition-colors duration-300 relative z-10",
+                                type === 'transfer' ? 'text-white' : 'text-slate-500'
+                            )}
+                        >
+                            Transferência
                         </button>
                         <button
                             type="button"
@@ -343,30 +405,32 @@ export function TransactionForm({ className, transaction, onSuccess, onCancel }:
                     <div className="grid grid-cols-2 gap-6">
                         <div className="space-y-3">
                             <Label htmlFor="wallet" className="text-[10px] font-bold text-slate-300 uppercase tracking-widest ml-1">
-                                Carteira
+                                {type === 'transfer' ? 'De onde sai?' : 'Carteira'}
                             </Label>
                             {isMobile ? (
-                                <select
-                                    id="wallet"
-                                    value={walletId}
-                                    onChange={(e) => setWalletId(e.target.value)}
-                                    className="h-14 w-full rounded-2xl bg-white border border-slate-100 shadow-sm transition-all text-[14px] px-6 appearance-none"
-                                    style={{
-                                        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23cbd5e1'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
-                                        backgroundRepeat: 'no-repeat',
-                                        backgroundPosition: 'right 1.5rem center',
-                                        backgroundSize: '1.25rem'
-                                    }}
-                                >
-                                    <option value="">Onde?</option>
-                                    {wallets.map((wallet) => (
-                                        <option key={wallet.id} value={wallet.id}>{wallet.name}</option>
-                                    ))}
-                                </select>
+                                <div className="relative">
+                                    <select
+                                        id="wallet"
+                                        value={walletId}
+                                        onChange={(e) => setWalletId(e.target.value)}
+                                        className="h-14 w-full rounded-2xl bg-white border border-slate-100 shadow-sm transition-all text-[14px] px-6 appearance-none focus:ring-2 focus:ring-slate-100 focus:outline-none"
+                                        style={{
+                                            backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")`,
+                                            backgroundRepeat: 'no-repeat',
+                                            backgroundPosition: 'right 1rem center',
+                                            backgroundSize: '1.25rem'
+                                        }}
+                                    >
+                                        <option value="" disabled>Selecione...</option>
+                                        {wallets.map((wallet) => (
+                                            <option key={wallet.id} value={wallet.id}>{wallet.name}</option>
+                                        ))}
+                                    </select>
+                                </div>
                             ) : (
                                 <Select value={walletId} onValueChange={setWalletId}>
                                     <SelectTrigger className="h-14 rounded-2xl bg-white border-slate-100 shadow-sm transition-all text-[14px] px-6">
-                                        <SelectValue placeholder="Onde?" />
+                                        <SelectValue placeholder="Selecione..." />
                                     </SelectTrigger>
                                     <SelectContent className="rounded-[28px] border-slate-100 shadow-2xl p-2 bg-white/98 backdrop-blur-xl">
                                         {wallets.map((wallet) => (
@@ -377,41 +441,83 @@ export function TransactionForm({ className, transaction, onSuccess, onCancel }:
                             )}
                         </div>
 
-                        <div className="space-y-3">
-                            <Label htmlFor="category" className="text-[10px] font-bold text-slate-300 uppercase tracking-widest ml-1">
-                                Categoria
-                            </Label>
-                            {isMobile ? (
-                                <select
-                                    id="category"
-                                    value={categoryId}
-                                    onChange={(e) => setCategoryId(e.target.value)}
-                                    className="h-14 w-full rounded-2xl bg-white border border-slate-100 shadow-sm transition-all text-[14px] px-6 appearance-none"
-                                    style={{
-                                        backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23cbd5e1'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
-                                        backgroundRepeat: 'no-repeat',
-                                        backgroundPosition: 'right 1.5rem center',
-                                        backgroundSize: '1.25rem'
-                                    }}
-                                >
-                                    <option value="">O quê?</option>
-                                    {categories.map((category) => (
-                                        <option key={category.id} value={category.id}>{category.name}</option>
-                                    ))}
-                                </select>
-                            ) : (
-                                <Select value={categoryId} onValueChange={setCategoryId}>
-                                    <SelectTrigger className="h-14 rounded-2xl bg-white border-slate-100 shadow-sm transition-all text-[14px] px-6">
-                                        <SelectValue placeholder="O quê?" />
-                                    </SelectTrigger>
-                                    <SelectContent className="rounded-[28px] border-slate-100 shadow-2xl p-2 bg-white/98 backdrop-blur-xl">
-                                        {categories.map((category) => (
-                                            <SelectItem key={category.id} value={category.id} className="rounded-xl py-3 focus:bg-slate-50 cursor-pointer">{category.name}</SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
-                            )}
-                        </div>
+                        {type === 'transfer' ? (
+                            <div className="space-y-3">
+                                <Label htmlFor="destination_wallet" className="text-[10px] font-bold text-slate-300 uppercase tracking-widest ml-1">
+                                    Para onde vai?
+                                </Label>
+                                {isMobile ? (
+                                    <div className="relative">
+                                        <select
+                                            id="destination_wallet"
+                                            value={destinationWalletId}
+                                            onChange={(e) => setDestinationWalletId(e.target.value)}
+                                            className="h-14 w-full rounded-2xl bg-white border border-slate-100 shadow-sm transition-all text-[14px] px-6 appearance-none focus:ring-2 focus:ring-slate-100 focus:outline-none"
+                                            style={{
+                                                backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")`,
+                                                backgroundRepeat: 'no-repeat',
+                                                backgroundPosition: 'right 1rem center',
+                                                backgroundSize: '1.25rem'
+                                            }}
+                                        >
+                                            <option value="" disabled>Selecione...</option>
+                                            {wallets.filter(w => w.id !== walletId).map((wallet) => (
+                                                <option key={wallet.id} value={wallet.id}>{wallet.name}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                ) : (
+                                    <Select value={destinationWalletId} onValueChange={setDestinationWalletId}>
+                                        <SelectTrigger className="h-14 rounded-2xl bg-white border-slate-100 shadow-sm transition-all text-[14px] px-6">
+                                            <SelectValue placeholder="Selecione..." />
+                                        </SelectTrigger>
+                                        <SelectContent className="rounded-[28px] border-slate-100 shadow-2xl p-2 bg-white/98 backdrop-blur-xl">
+                                            {wallets.filter(w => w.id !== walletId).map((wallet) => (
+                                                <SelectItem key={wallet.id} value={wallet.id} className="rounded-xl py-3 focus:bg-slate-50 cursor-pointer">{wallet.name}</SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                )}
+                            </div>
+                        ) : (
+                            <div className="space-y-3">
+                                <Label htmlFor="category" className="text-[10px] font-bold text-slate-300 uppercase tracking-widest ml-1">
+                                    Categoria
+                                </Label>
+                                {isMobile ? (
+                                    <div className="relative">
+                                        <select
+                                            id="category"
+                                            value={categoryId}
+                                            onChange={(e) => setCategoryId(e.target.value)}
+                                            className="h-14 w-full rounded-2xl bg-white border border-slate-100 shadow-sm transition-all text-[14px] px-6 appearance-none focus:ring-2 focus:ring-slate-100 focus:outline-none"
+                                            style={{
+                                                backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")`,
+                                                backgroundRepeat: 'no-repeat',
+                                                backgroundPosition: 'right 1rem center',
+                                                backgroundSize: '1.25rem'
+                                            }}
+                                        >
+                                            <option value="" disabled>O quê?</option>
+                                            {categories.map((category) => (
+                                                <option key={category.id} value={category.id}>{category.name}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                ) : (
+                                    <Select value={categoryId} onValueChange={setCategoryId}>
+                                        <SelectTrigger className="h-14 rounded-2xl bg-white border-slate-100 shadow-sm transition-all text-[14px] px-6">
+                                            <SelectValue placeholder="O quê?" />
+                                        </SelectTrigger>
+                                        <SelectContent className="rounded-[28px] border-slate-100 shadow-2xl p-2 bg-white/98 backdrop-blur-xl">
+                                            {categories.map((category) => (
+                                                <SelectItem key={category.id} value={category.id} className="rounded-xl py-3 focus:bg-slate-50 cursor-pointer">{category.name}</SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                )}
+                            </div>
+                        )}
                     </div>
 
                     <div className="grid grid-cols-2 gap-6">
@@ -436,13 +542,15 @@ export function TransactionForm({ className, transaction, onSuccess, onCancel }:
                             <Label htmlFor="date" className="text-[10px] font-bold text-slate-300 uppercase tracking-widest ml-1">
                                 Data
                             </Label>
-                            <Input
-                                id="date"
-                                type="date"
-                                value={date}
-                                onChange={(e) => setDate(e.target.value)}
-                                className="h-14 rounded-2xl bg-white border-slate-100 shadow-sm text-[14px] px-6 transition-all"
-                            />
+                            <div className="relative">
+                                <Input
+                                    id="date"
+                                    type="date"
+                                    value={date}
+                                    onChange={(e) => setDate(e.target.value)}
+                                    className="h-14 rounded-2xl bg-white border-slate-100 shadow-sm text-[14px] px-6 transition-all w-full appearance-none"
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -491,19 +599,20 @@ export function TransactionForm({ className, transaction, onSuccess, onCancel }:
                 </div>
             </div>
 
-            {/* 5. FLOATING PRIMARY ACTION */}
-            <div className="sticky bottom-0 bg-white/80 backdrop-blur-md pt-6 pb-2 mt-auto flex flex-col gap-4">
+            {/* 5. FLOATING PRIMARY ACTION (Removed Fixed) */}
+            <div className="pt-8 pb-4 mt-auto flex flex-col gap-4">
                 <motion.button
                     type="submit"
                     disabled={loading}
                     whileTap={{ scale: 0.98 }}
                     className={cn(
                         "w-full h-14 rounded-[18px] text-white font-semibold shadow-2xl transition-all flex items-center justify-center gap-2",
-                        type === 'income' ? 'bg-blue-600 shadow-blue-500/20' : 'bg-slate-900 shadow-slate-900/10',
+                        type === 'income' ? 'bg-blue-600 shadow-blue-500/20' :
+                            type === 'transfer' ? 'bg-violet-600 shadow-violet-500/20' : 'bg-slate-900 shadow-slate-900/10',
                         loading && "opacity-80"
                     )}
                 >
-                    {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : (transaction ? "Salvar Alterações" : "Salvar Transação")}
+                    {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : (transaction ? "Salvar Alterações" : type === 'transfer' ? "Confirmar Transferência" : "Salvar Transação")}
                 </motion.button>
 
                 {transaction && (

@@ -23,7 +23,7 @@ class ServiceFactory {
     public readonly health = new HealthAppService(this.transactionRepo, this.walletRepo);
     public readonly import = new ImportAppService();
     public readonly categories = {
-        list: (type?: 'income' | 'expense') => this.categoryRepo.list(type)
+        list: (type?: 'income' | 'expense' | 'transfer') => this.categoryRepo.list(type as any)
     };
 }
 

@@ -17,13 +17,13 @@ export function AuthenticatedShell({ children }: { children: React.ReactNode }) 
     }
 
     return (
-        <div className="flex min-h-screen">
+        <div className="flex h-dvh w-full overflow-hidden bg-gray-50 dark:bg-gray-900">
             <Sidebar />
             <BottomNav />
-            <div className="flex-1 ml-0 md:ml-64 flex flex-col min-h-screen transition-all duration-300 pb-20 md:pb-0">
+            <div className="flex-1 ml-0 md:ml-64 flex flex-col h-full min-h-0 relative overflow-hidden transition-all duration-300">
                 <Header />
                 <CommandPalette />
-                <main className="flex-1 px-4 md:px-8 pt-4 pb-8 overflow-y-auto">
+                <main className="flex-1 overflow-y-auto overflow-x-hidden pt-4 px-4 md:px-8 pb-32 md:pb-8 scrollbar-hide pt-safe pb-safe">
                     {children}
                 </main>
             </div>

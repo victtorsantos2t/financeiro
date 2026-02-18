@@ -11,7 +11,7 @@ interface MonthlyEarningsChartProps {
 const MONTHS = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
 
 export function MonthlyEarningsChart({ currentDate = new Date() }: MonthlyEarningsChartProps) {
-    const [data, setData] = useState<{ name: string; value: number }[]>([]);
+    const [data, setData] = useState<{ name: string; income: number; expense: number }[]>([]);
     const supabase = createClient();
 
     useEffect(() => {
@@ -46,36 +46,49 @@ export function MonthlyEarningsChart({ currentDate = new Date() }: MonthlyEarnin
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) return;
 
+        // Fetch ALL completed transactions for the year
         const { data: transactions } = await supabase
             .from("transactions")
             .select("date, amount, type")
             .eq("user_id", user.id)
-            .eq("type", "income")
             .eq("status", "completed")
             .gte("date", startOfYear)
             .lte("date", endOfYear)
             .order("date");
 
         if (transactions) {
-            const monthlyMap = new Map<number, number>();
+            const monthlyMap = new Map<number, { income: number; expense: number }>();
 
-            // Initialize all months up to current
+            // Initialize all months
             for (let i = 0; i < 12; i++) {
-                monthlyMap.set(i, 0);
+                monthlyMap.set(i, { income: 0, expense: 0 });
             }
 
+            // Aggregate data
             transactions.forEach(t => {
-                const month = new Date(t.date).getUTCMonth();
-                monthlyMap.set(month, (monthlyMap.get(month) || 0) + t.amount);
+                // Use UTC month to correspond with ISO date storage
+                const date = new Date(t.date);
+                const month = date.getUTCMonth();
+                const current = monthlyMap.get(month) || { income: 0, expense: 0 };
+
+                if (t.type === 'income') {
+                    current.income += t.amount;
+                } else if (t.type === 'expense') {
+                    current.expense += t.amount;
+                }
+
+                monthlyMap.set(month, current);
             });
 
-            // Filter out months with no data if needed, or show all
+            const currentMonthIndex = new Date().getMonth();
+
+            // Format for chart
             const chartData = Array.from(monthlyMap.entries())
-                .map(([monthIndex, value]) => ({
+                .map(([monthIndex, values]) => ({
                     name: MONTHS[monthIndex],
-                    value: value
-                }))
-                .slice(0, 10); // Show up to current/Oct as per design
+                    income: values.income,
+                    expense: values.expense
+                }));
 
             setData(chartData);
         }
@@ -86,12 +99,21 @@ export function MonthlyEarningsChart({ currentDate = new Date() }: MonthlyEarnin
             <div className="mb-10 flex justify-between items-start">
                 <div>
                     <h3 className="text-2xl font-semibold text-slate-900 tracking-tight mb-1.5">Visão Mensal</h3>
-                    <div className="flex items-center gap-2 text-slate-300 font-semibold text-[10px] uppercase tracking-[0.2em]">
-                        Receita <TrendingUp className="w-3.5 h-3.5 text-blue-500/60" strokeWidth={2.5} />
+                    <div className="flex items-center gap-4 text-[10px] uppercase tracking-[0.2em] font-bold">
+                        <div className="flex items-center gap-1.5 text-emerald-500">
+                            <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+                            Receita
+                        </div>
+                        <div className="flex items-center gap-1.5 text-rose-500">
+                            <span className="w-2 h-2 rounded-full bg-rose-500"></span>
+                            Despesa
+                        </div>
                     </div>
                 </div>
                 <div className="flex gap-2">
-                    <div className="px-5 py-2 rounded-2xl bg-slate-50/50 text-slate-400 text-[10px] font-semibold uppercase tracking-widest border border-slate-100/30">2024</div>
+                    <div className="px-5 py-2 rounded-2xl bg-slate-50/50 text-slate-400 text-[10px] font-semibold uppercase tracking-widest border border-slate-100/30">
+                        {currentDate.getFullYear()}
+                    </div>
                 </div>
             </div>
 
@@ -102,9 +124,13 @@ export function MonthlyEarningsChart({ currentDate = new Date() }: MonthlyEarnin
                     <ResponsiveContainer width="100%" height="100%">
                         <AreaChart data={data} margin={{ top: 10, right: 0, left: -20, bottom: 0 }}>
                             <defs>
-                                <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.08} />
-                                    <stop offset="95%" stopColor="#3b82f6" stopOpacity={0.01} />
+                                <linearGradient id="colorIncome" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="5%" stopColor="#10b981" stopOpacity={0.1} />
+                                    <stop offset="95%" stopColor="#10b981" stopOpacity={0.01} />
+                                </linearGradient>
+                                <linearGradient id="colorExpense" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="5%" stopColor="#f43f5e" stopOpacity={0.1} />
+                                    <stop offset="95%" stopColor="#f43f5e" stopOpacity={0.01} />
                                 </linearGradient>
                             </defs>
                             <CartesianGrid
@@ -134,19 +160,36 @@ export function MonthlyEarningsChart({ currentDate = new Date() }: MonthlyEarnin
                                     padding: "16px 20px"
                                 }}
                                 cursor={{ stroke: '#e2e8f0', strokeWidth: 1.5 }}
-                                formatter={(value: number | undefined) => [`R$ ${Number(value || 0).toLocaleString('pt-BR', { minimumFractionDigits: 0 })}`, ""]}
+                                formatter={(value: any, name: any) => [
+                                    `R$ ${Number(value || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`,
+                                    name === 'income' ? 'Receita' : 'Despesa'
+                                ]}
                             />
                             <Area
                                 type="monotone"
-                                dataKey="value"
-                                stroke="var(--chart-1)"
-                                strokeWidth={4}
+                                dataKey="income"
+                                stroke="#10b981" // Emerald-500
+                                strokeWidth={3}
                                 fillOpacity={1}
-                                fill="url(#colorValue)"
+                                fill="url(#colorIncome)"
                                 activeDot={{
                                     r: 6,
                                     fill: "white",
-                                    stroke: "var(--chart-1)",
+                                    stroke: "#10b981",
+                                    strokeWidth: 3,
+                                }}
+                            />
+                            <Area
+                                type="monotone"
+                                dataKey="expense"
+                                stroke="#f43f5e" // Rose-500
+                                strokeWidth={3}
+                                fillOpacity={1}
+                                fill="url(#colorExpense)"
+                                activeDot={{
+                                    r: 6,
+                                    fill: "white",
+                                    stroke: "#f43f5e",
                                     strokeWidth: 3,
                                 }}
                             />

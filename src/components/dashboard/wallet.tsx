@@ -5,12 +5,14 @@ import { services } from "@/core/application/services/services.factory";
 import { TrendingDown, TrendingUp } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useDashboard } from "@/context/dashboard-context";
 
 export function Wallet() {
     const [totalBalance, setTotalBalance] = useState(0);
     const [income, setIncome] = useState(0);
     const [expense, setExpense] = useState(0);
     const [loading, setLoading] = useState(true);
+    const { refreshTrigger, currentDate } = useDashboard();
     const supabase = createClient();
 
     useEffect(() => {
@@ -42,7 +44,7 @@ export function Wallet() {
         return () => {
             supabase.removeChannel(channel);
         };
-    }, []);
+    }, [refreshTrigger, currentDate]);
 
     const fetchData = async () => {
         setLoading(true);
@@ -55,17 +57,19 @@ export function Wallet() {
             const total = wallets?.reduce((acc, curr) => acc + curr.balance, 0) || 0;
             setTotalBalance(total);
 
-            // Filter for current month completed transactions
-            const today = new Date();
-            const currentMonth = today.getMonth();
-            const currentYear = today.getFullYear();
+            // Filter for current month completed transactions based on selected date
+            const currentMonth = currentDate.getMonth();
+            const currentYear = currentDate.getFullYear();
 
             let inc = 0;
             let exp = 0;
 
             transactions?.forEach(t => {
-                const tDate = new Date(t.date);
-                if (tDate.getMonth() === currentMonth && tDate.getFullYear() === currentYear && t.status === 'completed') {
+                // Fix timezone issue by splitting explicitly
+                const [tYear, tMonth] = t.date.split('T')[0].split('-').map(Number);
+                // tMonth is 1-indexed, getMonth() is 0-indexed
+
+                if ((tMonth - 1) === currentMonth && tYear === currentYear && t.status === 'completed') {
                     if (t.type === 'income') inc += t.amount;
                     if (t.type === 'expense') exp += t.amount;
                 }

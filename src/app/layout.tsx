@@ -25,6 +25,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   userScalable: false, // Prevents zooming on inputs for iOS
+  viewportFit: "cover",
 };
 
 import { ThemeProvider } from "@/components/theme-provider";
@@ -39,7 +40,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-50 dark:bg-gray-900 transition-colors duration-300`}
+        className={`${geistSans.variable} ${geistMono.variable} min-h-dvh antialiased bg-gray-50 dark:bg-gray-900 transition-colors duration-300`}
       >
         <ThemeProvider
           attribute="class"

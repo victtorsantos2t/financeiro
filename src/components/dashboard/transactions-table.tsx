@@ -24,6 +24,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Transaction } from "./transaction-form";
+import { useDashboard } from "@/context/dashboard-context";
 
 // Extended type for display
 interface TransactionWithDetails extends Transaction {
@@ -57,6 +58,7 @@ export function TransactionsTable({
     const pageSize = isCompact ? 10 : 10;
 
     const supabase = createClient();
+    const { refreshTrigger } = useDashboard();
 
     useEffect(() => {
         fetchTransactions();
@@ -71,7 +73,7 @@ export function TransactionsTable({
             .subscribe();
 
         return () => { supabase.removeChannel(channel); };
-    }, [externalFilters, activeTab, currentPage, isCompact]);
+    }, [externalFilters, activeTab, currentPage, isCompact, refreshTrigger]);
 
     const fetchTransactions = async () => {
         setLoading(true);

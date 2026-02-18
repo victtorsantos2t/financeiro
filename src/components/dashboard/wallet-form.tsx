@@ -24,9 +24,12 @@ export interface Wallet {
     type: string;
     balance: number;
     color: string;
-    card_type?: string;
-    card_number?: string;
-    card_limit?: number;
+    card_type?: string | null;
+    card_number?: string | null;
+    card_limit?: number | null;
+    investment_type?: string | null;
+    yield_benchmark?: string | null;
+    yield_percentage?: number | null;
 }
 
 interface WalletFormProps {
@@ -38,7 +41,6 @@ interface WalletFormProps {
 export function WalletForm({ wallet, onSuccess, onCancel }: WalletFormProps) {
     const [name, setName] = useState(wallet?.name || "");
     const [type, setType] = useState(wallet?.type || "Corrente");
-    const [balance, setBalance] = useState(wallet?.balance?.toString() || "");
     const [color, setColor] = useState(wallet?.color || "blue");
     const [loading, setLoading] = useState(false);
     const [walletTypes, setWalletTypes] = useState<string[]>(["Corrente", "Poupança", "Investimento", "Dinheiro"]);
@@ -49,11 +51,51 @@ export function WalletForm({ wallet, onSuccess, onCancel }: WalletFormProps) {
     const [cardNumber, setCardNumber] = useState(wallet?.card_number || "");
     const [cardLimit, setCardLimit] = useState(wallet?.card_limit?.toString() || "");
 
+    const formatCurrency = (value: string) => {
+        const numericValue = value.replace(/\D/g, "");
+        const floatValue = parseFloat(numericValue) / 100;
+        return floatValue.toLocaleString("pt-BR", {
+            style: "currency",
+            currency: "BRL",
+        });
+    };
+
+    const parseCurrency = (value: string) => {
+        return parseFloat(value.replace(/\D/g, "")) / 100;
+    };
+
+    const initialBalance = wallet?.balance
+        ? wallet.balance.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })
+        : "";
+    const [balanceDisplay, setBalanceDisplay] = useState(initialBalance);
+    const [currentBalance, setCurrentBalance] = useState(wallet?.balance?.toString() || "");
+
+    const handleBalanceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const rawValue = e.target.value;
+        const numericOnly = rawValue.replace(/\D/g, "");
+
+        if (numericOnly === "") {
+            setBalanceDisplay("");
+            setCurrentBalance("");
+            return;
+        }
+
+        const formatted = formatCurrency(numericOnly);
+        setBalanceDisplay(formatted);
+        const floatVal = parseCurrency(formatted);
+        setCurrentBalance(floatVal.toString());
+    };
+
+    const [investmentType, setInvestmentType] = useState(wallet?.investment_type || "CDB");
+    const [yieldBenchmark, setYieldBenchmark] = useState(wallet?.yield_benchmark || "CDI");
+    const [yieldPercentage, setYieldPercentage] = useState(wallet?.yield_percentage?.toString() || "100");
+
     useEffect(() => {
         if (wallet) {
             setName(wallet.name);
             setType(wallet.type);
-            setBalance(wallet.balance.toString());
+            setCurrentBalance(wallet.balance.toString());
+            setBalanceDisplay(wallet.balance.toLocaleString("pt-BR", { style: "currency", currency: "BRL" }));
             setColor(wallet.color);
             // @ts-ignore
             setCardType(wallet.card_type || "none");
@@ -61,6 +103,12 @@ export function WalletForm({ wallet, onSuccess, onCancel }: WalletFormProps) {
             setCardNumber(wallet.card_number || "");
             // @ts-ignore
             setCardLimit(wallet.card_limit?.toString() || "");
+            // @ts-ignore
+            setInvestmentType(wallet.investment_type || "CDB");
+            // @ts-ignore
+            setYieldBenchmark(wallet.yield_benchmark || "CDI");
+            // @ts-ignore
+            setYieldPercentage(wallet.yield_percentage?.toString() || "100");
         }
         fetchWalletTypes();
     }, [wallet]);
@@ -82,11 +130,14 @@ export function WalletForm({ wallet, onSuccess, onCancel }: WalletFormProps) {
             const walletData = {
                 name,
                 type,
-                balance: parseFloat(balance) || 0,
+                balance: parseFloat(currentBalance) || 0,
                 color,
                 card_type: cardType === "none" ? null : cardType as any,
                 card_number: cardType === "none" ? null : cardNumber,
                 card_limit: cardType === "credit" ? parseFloat(cardLimit) || 0 : null,
+                investment_type: type === "Investimento" ? (investmentType as any) : null,
+                yield_benchmark: type === "Investimento" ? (yieldBenchmark as any) : null,
+                yield_percentage: type === "Investimento" ? parseFloat(yieldPercentage) || 0 : null,
             };
 
             if (wallet) {
@@ -98,7 +149,8 @@ export function WalletForm({ wallet, onSuccess, onCancel }: WalletFormProps) {
             toast.success(wallet ? "Carteira atualizada!" : "Carteira criada!");
             if (!wallet) {
                 setName("");
-                setBalance("");
+                setBalanceDisplay("");
+                setCurrentBalance("");
                 setCardType("none");
                 setCardNumber("");
                 setCardLimit("");
@@ -188,17 +240,79 @@ export function WalletForm({ wallet, onSuccess, onCancel }: WalletFormProps) {
                         </div>
                     </div>
 
+                    {type === "Investimento" && (
+                        <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-300 border-t border-slate-100 pt-4 mt-2">
+                            <Label className="text-[11px] font-bold text-slate-400 uppercase tracking-widest ml-1 mb-2 block">
+                                Detalhes do Investimento
+                            </Label>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                    <Label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Tipo de Ativo</Label>
+                                    <Select value={investmentType} onValueChange={setInvestmentType}>
+                                        <SelectTrigger className="h-11 rounded-xl bg-slate-50 border-slate-100 font-medium text-xs">
+                                            <SelectValue />
+                                        </SelectTrigger>
+                                        <SelectContent className="rounded-xl">
+                                            <SelectItem value="CDB">CDB</SelectItem>
+                                            <SelectItem value="LCI">LCI</SelectItem>
+                                            <SelectItem value="LCA">LCA</SelectItem>
+                                            <SelectItem value="Tesouro">Tesouro Direto</SelectItem>
+                                            <SelectItem value="FII">FII</SelectItem>
+                                            <SelectItem value="Ações">Ações</SelectItem>
+                                            <SelectItem value="Crypto">Cripto</SelectItem>
+                                            <SelectItem value="Conta Remunerada">Conta Remunerada</SelectItem>
+                                            <SelectItem value="Cofrinho">Cofrinho</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                                <div className="space-y-2">
+                                    <Label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Indexador</Label>
+                                    <Select value={yieldBenchmark} onValueChange={setYieldBenchmark}>
+                                        <SelectTrigger className="h-11 rounded-xl bg-slate-50 border-slate-100 font-medium text-xs">
+                                            <SelectValue />
+                                        </SelectTrigger>
+                                        <SelectContent className="rounded-xl">
+                                            <SelectItem value="CDI">CDI</SelectItem>
+                                            <SelectItem value="SELIC">SELIC</SelectItem>
+                                            <SelectItem value="IPCA">IPCA</SelectItem>
+                                            <SelectItem value="FIXED">Pré-fixado</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                            </div>
+                            <div className="space-y-2">
+                                <Label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">
+                                    Rentabilidade {yieldBenchmark === 'FIXED' ? '(% a.a.)' : `(% do ${yieldBenchmark})`}
+                                </Label>
+                                <div className="relative">
+                                    <Input
+                                        type="number"
+                                        value={yieldPercentage}
+                                        onChange={(e) => setYieldPercentage(e.target.value)}
+                                        className="h-11 rounded-xl bg-slate-50 border-slate-100 font-bold pl-4"
+                                        placeholder="100"
+                                    />
+                                    <div className="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-bold text-slate-400">%</div>
+                                </div>
+                                <p className="text-[10px] text-slate-400 ml-1">
+                                    Ex: 100% do CDI (Conta Padrão) ou 120% (Cofrinho Turbo).
+                                </p>
+                            </div>
+                        </div>
+                    )}
+
                     <div className="space-y-2">
                         <Label htmlFor="balance" className="text-[11px] font-bold text-slate-400 uppercase tracking-widest ml-1">Saldo Inicial</Label>
                         <div className="relative">
-                            <span className="absolute left-4 top-1/2 -translate-y-1/2 font-bold text-slate-400 text-sm">R$</span>
+                            <span className="absolute left-4 top-1/2 -translate-y-1/2 font-bold text-slate-400 text-sm z-10 opacity-0">R$</span>
                             <Input
                                 id="balance"
-                                type="number"
-                                value={balance}
-                                onChange={(e) => setBalance(e.target.value)}
-                                placeholder="0,00"
-                                className="h-12 pl-12 rounded-xl bg-slate-50 border-slate-100 focus:bg-white focus:ring-2 focus:ring-primary/20 transition-all font-bold text-lg"
+                                type="text"
+                                inputMode="numeric"
+                                value={balanceDisplay}
+                                onChange={handleBalanceChange}
+                                placeholder="R$ 0,00"
+                                className="h-12 pl-4 rounded-xl bg-slate-50 border-slate-100 focus:bg-white focus:ring-2 focus:ring-primary/20 transition-all font-bold text-lg"
                             />
                         </div>
                     </div>

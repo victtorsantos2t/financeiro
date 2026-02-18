@@ -6,19 +6,14 @@ export class SupabaseWalletRepository implements IWalletRepository {
     private supabase = createClient();
 
     async list(): Promise<Wallet[]> {
-        console.log('[WalletRepo] Iniciando list()');
-
         const { data, error } = await this.supabase
             .from("wallets")
-            .select("*")
-            .is("deleted_at", null);
+            .select("*");
 
         if (error) {
-            console.error('[WalletRepo] Erro ao buscar wallets:', error);
             throw error;
         }
 
-        console.log('[WalletRepo] Wallets carregadas:', data?.length || 0);
         return data as Wallet[];
     }
 

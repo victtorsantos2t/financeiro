@@ -21,6 +21,9 @@ export interface Wallet {
     card_type?: 'credit' | 'debit' | null;
     card_number?: string | null;
     card_limit?: number | null;
+    investment_type?: 'CDB' | 'LCI' | 'LCA' | 'Tesouro' | 'FII' | 'Ações' | 'Crypto' | 'Outros' | null;
+    yield_benchmark?: 'CDI' | 'SELIC' | 'IPCA' | 'FIXED' | null;
+    yield_percentage?: number | null;
     created_at: string;
 }
 
