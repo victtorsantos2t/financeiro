@@ -46,13 +46,27 @@ export function NotificationSheet() {
     const [loading, setLoading] = useState(true);
     const [activeTab, setActiveTab] = useState<'all' | 'unread'>('all');
     const [isMobile, setIsMobile] = useState(false);
-    const [showBanner, setShowBanner] = useState(true);
+    const [showBanner, setShowBanner] = useState(false); // Default to false, check in useEffect
+    const [permissionStatus, setPermissionStatus] = useState<NotificationPermission>('default');
     const supabase = createClient();
 
     useEffect(() => {
         const checkMobile = () => setIsMobile(window.innerWidth < 768);
         checkMobile();
         window.addEventListener('resize', checkMobile);
+
+        // Persistence check
+        const bannerDismissed = localStorage.getItem('notifications-banner-dismissed');
+        const hasPermission = 'Notification' in window && Notification.permission === 'granted';
+
+        if (!bannerDismissed && !hasPermission) {
+            setShowBanner(true);
+        }
+
+        if ('Notification' in window) {
+            setPermissionStatus(Notification.permission);
+        }
+
         fetchNotifications();
 
         // Listen for transaction changes to update notifications in real-time
@@ -81,19 +95,37 @@ export function NotificationSheet() {
             .select("id, description, amount, date")
             .eq("user_id", user.id)
             .eq("status", "pending")
-            .order("date", { ascending: false })
-            .limit(10);
+            .order("date", { ascending: true }) // Show soonest first
+            .limit(20);
 
-        const txNotifications: Notification[] = (pendingTx || []).map(tx => ({
-            id: tx.id,
-            type: 'payment',
-            title: "Pagamento Pendente",
-            description: `Vencimento de ${tx.description}`,
-            amount: tx.amount,
-            date: tx.date,
-            isRead: false,
-            subIcon: Calendar
-        }));
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        const txNotifications: Notification[] = (pendingTx || []).map(tx => {
+            const txDate = new Date(tx.date);
+            txDate.setHours(0, 0, 0, 0);
+
+            const isOverdue = txDate < today;
+            const diffTime = txDate.getTime() - today.getTime();
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+            let title = "Pagamento Pendente";
+            if (isOverdue) title = "Pagamento Atrasado ⚠️";
+            else if (diffDays === 0) title = "Vence Hoje! ⚡";
+            else if (diffDays <= 3) title = `Vence em ${diffDays} dias`;
+
+            return {
+                id: tx.id,
+                type: isOverdue ? 'payment' : 'payment', // Both use payment icon for now but title changes
+                title,
+                description: `Vencimento de ${tx.description}`,
+                amount: tx.amount,
+                date: tx.date,
+                isRead: false,
+                subIcon: Calendar,
+                isOverdue
+            };
+        });
 
         const systemAlerts: Notification[] = [
             {
@@ -104,15 +136,6 @@ export function NotificationSheet() {
                 date: new Date().toISOString(),
                 isRead: false,
                 subIcon: Zap
-            },
-            {
-                id: 'system-update',
-                type: 'success',
-                title: "Sistema Atualizado",
-                description: "Sua interface agora conta com a nova versão Ultra Premium.",
-                date: new Date(Date.now() - 3600000 * 2).toISOString(),
-                isRead: true,
-                subIcon: CheckCircle2
             }
         ];
 
@@ -136,9 +159,35 @@ export function NotificationSheet() {
         toast.success(`${unreadCount} notificações marcadas como lidas`);
     };
 
-    const enablePush = () => {
+    const enablePush = async () => {
+        if (!('Notification' in window)) {
+            toast.error("Este navegador não suporta notificações.");
+            return;
+        }
+
+        try {
+            const permission = await Notification.requestPermission();
+            setPermissionStatus(permission);
+
+            if (permission === 'granted') {
+                localStorage.setItem('notifications-banner-dismissed', 'true');
+                setShowBanner(false);
+                toast.success("Notificações Push ativadas com sucesso!");
+            } else if (permission === 'denied') {
+                localStorage.setItem('notifications-banner-dismissed', 'true');
+                setShowBanner(false);
+                toast.error("Notificações bloqueadas no navegador. Clique no ícone de 'Cadeado' na barra de endereços para permitir.");
+            } else {
+                toast.error("Permissão de notificação não concedida.");
+            }
+        } catch (error) {
+            console.error("Erro ao solicitar permissão:", error);
+        }
+    };
+
+    const ignoreBanner = () => {
+        localStorage.setItem('notifications-banner-dismissed', 'true');
         setShowBanner(false);
-        toast.info("Notificações Push ativadas com sucesso!");
     };
 
     const filteredNotifications = activeTab === 'all'
@@ -224,7 +273,7 @@ export function NotificationSheet() {
                                     className="p-8 bg-slate-50/50 border border-slate-100/50 rounded-[32px] relative overflow-hidden"
                                 >
                                     <button
-                                        onClick={() => setShowBanner(false)}
+                                        onClick={ignoreBanner}
                                         className="absolute top-6 right-6 text-slate-300 hover:text-slate-600 transition-all"
                                     >
                                         <X className="h-4 w-4" />
@@ -241,7 +290,7 @@ export function NotificationSheet() {
                                             Ativar
                                         </button>
                                         <button
-                                            onClick={() => setShowBanner(false)}
+                                            onClick={ignoreBanner}
                                             className="flex-1 py-3 bg-white border border-slate-100 text-slate-500 rounded-2xl text-[11px] font-semibold uppercase tracking-wider hover:bg-slate-50 transition-all active:scale-95"
                                         >
                                             Ignorar
@@ -301,9 +350,12 @@ export function NotificationSheet() {
                                                 )}
                                             >
                                                 <div className="relative shrink-0">
-                                                    <div className="w-12 h-12 rounded-[18px] bg-slate-50 border border-slate-100/50 flex items-center justify-center overflow-hidden">
+                                                    <div className={cn(
+                                                        "w-12 h-12 rounded-[18px] flex items-center justify-center overflow-hidden border transition-all",
+                                                        (n as any).isOverdue ? "bg-rose-50 border-rose-100 text-rose-500" : "bg-slate-50 border-slate-100/50 text-slate-400"
+                                                    )}>
                                                         {n.type === 'payment' ? (
-                                                            <Calendar className="h-5 w-5 text-orange-400" />
+                                                            <Calendar className={cn("h-5 w-5", (n as any).isOverdue ? "text-rose-500" : "text-orange-400")} />
                                                         ) : n.type === 'alert' ? (
                                                             <Zap className="h-5 w-5 text-blue-500" />
                                                         ) : (

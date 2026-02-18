@@ -38,16 +38,8 @@ export default function WalletPage() {
                 <WalletModal onSuccess={fetchWallets} />
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div className="lg:col-span-2">
-                    <Wallet />
-                </div>
-
-                <div className="bg-blue-600 dark:bg-blue-800 rounded-3xl p-8 text-white flex flex-col justify-center items-start shadow-lg shadow-blue-200 dark:shadow-none">
-                    <h3 className="text-xl font-bold mb-2">Cartão Premium</h3>
-                    <p className="text-blue-100 mb-6">Obtenha 5% de cashback em todas as compras.</p>
-                    <Button variant="secondary" className="rounded-xl">Saiba Mais</Button>
-                </div>
+            <div className="w-full">
+                <Wallet />
             </div>
 
             <div>

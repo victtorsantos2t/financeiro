@@ -55,10 +55,14 @@ export function TransactionsTable({
     // Pagination state
     const [currentPage, setCurrentPage] = useState(1);
     const [totalCount, setTotalCount] = useState(0);
-    const pageSize = isCompact ? 10 : 10;
+    const pageSize = 25;
 
     const supabase = createClient();
     const { refreshTrigger } = useDashboard();
+
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [externalFilters, activeTab, isCompact]);
 
     useEffect(() => {
         fetchTransactions();
@@ -83,19 +87,20 @@ export function TransactionsTable({
             // Simulação de filtragem externa para manter compatibilidade com o drawer antigo
             // Idealmente, o TransactionService deveria aceitar todos os filtros
             let filtered = data;
-            if (externalFilters) {
-                if (externalFilters.types && externalFilters.types.length > 0) {
-                    filtered = filtered.filter(t => externalFilters.types.includes(t.type));
-                }
-                if (externalFilters.startDate) {
-                    filtered = filtered.filter(t => t.date >= externalFilters.startDate);
-                }
-                if (externalFilters.endDate) {
-                    filtered = filtered.filter(t => t.date <= externalFilters.endDate);
-                }
+
+            // Filter by Tab
+            const todayStr = new Date().toISOString().split('T')[0];
+            if (activeTab === 'recentes') {
+                filtered = filtered.filter(t => t.date.split('T')[0] <= todayStr);
+            } else if (activeTab === 'futuros') {
+                filtered = filtered.filter(t => t.date.split('T')[0] > todayStr);
             }
 
-            setTransactions(filtered as any);
+            // Pagination local (since getHistory currently returns all)
+            const startIndex = (currentPage - 1) * pageSize;
+            const paginated = filtered.slice(startIndex, startIndex + pageSize);
+
+            setTransactions(paginated as any);
             setTotalCount(filtered.length);
         } catch (error) {
             console.error("Erro ao carregar transações:", error);
@@ -189,9 +194,16 @@ export function TransactionsTable({
                                 return (
                                     <div key={date} className="px-6 mb-8">
                                         {/* Date Header */}
-                                        <div className="py-6 border-b border-slate-100/50">
-                                            <h4 className="text-base font-bold text-slate-900 mb-1 capitalize">
+                                        <div className={cn(
+                                            "py-6 border-b border-slate-100/50",
+                                            isFuture && "border-rose-100/50"
+                                        )}>
+                                            <h4 className={cn(
+                                                "text-base font-bold mb-1 capitalize",
+                                                isFuture ? "text-rose-600" : "text-slate-900"
+                                            )}>
                                                 {format(new Date(date), "d 'de' MMMM 'de' yyyy", { locale: ptBR })}
+                                                {isFuture && <span className="ml-2 text-[10px] uppercase tracking-wider bg-rose-50 text-rose-500 px-2 py-0.5 rounded-full">Agendado</span>}
                                             </h4>
                                             {!isFuture && (
                                                 <p className="text-sm text-slate-500 font-medium">
@@ -220,12 +232,15 @@ export function TransactionsTable({
                                                         <span className="text-xs text-slate-400 font-medium block mb-1">
                                                             {t.type === 'income' ? 'Pix recebido' : 'Transferência enviada'}
                                                         </span>
-                                                        <h5 className="text-[15px] font-bold text-slate-900 leading-tight truncate mb-1">
+                                                        <h5 className={cn(
+                                                            "text-[15px] font-bold leading-tight truncate mb-1",
+                                                            isFuture ? "text-rose-600" : "text-slate-900"
+                                                        )}>
                                                             {t.description}
                                                         </h5>
                                                         <span className={cn(
                                                             "text-[15px] font-medium tracking-tight",
-                                                            t.type === 'income' ? "text-emerald-600" : "text-slate-500"
+                                                            isFuture ? "text-rose-500" : (t.type === 'income' ? "text-emerald-600" : "text-slate-500")
                                                         )}>
                                                             {t.type === 'income' ? '' : '- '}
                                                             {showValues ? new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(t.amount) : "R$ ••••"}
@@ -244,35 +259,37 @@ export function TransactionsTable({
                         </AnimatePresence>
                     </div>
                 )}
+
+                {/* Pagination moved inside scrollable area to be at the absolute end of the list */}
+                {!loading && totalPages > 1 && (
+                    <div className="flex items-center justify-between p-6 border-t border-slate-100 bg-white mt-4">
+                        <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handlePageChange(currentPage - 1)}
+                            disabled={currentPage === 1}
+                            className="text-slate-500 hover:bg-slate-50"
+                        >
+                            <ChevronLeft className="h-4 w-4 mr-1" /> Anterior
+                        </Button>
+                        <div className="flex flex-col items-center">
+                            <span className="text-xs font-semibold text-slate-400 uppercase tracking-widest">
+                                Página {currentPage} de {Math.max(1, totalPages)}
+                            </span>
+                            <span className="text-[10px] text-slate-300 font-medium">{totalCount} registros totais</span>
+                        </div>
+                        <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handlePageChange(currentPage + 1)}
+                            disabled={currentPage >= totalPages}
+                            className="text-slate-500 hover:bg-slate-50"
+                        >
+                            Próxima <ChevronRight className="h-4 w-4 ml-1" />
+                        </Button>
+                    </div>
+                )}
             </div>
-
-            {/* Pagination */}
-            {!loading && totalPages > 1 && (
-                <div className="flex items-center justify-between p-6 border-t border-slate-100 bg-white sticky bottom-0">
-                    <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handlePageChange(currentPage - 1)}
-                        disabled={currentPage === 1}
-                        className="text-slate-500"
-                    >
-                        <ChevronLeft className="h-4 w-4 mr-1" /> Anterior
-                    </Button>
-                    <span className="text-xs font-semibold text-slate-400 uppercase tracking-widest">
-                        Página {currentPage} de {Math.max(1, totalPages)}
-                    </span>
-                    <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handlePageChange(currentPage + 1)}
-                        disabled={currentPage >= totalPages}
-                        className="text-slate-500"
-                    >
-                        Próxima <ChevronRight className="h-4 w-4 ml-1" />
-                    </Button>
-                </div>
-            )}
-
         </div>
     );
 }

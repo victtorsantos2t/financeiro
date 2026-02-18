@@ -73,14 +73,6 @@ export function AddTransactionModal({ children, transaction, open, onOpenChange 
                                 <h2 className="text-xl font-semibold text-slate-900 tracking-tight">{title}</h2>
                                 <p className="text-[12px] text-slate-400 font-medium">Registro financeiro de precisão</p>
                             </div>
-                            <Button
-                                variant="ghost"
-                                size="icon"
-                                onClick={() => handleOpenChange(false)}
-                                className="h-8 w-8 rounded-full bg-slate-50 text-slate-400 hover:text-slate-900"
-                            >
-                                <Plus className="h-4 w-4 rotate-45" />
-                            </Button>
                         </div>
                         <TransactionForm
                             transaction={transaction}

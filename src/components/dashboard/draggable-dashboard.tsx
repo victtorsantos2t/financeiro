@@ -12,6 +12,7 @@ import { Wallet } from "@/components/dashboard/wallet";
 import { TransactionsTable } from "@/components/dashboard/transactions-table";
 import { MonthlyEarningsChart } from "@/components/dashboard/monthly-earnings-chart";
 import { EarningsDonut } from "@/components/dashboard/earnings-donut";
+import { useDashboard } from "@/context/dashboard-context";
 import { FinancialHealthScorecard } from "@/components/dashboard/financial-health-scorecard";
 import { AddTransactionModal } from "@/components/dashboard/add-transaction-modal";
 import { ImportTransactionsModal } from "@/components/dashboard/import-transactions-modal";
@@ -25,6 +26,7 @@ import { GripVertical } from "lucide-react";
 
 export default function DraggableDashboard() {
     const { layout, setLayout } = useWidgetStore();
+    const { currentDate } = useDashboard();
     const [mounted, setMounted] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
 
@@ -74,8 +76,8 @@ export default function DraggableDashboard() {
             case 'wallet-summary': return <Wallet />;
             case 'financial-health': return <FinancialHealthScorecard />;
             case 'transactions-table': return <TransactionsTable />;
-            case 'monthly-chart': return <MonthlyEarningsChart />;
-            case 'earnings-donut': return <EarningsDonut />;
+            case 'monthly-chart': return <MonthlyEarningsChart currentDate={currentDate} />;
+            case 'earnings-donut': return <EarningsDonut currentDate={currentDate} />;
             case 'payable-accounts': return <PayableAccounts />;
             case 'cash-flow-forecast': return <CashFlowForecast />;
             case 'credit-card':
@@ -120,17 +122,6 @@ export default function DraggableDashboard() {
                     <p className="text-sm font-medium text-slate-400 tracking-wide">Desempenho financeiro consolidado.</p>
                 </div>
                 <div className="hidden md:flex gap-3">
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => {
-                            localStorage.removeItem('widget-layout');
-                            window.location.reload();
-                        }}
-                        className="text-slate-600"
-                    >
-                        Resetar Layout
-                    </Button>
                     <ImportTransactionsModal />
                     <AddTransactionModal />
                 </div>

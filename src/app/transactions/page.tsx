@@ -48,7 +48,7 @@ export default function TransactionsPage() {
                 <header className="sticky top-0 z-40 bg-white pt-4">
                     <div className="flex items-center justify-between px-6 py-4">
                         <button
-                            onClick={() => router.push('/')}
+                            onClick={() => router.push('/dashboard')}
                             className="p-2 -ml-2 text-slate-900 hover:bg-slate-50 rounded-full transition-colors"
                         >
                             <ChevronLeft className="h-6 w-6" />
