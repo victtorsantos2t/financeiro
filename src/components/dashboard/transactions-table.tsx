@@ -142,30 +142,30 @@ export function TransactionsTable({
         const cat = categoryName.toLowerCase();
 
         if (desc.includes('pix recebido') || cat.includes('receita')) {
-            return <div className="p-2.5 rounded-xl border border-emerald-100 text-emerald-600"><ArrowDownRight className="h-5 w-5" /></div>;
+            return <div className="p-2 rounded-xl border border-emerald-100 text-emerald-600"><ArrowDownRight className="h-4 w-4" /></div>;
         }
 
         if (desc.includes('pix enviado') || cat.includes('transferencia')) {
-            return <div className="p-2.5 rounded-xl border border-rose-100 text-rose-500"><ArrowUpRight className="h-5 w-5" /></div>;
+            return <div className="p-2 rounded-xl border border-rose-100 text-rose-500"><ArrowUpRight className="h-4 w-4" /></div>;
         }
 
         if (desc.includes('burger') || desc.includes('restaurante') || cat.includes('alimentacao')) {
-            return <div className="p-2.5 rounded-xl border border-slate-100 text-slate-400"><Utensils className="size-5" /></div>;
+            return <div className="p-2 rounded-xl border border-slate-100 text-slate-400"><Utensils className="size-4" /></div>;
         }
 
         if (cat.includes('compras') || desc.includes('shpp')) {
-            return <div className="p-2.5 rounded-xl border border-slate-100 text-slate-400"><ShoppingBag className="size-5" /></div>;
+            return <div className="p-2 rounded-xl border border-slate-100 text-slate-400"><ShoppingBag className="size-4" /></div>;
         }
 
         if (cat.includes('servicos') || desc.includes('conveniencia') || desc.includes('mercado')) {
-            return <div className="p-2.5 rounded-xl border border-slate-100 text-slate-400"><Store className="size-5" /></div>;
+            return <div className="p-2 rounded-xl border border-slate-100 text-slate-400"><Store className="size-4" /></div>;
         }
 
-        return <div className="p-2.5 rounded-xl border border-slate-100 text-slate-400"><CircleDollarSign className="size-5" strokeWidth={1.5} /></div>;
+        return <div className="p-2 rounded-xl border border-slate-100 text-slate-400"><CircleDollarSign className="size-4" strokeWidth={1.5} /></div>;
     };
 
     return (
-        <div className="flex flex-col h-full bg-card rounded-card border border-border shadow-sm overflow-hidden min-h-[500px]">
+        <div className="flex flex-col h-full bg-card rounded-card border border-border shadow-sm overflow-hidden min-h-[400px]">
             <div className="flex-1 overflow-auto custom-scrollbar">
                 {loading ? (
                     <div className="p-6 space-y-8">
@@ -191,21 +191,21 @@ export function TransactionsTable({
                                 const isFuture = new Date(date) > new Date();
 
                                 return (
-                                    <div key={date} className="mb-2">
+                                    <div key={date} className="mb-1">
                                         <div className={cn(
-                                            "px-6 py-4 bg-secondary/30 flex justify-between items-center border-y border-border/50 sticky top-0 z-10 backdrop-blur-md",
+                                            "px-4 py-2.5 bg-secondary/30 flex justify-between items-center border-y border-border/50 sticky top-0 z-10 backdrop-blur-md",
                                             isFuture && "bg-destructive/5"
                                         )}>
                                             <h4 className={cn(
-                                                "text-[13px] font-black capitalize flex items-center gap-2",
+                                                "text-[12px] font-black capitalize flex items-center gap-2",
                                                 isFuture ? "text-destructive" : "text-slate-900"
                                             )}>
                                                 {format(new Date(date + 'T00:00:00'), "d 'de' MMMM", { locale: ptBR })}
-                                                {isFuture && <span className="text-[9px] uppercase tracking-wider bg-destructive/10 text-destructive px-2 py-0.5 rounded-full">Agendado</span>}
+                                                {isFuture && <span className="text-[8px] uppercase tracking-wider bg-destructive/10 text-destructive px-1.5 py-0.5 rounded-full">Agendado</span>}
                                             </h4>
                                             {!isFuture && (
-                                                <p className="text-[12px] text-muted-foreground font-medium">
-                                                    Saldo do dia: {showValues ? new Intl.NumberFormat('pt-BR', {
+                                                <p className="text-[11px] text-muted-foreground font-medium">
+                                                    Saldo: {showValues ? new Intl.NumberFormat('pt-BR', {
                                                         style: 'currency',
                                                         currency: 'BRL',
                                                         signDisplay: 'always'
@@ -220,33 +220,33 @@ export function TransactionsTable({
                                                 <div
                                                     key={t.id}
                                                     onClick={() => handleTransactionClick(t)}
-                                                    className="flex items-center gap-4 px-6 py-4 hover:bg-secondary/20 group/item cursor-pointer transition-colors"
+                                                    className="flex items-center gap-4 px-4 py-2.5 hover:bg-secondary/20 group/item cursor-pointer transition-colors"
                                                 >
                                                     <div className="flex-shrink-0">
                                                         {getCategoryIcon(t.category?.name || "Geral", t.description)}
                                                     </div>
 
-                                                    <div className="flex-1 min-w-0 pr-2 py-1">
-                                                        <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider block mb-0.5">
+                                                    <div className="flex-1 min-w-0 pr-2 py-0.5">
+                                                        <span className="text-[9px] text-muted-foreground font-bold uppercase tracking-wider block mb-0">
                                                             {t.category?.name || 'Geral'}
                                                         </span>
                                                         <h5 className={cn(
-                                                            "text-[15px] font-black leading-tight truncate",
+                                                            "text-[13.5px] font-black leading-tight truncate",
                                                             isFuture ? "text-destructive" : "text-slate-900"
                                                         )}>
                                                             {t.description}
                                                         </h5>
                                                     </div>
 
-                                                    <div className="text-right flex flex-col items-end py-1">
+                                                    <div className="text-right flex flex-col items-end py-0.5">
                                                         <span className={cn(
-                                                            "text-[16px] font-black tracking-tighter",
+                                                            "text-[14.5px] font-black tracking-tighter",
                                                             isFuture ? "text-destructive" : (t.type === 'income' ? "text-success" : "text-slate-900")
                                                         )}>
                                                             {t.type === 'income' ? '+ ' : '- '}
                                                             {showValues ? new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(t.amount) : "R$ ••••"}
                                                         </span>
-                                                        <span className="text-[10px] font-bold text-muted-foreground uppercase opacity-70">
+                                                        <span className="text-[9px] font-bold text-muted-foreground uppercase opacity-70">
                                                             {t.wallet?.name}
                                                         </span>
                                                     </div>

@@ -23,15 +23,15 @@ export function Header() {
     };
 
     return (
-        <header className="h-20 flex items-center justify-between px-4 md:px-8 bg-background/80 sticky top-0 z-40 backdrop-blur-md border-b border-border/40">
+        <header className="h-16 flex items-center justify-between px-4 md:px-8 bg-background/80 sticky top-0 z-40 backdrop-blur-md border-b border-border/40">
             <div className="flex items-center gap-4 md:gap-8 flex-1">
                 {isDashboard ? (
                     <div className="flex items-center animate-in fade-in slide-in-from-left-4 duration-500">
                         <div className="hidden md:block">
                             <ReportActions currentDate={currentDate} />
                         </div>
-                        <div className="hidden md:ml-6 lg:block border-l border-border pl-6">
-                            <h1 className="text-lg font-bold text-foreground tracking-tight">Dashboard</h1>
+                        <div className="hidden md:ml-5 lg:block border-l border-border pl-4">
+                            <h1 className="text-base font-bold text-foreground tracking-tight">Dashboard</h1>
                         </div>
                     </div>
                 ) : (

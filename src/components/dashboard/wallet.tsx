@@ -90,40 +90,40 @@ export function Wallet() {
     const expenseTrend = -4.2;
 
     return (
-        <div className="w-full h-auto min-h-[200px] bg-card rounded-card p-6 flex flex-col justify-between shadow-sm border border-border relative overflow-hidden group transition-all duration-300 hover:shadow-md">
+        <div className="w-full h-auto min-h-[180px] bg-card rounded-card p-5 flex flex-col justify-between shadow-sm border border-border relative overflow-hidden group transition-all duration-300 hover:shadow-md">
             <div className="relative z-10 flex justify-between items-start">
                 <div>
-                    <h3 className="text-muted-foreground font-medium text-[13px] mb-1">Saldo Total</h3>
-                    <h2 className="text-4xl font-bold text-foreground tracking-tight">
-                        {loading ? <Skeleton className="h-10 w-48" /> : `R$ ${totalBalance.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`}
+                    <h3 className="text-muted-foreground font-medium text-[12px] mb-1">Saldo Total</h3>
+                    <h2 className="text-2xl font-black text-foreground tracking-tight">
+                        {loading ? <Skeleton className="h-8 w-40" /> : `R$ ${totalBalance.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`}
                     </h2>
                 </div>
                 <div className="p-2.5 bg-secondary rounded-xl text-primary">
-                    <TrendingUp className="w-5 h-5" />
+                    <TrendingUp className="w-4 h-4" />
                 </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4 relative z-10 mt-6">
-                <div className="p-4 rounded-[20px] bg-white border border-border shadow-sm">
+            <div className="grid grid-cols-2 gap-4 relative z-10 mt-4">
+                <div className="p-3.5 rounded-[20px] bg-white border border-border shadow-sm">
                     <div className="flex items-center gap-2 mb-2">
-                        <div className="w-1.5 h-1.5 rounded-full bg-success shadow-[0_0_8px_rgba(34,197,94,0.4)]" />
-                        <p className="text-[10px] font-black text-muted-foreground uppercase tracking-wider">Receita</p>
+                        <div className="w-1.2 h-1.2 rounded-full bg-success shadow-[0_0_8px_rgba(34,197,94,0.4)]" />
+                        <p className="text-[9px] font-black text-muted-foreground uppercase tracking-wider">Receita</p>
                     </div>
                     <div className="flex items-end gap-2">
-                        <span className="text-lg font-black text-slate-900 tracking-tighter">
-                            {loading ? <Skeleton className="h-6 w-24" /> : `R$ ${income.toLocaleString('pt-BR', { minimumFractionDigits: 0 })}`}
+                        <span className="text-base font-black text-slate-900 tracking-tighter">
+                            {loading ? <Skeleton className="h-5 w-20" /> : `R$ ${income.toLocaleString('pt-BR', { minimumFractionDigits: 0 })}`}
                         </span>
                     </div>
                 </div>
 
-                <div className="p-4 rounded-[20px] bg-white border border-border shadow-sm">
+                <div className="p-3.5 rounded-[20px] bg-white border border-border shadow-sm">
                     <div className="flex items-center gap-2 mb-2">
-                        <div className="w-1.5 h-1.5 rounded-full bg-destructive shadow-[0_0_8px_rgba(239,68,68,0.4)]" />
-                        <p className="text-[10px] font-black text-muted-foreground uppercase tracking-wider">Despesa</p>
+                        <div className="w-1.2 h-1.2 rounded-full bg-destructive shadow-[0_0_8px_rgba(239,68,68,0.4)]" />
+                        <p className="text-[9px] font-black text-muted-foreground uppercase tracking-wider">Despesa</p>
                     </div>
                     <div className="flex items-end gap-2">
-                        <span className="text-lg font-black text-slate-900 tracking-tighter">
-                            {loading ? <Skeleton className="h-6 w-24" /> : `R$ ${expense.toLocaleString('pt-BR', { minimumFractionDigits: 0 })}`}
+                        <span className="text-base font-black text-slate-900 tracking-tighter">
+                            {loading ? <Skeleton className="h-5 w-20" /> : `R$ ${expense.toLocaleString('pt-BR', { minimumFractionDigits: 0 })}`}
                         </span>
                     </div>
                 </div>

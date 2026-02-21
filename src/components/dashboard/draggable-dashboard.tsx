@@ -87,12 +87,12 @@ export default function DraggableDashboard() {
     }
 
     return (
-        <div className="space-y-8 max-w-[1440px] mx-auto pb-12 px-2 md:px-0">
+        <div className="space-y-6 max-w-[1440px] mx-auto pb-8 px-2 md:px-0">
             {/* Header com Ações */}
             <div className="flex flex-col gap-1 md:flex-row md:items-end justify-between px-2">
                 <div>
-                    <h1 className="text-4xl font-semibold text-slate-900 tracking-tight">Visão Geral</h1>
-                    <p className="text-sm font-medium text-slate-400 tracking-wide">Desempenho financeiro consolidado.</p>
+                    <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Visão Geral</h1>
+                    <p className="text-xs font-medium text-slate-400 tracking-wide">Desempenho financeiro consolidado.</p>
                 </div>
                 <div className="hidden md:flex gap-3">
                     <ImportTransactionsModal />
@@ -101,10 +101,10 @@ export default function DraggableDashboard() {
             </div>
 
             {/* Layout Principal Estático conforme Referência */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-5">
                 {/* Coluna Mancha Esquerda (8/12 - 2 colunas no LG) */}
-                <div className="lg:col-span-8 space-y-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="lg:col-span-8 space-y-5">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                         <Wallet />
                         <PayableAccounts />
                     </div>
@@ -120,7 +120,7 @@ export default function DraggableDashboard() {
             </div>
 
             {/* Seção Inferior: Inteligência e Detalhes */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 border-t border-border/50 pt-8">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 border-t border-border/50 pt-6">
                 <div className="lg:col-span-8">
                     <DashboardInsights currentDate={currentDate} />
                 </div>

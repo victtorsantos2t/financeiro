@@ -28,14 +28,14 @@ export function AuthenticatedShell({ children }: { children: React.ReactNode }) 
 
             {/* Mobile Sidebar (Drawer) */}
             <Sheet open={isSidebarOpen} onOpenChange={setIsSidebarOpen}>
-                <SheetContent side="left" className="p-0 border-none w-64 bg-white" showCloseButton={false}>
+                <SheetContent side="left" className="p-0 border-none w-60 bg-white" showCloseButton={false}>
                     <Sidebar className="w-full h-full border-none" onNavItemClick={() => setIsSidebarOpen(false)} />
                 </SheetContent>
             </Sheet>
 
             <BottomNav onMenuClick={() => setIsSidebarOpen(true)} />
 
-            <div className="flex-1 ml-0 md:ml-64 flex flex-col h-full min-h-0 relative overflow-hidden transition-all duration-300">
+            <div className="flex-1 ml-0 md:ml-60 flex flex-col h-full min-h-0 relative overflow-hidden transition-all duration-300">
                 <Header />
                 <CommandPalette />
                 <main className="flex-1 overflow-y-auto overflow-x-hidden pt-2 px-4 md:px-6 pb-24 md:pb-6 scrollbar-hide pt-safe pb-safe">

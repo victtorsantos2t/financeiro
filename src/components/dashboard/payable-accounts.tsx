@@ -54,19 +54,19 @@ export function PayableAccounts({ variant = "card" }: PayableAccountsProps) {
                 onClick={() => setOpen(true)}
                 className={`${variant === "sidebar" ? "bg-card rounded-card p-6 shadow-sm border border-border cursor-pointer hover:bg-secondary/50 transition-all group" : ""}`}
             >
-                <div className="mb-4">
-                    <h3 className="text-lg font-bold text-foreground mb-1 tracking-tight group-hover:text-primary transition-colors">Contas a Pagar</h3>
-                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">
+                <div className="mb-3">
+                    <h3 className="text-base font-bold text-foreground mb-1 tracking-tight group-hover:text-primary transition-colors">Contas a Pagar</h3>
+                    <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-[0.2em]">
                         Ciclo Atual
                     </p>
                 </div>
 
                 <div>
-                    <div className="flex flex-col gap-1">
-                        <span className="font-bold text-3xl text-foreground tracking-tight">
+                    <div className="flex flex-col gap-0.5">
+                        <span className="font-black text-xl text-foreground tracking-tight">
                             {loading ? "..." : `R$ ${totalAmount.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`}
                         </span>
-                        <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest mt-1">
+                        <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mt-1">
                             {loading ? "..." : `${pendingCount} pendentes`}
                         </span>
                     </div>
@@ -86,7 +86,7 @@ export function PayableAccounts({ variant = "card" }: PayableAccountsProps) {
     }
 
     return (
-        <div className="w-full bg-card rounded-card p-6 flex flex-col justify-between shadow-sm border border-border transition-all duration-300">
+        <div className="w-full bg-card rounded-card p-5 flex flex-col justify-between shadow-sm border border-border transition-all duration-300">
             {content}
         </div>
     );
