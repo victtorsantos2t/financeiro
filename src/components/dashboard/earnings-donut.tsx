@@ -70,60 +70,59 @@ export function EarningsDonut({ currentDate = new Date() }: EarningsDonutProps) 
     const totalIncome = data.find(d => d.name === "Receitas")?.value || 0;
 
     return (
-        <div className="w-full bg-white rounded-[24px] p-8 md:p-10 shadow-[0_2px_12px_-2px_rgba(0,0,0,0.02)] border border-slate-100/40 flex flex-col items-center justify-between transition-all duration-700">
-            <h3 className="text-2xl font-semibold text-slate-900 w-full text-left mb-8 tracking-tight">Balanço</h3>
+        <div className="w-full bg-card rounded-card p-6 shadow-sm border border-border flex flex-col items-center justify-between transition-all duration-300 hover:shadow-md">
+            <h3 className="text-lg font-bold text-foreground w-full text-left mb-6 tracking-tight">Balanço do Mês</h3>
 
-            <div className="h-[280px] w-full relative flex items-center justify-center">
+            <div className="h-[240px] w-full relative flex items-center justify-center">
                 <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
                         <Pie
                             data={data}
-                            innerRadius={85}
-                            outerRadius={110}
-                            paddingAngle={8}
+                            innerRadius={75}
+                            outerRadius={95}
+                            paddingAngle={4}
                             dataKey="value"
                             stroke="none"
                             startAngle={90}
                             endAngle={-270}
-                            cornerRadius={16}
+                            cornerRadius={8}
                         >
                             {data.map((entry, index) => (
-                                <Cell key={`cell-${index}`} fill={index === 0 ? 'var(--chart-1)' : 'var(--secondary)'} />
+                                <Cell key={`cell-${index}`} fill={index === 0 ? 'var(--primary)' : 'var(--secondary)'} />
                             ))}
                         </Pie>
                         <Tooltip
                             contentStyle={{
-                                borderRadius: '20px',
-                                border: "1px solid rgba(255,255,255,0.8)",
-                                boxShadow: "0 20px 40px rgba(0,0,0,0.04)",
-                                backgroundColor: "rgba(255,255,255,0.85)",
-                                backdropFilter: "blur(16px)",
-                                padding: '12px 18px',
+                                borderRadius: '12px',
+                                border: "1px solid var(--border)",
+                                boxShadow: "0 10px 15px -3px rgba(0,0,0,0.1)",
+                                backgroundColor: "var(--card)",
+                                padding: '8px 12px',
                                 fontSize: '12px',
-                                fontWeight: 700
+                                fontWeight: 600
                             }}
-                            itemStyle={{ color: '#1e293b' }}
+                            itemStyle={{ color: 'var(--foreground)' }}
                             cursor={false}
                             formatter={(value: number | undefined) => [`R$ ${Number(value || 0).toLocaleString('pt-BR', { minimumFractionDigits: 0 })}`, ""]}
                         />
                     </PieChart>
                 </ResponsiveContainer>
                 <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none pb-2">
-                    <span className="text-4xl font-semibold text-slate-900 tracking-tighter">
+                    <span className="text-3xl font-bold text-foreground tracking-tight">
                         R$ {totalIncome.toLocaleString('pt-BR', { minimumFractionDigits: 0 })}
                     </span>
-                    <span className="text-[10px] font-semibold text-slate-300 uppercase tracking-[0.3em] mt-3 ml-1">Receitas</span>
+                    <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em] mt-1">Receitas</span>
                 </div>
             </div>
 
-            <div className="flex gap-10 mt-10">
-                <div className="flex items-center gap-3">
-                    <div className="w-2.5 h-2.5 bg-blue-500/80 rounded-full shadow-lg shadow-blue-500/10"></div>
-                    <span className="text-[10px] font-semibold text-slate-300 uppercase tracking-[0.15em]">Receitas</span>
+            <div className="grid grid-cols-2 gap-6 w-full mt-6 pt-6 border-t border-border">
+                <div className="flex items-center gap-2 justify-center">
+                    <div className="w-2.5 h-2.5 bg-primary rounded-full"></div>
+                    <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest">Receitas</span>
                 </div>
-                <div className="flex items-center gap-3">
-                    <div className="w-2.5 h-2.5 bg-slate-100 rounded-full"></div>
-                    <span className="text-[10px] font-semibold text-slate-300 uppercase tracking-[0.15em]">Despesas</span>
+                <div className="flex items-center gap-2 justify-center">
+                    <div className="w-2.5 h-2.5 bg-secondary rounded-full"></div>
+                    <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest">Despesas</span>
                 </div>
             </div>
         </div>

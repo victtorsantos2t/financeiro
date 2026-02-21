@@ -42,59 +42,59 @@ export default function TransactionsPage() {
     }
 
     return (
-        <div className="flex flex-col min-h-screen bg-white">
+        <div className="flex flex-col min-h-screen bg-background">
             <div className="max-w-5xl mx-auto w-full flex flex-col min-h-screen">
                 {/* Header */}
-                <header className="sticky top-0 z-40 bg-white pt-4">
+                <header className="sticky top-0 z-40 bg-background pt-4">
                     <div className="flex items-center justify-between px-6 py-4">
                         <button
                             onClick={() => router.push('/dashboard')}
-                            className="p-2 -ml-2 text-slate-900 hover:bg-slate-50 rounded-full transition-colors"
+                            className="p-2 -ml-2 text-foreground hover:bg-secondary rounded-xl transition-all active:scale-95"
                         >
                             <ChevronLeft className="h-6 w-6" />
                         </button>
 
                         <button
                             onClick={() => setShowValues(!showValues)}
-                            className="p-2 text-slate-900 hover:bg-slate-50 rounded-full transition-colors"
+                            className="p-2 text-foreground hover:bg-secondary rounded-xl transition-all active:scale-95"
                         >
-                            {showValues ? <Eye className="h-6 w-6" /> : <Eye className="h-6 w-6 text-slate-300" />}
+                            {showValues ? <Eye className="h-6 w-6" /> : <Eye className="h-6 w-6 text-muted-foreground/30" />}
                         </button>
                     </div>
 
                     <div className="px-6 pb-2">
                         <div className="flex items-center justify-between mb-8">
-                            <h1 className="text-2xl font-bold text-slate-900">Lançamentos</h1>
+                            <h1 className="text-2xl font-bold text-foreground tracking-tight">Lançamentos</h1>
                             <div className="flex items-center gap-3">
                                 <button
-                                    onClick={() => setView('export')}
-                                    className="p-3 bg-slate-50 rounded-full text-slate-900 active:scale-95 transition-all hover:bg-slate-100"
+                                    onClick={() => setView('list')}
+                                    className="p-3 bg-card border border-border rounded-xl text-foreground active:scale-95 transition-all hover:bg-secondary shadow-sm"
                                 >
-                                    <Download className="h-6 w-6" />
+                                    <Download className="h-5 w-5" />
                                 </button>
                                 <button
                                     onClick={() => setIsFilterOpen(true)}
-                                    className="p-3 bg-slate-50 rounded-full text-slate-900 active:scale-95 transition-all hover:bg-slate-100"
+                                    className="p-3 bg-card border border-border rounded-xl text-foreground active:scale-95 transition-all hover:bg-secondary shadow-sm"
                                 >
-                                    <Filter className="h-6 w-6" />
+                                    <Filter className="h-5 w-5" />
                                 </button>
                             </div>
                         </div>
 
                         {/* Tabs */}
-                        <div className="flex border-b border-slate-100">
+                        <div className="flex border-b border-border">
                             {['recentes', 'futuros'].map((tab) => (
                                 <button
                                     key={tab}
                                     onClick={() => setActiveTab(tab as any)}
-                                    className="relative px-6 py-4 text-sm font-bold capitalize transition-colors"
-                                    style={{ color: activeTab === tab ? '#000' : '#64748b' }}
+                                    className="relative px-6 py-4 text-sm font-bold capitalize transition-all"
+                                    style={{ color: activeTab === tab ? 'var(--foreground)' : 'var(--muted-foreground)' }}
                                 >
                                     {tab}
                                     {activeTab === tab && (
                                         <motion.div
                                             layoutId="activeTab"
-                                            className="absolute bottom-0 left-0 right-0 h-[3px] bg-[#000000]"
+                                            className="absolute bottom-0 left-0 right-0 h-[3px] bg-primary rounded-t-full"
                                         />
                                     )}
                                 </button>

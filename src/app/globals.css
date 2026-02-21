@@ -13,114 +13,73 @@
 }
 
 :root {
-  /* Ultra Premium - Silence Over Noise Palette */
+  /* SaaS Financeiro Moderno - Paleta Obrigatória */
 
-  /* Backgrounds - "Calm" Off-Whites */
-  --background: oklch(0.985 0.002 240);
-  /* Near white with a hint of slate - Layer Zero */
-  --foreground: oklch(0.25 0.02 240);
-  /* Deep Slate, softer than black */
+  /* Backgrounds */
+  --background: #F5F7FA;
+  --foreground: #111827;
 
   /* Surfaces */
-  --card: oklch(1 0 0);
-  /* Pure White for elevated cards - Layer One */
-  --card-foreground: oklch(0.25 0.02 240);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.25 0.02 240);
+  --card: #FFFFFF;
+  --card-foreground: #111827;
+  --popover: #FFFFFF;
+  --popover-foreground: #111827;
 
-  /* Accents - Sophisticated Royal Blue */
-  --primary: oklch(0.52 0.22 260);
-  /* Deep Electric/Royal Blue */
-  --primary-foreground: oklch(1 0 0);
+  /* Accents - Primary Blue */
+  --primary: #3B82F6;
+  --primary-hover: #2563EB;
+  --primary-active: #1E40AF;
+  --primary-foreground: #FFFFFF;
 
   /* Secondary Surfaces */
-  --secondary: oklch(0.97 0.005 240);
-  /* Very subtle gray */
-  --secondary-foreground: oklch(0.35 0.03 240);
+  --secondary: #F3F4F6;
+  --secondary-foreground: #6B7280;
 
   /* Muted Text */
-  --muted: oklch(0.97 0.005 240);
-  --muted-foreground: oklch(0.5 0.03 240);
-  /* Intermediate state for labels */
+  --muted: #F3F4F6;
+  --muted-foreground: #9CA3AF;
 
-  /* Borders - Extremely subtle */
-  --border: oklch(0.94 0.005 240);
-  --input: oklch(0.94 0.005 240);
-  --ring: oklch(0.52 0.22 260);
+  /* Borders & Inputs */
+  --border: #E5E7EB;
+  --input: #E5E7EB;
+  --ring: #3B82F6;
 
-  /* Radius - Apple Level Precision */
-  --radius: 1.25rem;
-  /* 20px - The golden standard for SaaS */
+  /* Radius */
+  --radius: 12px;
+  /* Base radius for inputs/sidebar */
+  --radius-card: 20px;
+  /* SaaS Standard for Cards */
 
   /* Status */
-  --destructive: oklch(0.65 0.2 25);
-  --destructive-foreground: oklch(1 0 0);
+  --success: #22C55E;
+  --success-bg: #DCFCE7;
+  --success-foreground: #111827;
+
+  --destructive: #EF4444;
+  --destructive-bg: #FEE2E2;
+  --destructive-foreground: #FFFFFF;
 
   /* Sidebar */
-  --sidebar: oklch(0.985 0.005 240);
-  --sidebar-foreground: oklch(0.3 0.02 240);
-  --sidebar-primary: oklch(0.52 0.22 260);
-  --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.96 0.01 240);
-  --sidebar-accent-foreground: oklch(0.52 0.22 260);
-  --sidebar-border: oklch(0.96 0.005 240);
-  --sidebar-ring: oklch(0.52 0.22 260);
-
-  /* Apple-style Charts - Desaturated for Silence */
-  --chart-1: oklch(0.52 0.2 260);
-  --chart-2: oklch(0.65 0.15 150);
-  --chart-3: oklch(0.7 0.12 70);
-  --chart-4: oklch(0.6 0.18 300);
-  --chart-5: oklch(0.6 0.18 20);
+  --sidebar: #FFFFFF;
+  --sidebar-foreground: #6B7280;
+  --sidebar-primary: #3B82F6;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #F3F4F6;
+  --sidebar-accent-foreground: #111827;
+  --sidebar-border: #E5E7EB;
+  --sidebar-ring: #3B82F6;
 }
 
 .dark {
-  /* Dark Mode - Deep Luxury */
-  --background: oklch(0.12 0.01 240);
-  /* Deep Blue-Black, not pure black */
-  --foreground: oklch(0.95 0.01 240);
-
-  --card: oklch(0.15 0.015 240);
-  /* Slightly lighter than bg */
-  --card-foreground: oklch(0.95 0.01 240);
-
-  --popover: oklch(0.15 0.015 240);
-  --popover-foreground: oklch(0.95 0.01 240);
-
-  --primary: oklch(0.6 0.2 260);
-  /* Lighter Royal Blue for dark mode */
-  --primary-foreground: oklch(1 0 0);
-
-  --secondary: oklch(0.2 0.02 240);
-  --secondary-foreground: oklch(0.9 0.01 240);
-
-  --muted: oklch(0.2 0.02 240);
-  --muted-foreground: oklch(0.65 0.03 240);
-
-  --accent: oklch(0.2 0.02 240);
-  --accent-foreground: oklch(0.95 0.01 240);
-
-  --destructive: oklch(0.5 0.2 25);
-  --destructive-foreground: oklch(0.95 0.01 240);
-
-  --border: oklch(0.22 0.02 240);
-  --input: oklch(0.22 0.02 240);
-  --ring: oklch(0.6 0.2 260);
-
-  --sidebar: oklch(0.13 0.01 240);
-  --sidebar-foreground: oklch(0.95 0.01 240);
-  --sidebar-primary: oklch(0.6 0.2 260);
-  --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.2 0.02 240);
-  --sidebar-accent-foreground: oklch(0.95 0.01 240);
-  --sidebar-border: oklch(0.22 0.02 240);
-  --sidebar-ring: oklch(0.6 0.2 260);
-
-  --chart-1: oklch(0.6 0.2 260);
-  --chart-2: oklch(0.7 0.18 150);
-  --chart-3: oklch(0.75 0.15 70);
-  --chart-4: oklch(0.65 0.2 300);
-  --chart-5: oklch(0.65 0.2 20);
+  /* Mantendo consistência mas com inversão suave se necessário, 
+     porém o foco é o padrão SaaS Clean solicitado */
+  --background: #111827;
+  --foreground: #F9FAFB;
+  --card: #1F2937;
+  --card-foreground: #F9FAFB;
+  --border: #374151;
+  --input: #374151;
+  --muted-foreground: #9CA3AF;
 }
 
 @theme inline {
@@ -143,17 +102,10 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
-  --radius-xl: var(--radius-xl);
-  --radius-2xl: var(--radius-2xl);
-  --radius-3xl: var(--radius-3xl);
+  --radius-card: var(--radius-card);
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar-primary: var(--sidebar-primary);
@@ -162,6 +114,8 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+
+  --font-sans: 'Inter', system-ui, sans-serif;
 }
 
 @layer base {

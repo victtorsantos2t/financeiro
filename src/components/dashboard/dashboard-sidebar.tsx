@@ -7,18 +7,18 @@ import { Separator } from "@/components/ui/separator";
 
 export function DashboardSidebar() {
     return (
-        <div className="w-full h-full p-4 space-y-8 overflow-y-auto custom-scrollbar">
+        <div className="w-full h-full p-2 space-y-6 overflow-y-auto scrollbar-hide">
             <section>
                 <PayableAccounts variant="sidebar" />
             </section>
 
-            <section>
-                <h3 className="text-base font-bold text-slate-900 mb-4 tracking-tight">Receitas</h3>
+            <section className="bg-card rounded-card p-6 shadow-sm border border-border">
+                <h3 className="text-sm font-bold text-foreground mb-4 uppercase tracking-widest">Receitas</h3>
                 <ReceiptsList variant="sidebar" />
             </section>
 
-            <section>
-                <h3 className="text-base font-bold text-slate-900 mb-4 tracking-tight">Pagamentos</h3>
+            <section className="bg-card rounded-card p-6 shadow-sm border border-border">
+                <h3 className="text-sm font-bold text-foreground mb-4 uppercase tracking-widest">Pagamentos</h3>
                 <PayablesList variant="sidebar" />
             </section>
         </div>

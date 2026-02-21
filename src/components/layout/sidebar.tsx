@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
     LayoutDashboard,
@@ -15,7 +16,7 @@ import { Separator } from "@/components/ui/separator";
 import { createClient } from "@/lib/supabase/client";
 
 const mainNavItems = [
-    { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard", active: true },
+    { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard" },
     { icon: Wallet, label: "Carteira", href: "/wallet" },
     { icon: ArrowRightLeft, label: "Transações", href: "/transactions" },
     { icon: LineChart, label: "Análise de Receita", href: "/analytics" },
@@ -26,6 +27,7 @@ const secondaryNavItems = [
 ];
 
 export function Sidebar() {
+    const pathname = usePathname();
     const [profile, setProfile] = useState<{ name: string; avatar_url: string | null; occupation: string } | null>(null);
     const supabase = createClient();
 
@@ -57,49 +59,58 @@ export function Sidebar() {
     };
 
     return (
-        <aside className="hidden md:flex w-64 h-screen fixed left-0 top-0 border-r border-slate-100 bg-white/80 backdrop-blur-xl text-slate-900 flex-col p-8 overflow-y-auto">
-            <div className="flex flex-col items-center mb-12 p-2">
-                <Avatar className="h-20 w-20 mb-5 border-[6px] border-white shadow-[0_4px_16px_rgba(0,0,0,0.04)]">
+        <aside className="hidden md:flex w-60 h-screen fixed left-0 top-0 border-r border-border bg-card text-foreground flex-col p-6 overflow-y-auto">
+            <div className="flex flex-col items-center mb-10 p-2">
+                <Avatar className="h-16 w-16 mb-4 border-4 border-white shadow-sm">
                     <AvatarImage src={profile?.avatar_url || ""} alt={displayName} />
-                    <AvatarFallback className="bg-blue-500 text-white font-semibold text-xl">{initials}</AvatarFallback>
+                    <AvatarFallback className="bg-primary text-primary-foreground font-semibold text-lg">{initials}</AvatarFallback>
                 </Avatar>
-                <h2 className="font-semibold text-center text-[15px] text-slate-900 mb-1 tracking-tight">{displayName}</h2>
-                <p className="text-[9px] font-black text-slate-300 uppercase tracking-[0.2em] text-center">{profile?.occupation || "Designer"}</p>
+                <h2 className="font-semibold text-center text-[15px] text-foreground mb-1 tracking-tight">{displayName}</h2>
+                <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider text-center">{profile?.occupation || "Designer"}</p>
             </div>
 
-            <nav className="flex-1 space-y-1.5">
-                {mainNavItems.map((item) => (
-                    <Link
-                        key={item.label}
-                        href={item.href}
-                        className={`flex items-center gap-4 px-5 py-3.5 rounded-[16px] transition-all duration-300 group ${item.active
-                            ? "bg-blue-50/50 text-blue-600 font-semibold border border-blue-500/10"
-                            : "text-slate-400 hover:text-slate-900 hover:bg-slate-50/80"
-                            }`}
-                    >
-                        <item.icon className={`h-[18px] w-[18px] ${item.active ? "text-blue-500" : "group-hover:text-slate-900"}`} />
-                        <span className="text-[13px] tracking-tight">{item.label}</span>
-                    </Link>
-                ))}
-
-                <div className="pt-8 mt-8 border-t border-slate-50 space-y-1.5">
-                    {secondaryNavItems.map((item) => (
+            <nav className="flex-1 space-y-2">
+                {mainNavItems.map((item) => {
+                    const isActive = pathname === item.href;
+                    return (
                         <Link
                             key={item.label}
                             href={item.href}
-                            className="flex items-center gap-4 px-5 py-3.5 rounded-[16px] text-slate-400 hover:text-slate-900 hover:bg-slate-50/80 transition-all group"
+                            className={`flex items-center gap-3 px-4 py-2.5 rounded-[12px] transition-all duration-200 group ${isActive
+                                ? "bg-primary text-white font-medium shadow-sm shadow-primary/20"
+                                : "text-secondary-foreground hover:text-foreground hover:bg-secondary/80"
+                                }`}
                         >
-                            <item.icon className="h-[18px] w-[18px] group-hover:text-slate-900" />
-                            <span className="text-[13px] tracking-tight">{item.label}</span>
+                            <item.icon className={`h-[18px] w-[18px] ${isActive ? "text-white" : "group-hover:text-foreground"}`} />
+                            <span className="text-[14px] font-medium tracking-tight">{item.label}</span>
                         </Link>
-                    ))}
+                    )
+                })}
+
+                <div className="pt-6 mt-6 border-t border-border space-y-2">
+                    {secondaryNavItems.map((item) => {
+                        const isActive = pathname === item.href;
+                        return (
+                            <Link
+                                key={item.label}
+                                href={item.href}
+                                className={`flex items-center gap-3 px-4 py-2.5 rounded-[12px] transition-all group ${isActive
+                                    ? "bg-primary text-white font-medium shadow-sm shadow-primary/20"
+                                    : "text-secondary-foreground hover:text-foreground hover:bg-secondary/80"
+                                    }`}
+                            >
+                                <item.icon className={`h-[18px] w-[18px] ${isActive ? "text-white" : "group-hover:text-foreground"}`} />
+                                <span className="text-[14px] font-medium tracking-tight">{item.label}</span>
+                            </Link>
+                        )
+                    })}
 
                     <button
                         onClick={handleLogout}
-                        className="flex items-center gap-4 px-5 py-3.5 rounded-[16px] text-slate-400 hover:text-rose-500 hover:bg-rose-50/50 transition-all group w-full text-left"
+                        className="flex items-center gap-3 px-4 py-2.5 rounded-[12px] text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all group w-full text-left"
                     >
-                        <LogOut className="h-[18px] w-[18px] group-hover:text-rose-500" />
-                        <span className="text-[13px] tracking-tight">Sair</span>
+                        <LogOut className="h-[18px] w-[18px] group-hover:text-destructive" />
+                        <span className="text-[14px] font-medium tracking-tight">Sair</span>
                     </button>
                 </div>
             </nav>

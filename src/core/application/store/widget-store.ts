@@ -10,9 +10,7 @@ interface WidgetLayoutState {
 const DEFAULT_LAYOUT = [
     'smart-insights',
     'wallet-summary',
-    'financial-health',
     'payable-accounts',
-    'cash-flow-forecast',
     'monthly-chart',
     'earnings-donut',
     'credit-card',

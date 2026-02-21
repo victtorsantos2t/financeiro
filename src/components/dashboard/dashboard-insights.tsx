@@ -99,71 +99,7 @@ export function DashboardInsights({ className, currentDate = new Date() }: Dashb
 
     return (
         <div className={cn("space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-1000", className)}>
-            {/* Header: Health Score & Monthly Summary */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {/* Health Score Card */}
-                <div className="col-span-1 md:col-span-2 relative overflow-hidden p-8 rounded-[32px] bg-gradient-to-br from-slate-900 to-slate-800 text-white shadow-2xl shadow-slate-200/50">
-                    <div className="relative z-10 flex flex-col h-full justify-between">
-                        <div className="flex items-center justify-between mb-8">
-                            <div className="flex items-center gap-3">
-                                <div className="p-2 bg-white/10 rounded-xl backdrop-blur-md">
-                                    <Trophy className="w-6 h-6 text-amber-400" />
-                                </div>
-                                <span className="font-semibold tracking-wide text-slate-300 uppercase text-xs">Saúde Financeira</span>
-                            </div>
-                            <div className="text-4xl font-black italic text-white/20 select-none">#{health.classificacao}</div>
-                        </div>
-
-                        <div className="flex items-end gap-6">
-                            <div className="flex-1">
-                                <h2 className="text-5xl font-black tracking-tight mb-2">
-                                    {health.score}<span className="text-2xl text-slate-500">/100</span>
-                                </h2>
-                                <p className="text-slate-400 font-medium leading-relaxed max-w-xs">
-                                    Sua classificação atual é <span className="text-white font-bold">{health.classificacao}</span>.
-                                    {health.score > 70 ? " Excelente trabalho mantendo o controle!" : " Há espaço para otimização nos próximos meses."}
-                                </p>
-                            </div>
-                            <div className="hidden sm:block">
-                                <Activity className="w-16 h-16 text-white/5" />
-                            </div>
-                        </div>
-                    </div>
-                    {/* Abstract circles for aesthetics */}
-                    <div className="absolute -top-10 -right-10 w-40 h-40 bg-indigo-500/10 rounded-full blur-3xl" />
-                    <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-emerald-500/10 rounded-full blur-3xl" />
-                </div>
-
-                {/* Projection Card */}
-                <div className="p-8 rounded-[32px] bg-white border border-slate-100 shadow-xl shadow-slate-100/50 flex flex-col justify-between group hover:border-indigo-100 transition-colors">
-                    <div className="flex items-center justify-between mb-4">
-                        <div className="p-2 bg-indigo-50 rounded-xl">
-                            <Zap className="w-6 h-6 text-indigo-500" />
-                        </div>
-                        <span className="text-[10px] font-black uppercase tracking-widest text-indigo-400 bg-indigo-50 px-2 py-1 rounded-full">Projeção Próx. Mês</span>
-                    </div>
-
-                    <div>
-                        <div className="text-3xl font-black text-slate-900 mb-1 leading-none">
-                            R$ {projection.saldo_projetado.toLocaleString('pt-BR')}
-                        </div>
-                        <div className="flex items-center gap-2">
-                            {projection.risco_de_deficit ? (
-                                <span className="flex items-center text-xs font-bold text-rose-500 bg-rose-50 px-2 py-0.5 rounded-full">
-                                    <AlertTriangle className="w-3 h-3 mr-1" /> Risco de Déficit
-                                </span>
-                            ) : (
-                                <span className="flex items-center text-xs font-bold text-emerald-500 bg-emerald-50 px-2 py-0.5 rounded-full">
-                                    <ShieldCheck className="w-3 h-3 mr-1" /> Fluxo Seguro
-                                </span>
-                            )}
-                            <span className="text-slate-400 text-[10px] font-bold">Confiança {projection.confianca_percentual}%</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* Anomalies & Report Grid */}
+            {/* Anomalies & Report Grid - Central de Inteligência Residual */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Insights / Anomalies Column */}
                 <div className="lg:col-span-1 space-y-6">

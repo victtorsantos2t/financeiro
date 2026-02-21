@@ -60,84 +60,84 @@ export function FinancialHealthScorecard() {
     if (loading) return <Skeleton className="h-[450px] w-full rounded-[40px]" />;
 
     return (
-        <div className="bg-white rounded-[40px] p-8 shadow-[0_8px_30px_rgb(0,0,0,0.02)] border border-slate-100/50 h-full flex flex-col relative overflow-hidden group transition-all duration-700">
-            {/* Visual Decoration */}
-            <div className="absolute top-0 right-0 p-8 opacity-[0.03] group-hover:opacity-[0.05] transition-opacity duration-700 pointer-events-none">
-                <Target size={180} className="text-blue-600" />
+        <div className="bg-card rounded-card p-6 shadow-sm border border-border h-full flex flex-col relative overflow-hidden group transition-all duration-300 hover:shadow-md">
+            {/* Visual Decoration - Sustile Icons */}
+            <div className="absolute top-0 right-0 p-6 opacity-[0.05] pointer-events-none">
+                <Target size={120} className="text-primary" />
             </div>
 
             {/* Header: Cockpit Style */}
-            <div className="flex items-center justify-between mb-8 relative z-10">
-                <div className="flex items-center gap-4">
-                    <div className="p-3 bg-blue-600 rounded-2xl text-white shadow-lg shadow-blue-200">
-                        <Zap className="h-5 w-5" strokeWidth={3} />
+            <div className="flex items-center justify-between mb-6 relative z-10">
+                <div className="flex items-center gap-3">
+                    <div className="p-2.5 bg-primary rounded-xl text-white shadow-sm shadow-primary/20">
+                        <Zap className="h-5 w-5" strokeWidth={2.5} />
                     </div>
                     <div>
-                        <h3 className="text-xl font-semibold text-slate-900 tracking-tight">Diagnóstico</h3>
-                        <div className="flex items-center gap-1.5 mt-1">
+                        <h3 className="text-lg font-bold text-foreground tracking-tight">Diagnóstico</h3>
+                        <div className="flex items-center gap-1.5 mt-0.5">
                             <span className={cn(
-                                "h-1.5 w-1.5 rounded-full animate-pulse",
-                                diagnosis?.status === 'Excelente' ? 'bg-emerald-500' :
-                                    diagnosis?.status === 'Bom' ? 'bg-blue-500' : 'bg-orange-500'
+                                "h-1.5 w-1.5 rounded-full",
+                                diagnosis?.status === 'Excelente' ? 'bg-success' :
+                                    diagnosis?.status === 'Bom' ? 'bg-primary' : 'bg-destructive'
                             )} />
-                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">IA Advisor v3.0</p>
+                            <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest">IA Advisor</p>
                         </div>
                     </div>
                 </div>
                 <div className="text-right">
-                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Status</p>
+                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-0.5">Status</p>
                     <p className={cn(
                         "text-sm font-bold",
-                        diagnosis?.status === 'Excelente' ? 'text-emerald-600' :
-                            diagnosis?.status === 'Bom' ? 'text-blue-600' : 'text-orange-600'
+                        diagnosis?.status === 'Excelente' ? 'text-success' :
+                            diagnosis?.status === 'Bom' ? 'text-primary' : 'text-destructive'
                     )}>{diagnosis?.status}</p>
                 </div>
             </div>
 
             {/* Score Hero */}
-            <div className="mb-10 text-center relative z-10">
-                <div className="inline-flex items-center justify-center p-8 rounded-[48px] bg-slate-50 border border-slate-100/50 mb-4 shadow-inner">
+            <div className="mb-8 text-center relative z-10 flex flex-col items-center">
+                <div className="inline-flex items-center justify-center p-6 rounded-[32px] bg-secondary border border-border mb-3">
                     <div className="text-center">
-                        <p className="text-6xl font-black text-slate-900 tracking-tighter">{diagnosis?.score}</p>
-                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mt-2">Score de Saúde</p>
+                        <p className="text-5xl font-bold text-foreground tracking-tight">{diagnosis?.score}</p>
+                        <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em] mt-1">Score</p>
                     </div>
                 </div>
-                <p className="text-sm text-slate-600 font-medium leading-relaxed max-w-[280px] mx-auto">
+                <p className="text-sm text-secondary-foreground font-medium leading-relaxed max-w-[280px] mx-auto">
                     {diagnosis?.diagnosis}
                 </p>
             </div>
 
             {/* Benchmarks Section (50/30/20) */}
-            <div className="space-y-6 mb-8 relative z-10">
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
-                    <Sparkles className="h-3 w-3" /> Metas vs Realidade
+            <div className="space-y-5 mb-6 relative z-10">
+                <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest flex items-center gap-2">
+                    <Sparkles className="h-3 w-3" /> Metas de Gastos
                 </p>
 
                 <div className="space-y-4">
                     {/* Fixed Needs (50%) */}
-                    <div className="space-y-2">
-                        <div className="flex justify-between text-[11px] font-bold text-slate-600">
+                    <div className="space-y-1.5">
+                        <div className="flex justify-between text-[11px] font-bold text-secondary-foreground">
                             <span>ESSENCIAIS (META: 50%)</span>
                             <span>{diagnosis?.benchmarks.needs}%</span>
                         </div>
-                        <div className="h-1.5 w-full bg-slate-50 rounded-full overflow-hidden border border-slate-100/30">
+                        <div className="h-2 w-full bg-secondary rounded-full overflow-hidden">
                             <div className={cn(
                                 "h-full rounded-full transition-all duration-1000",
-                                (diagnosis?.benchmarks.needs || 0) <= 55 ? 'bg-blue-600' : 'bg-orange-500'
+                                (diagnosis?.benchmarks.needs || 0) <= 55 ? 'bg-primary' : 'bg-destructive'
                             )} style={{ width: `${diagnosis?.benchmarks.needs}%` }} />
                         </div>
                     </div>
 
                     {/* Desires (30%) */}
-                    <div className="space-y-2">
-                        <div className="flex justify-between text-[11px] font-bold text-slate-600">
+                    <div className="space-y-1.5">
+                        <div className="flex justify-between text-[11px] font-bold text-secondary-foreground">
                             <span>DESEJOS (META: 30%)</span>
                             <span>{diagnosis?.benchmarks.wants}%</span>
                         </div>
-                        <div className="h-1.5 w-full bg-slate-50 rounded-full overflow-hidden border border-slate-100/30">
+                        <div className="h-2 w-full bg-secondary rounded-full overflow-hidden">
                             <div className={cn(
                                 "h-full rounded-full transition-all duration-1000",
-                                (diagnosis?.benchmarks.wants || 0) <= 35 ? 'bg-indigo-500' : 'bg-rose-500'
+                                (diagnosis?.benchmarks.wants || 0) <= 35 ? 'bg-indigo-500' : 'bg-destructive'
                             )} style={{ width: `${diagnosis?.benchmarks.wants}%` }} />
                         </div>
                     </div>
@@ -145,15 +145,15 @@ export function FinancialHealthScorecard() {
             </div>
 
             {/* Runway & Savings Footer */}
-            <div className="mt-auto pt-6 border-t border-slate-50 grid grid-cols-2 gap-4 relative z-10">
-                <div className="p-4 bg-slate-50/50 rounded-3xl border border-slate-100/50">
-                    <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-2">Poupado</p>
-                    <p className="text-2xl font-black text-slate-900 tracking-tighter">{metrics?.savingsRate}%</p>
+            <div className="mt-auto pt-5 border-t border-border grid grid-cols-2 gap-4 relative z-10">
+                <div className="p-3.5 bg-secondary/50 rounded-2xl border border-border">
+                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-1">Poupado</p>
+                    <p className="text-2xl font-bold text-foreground tracking-tight">{metrics?.savingsRate}%</p>
                 </div>
-                <div className="p-4 bg-slate-50/50 rounded-3xl border border-slate-100/50">
-                    <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-2">Runway</p>
-                    <p className="text-2xl font-black text-slate-900 tracking-tighter">
-                        {metrics?.runwayMonths} <span className="text-[10px] text-slate-400 uppercase tracking-normal">mês</span>
+                <div className="p-3.5 bg-secondary/50 rounded-2xl border border-border">
+                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-1">Runway</p>
+                    <p className="text-2xl font-bold text-foreground tracking-tight">
+                        {metrics?.runwayMonths} <span className="text-[10px] text-muted-foreground uppercase font-medium tracking-normal">meses</span>
                     </p>
                 </div>
             </div>

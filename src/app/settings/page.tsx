@@ -137,27 +137,27 @@ export default function SettingsPage() {
     ];
 
     return (
-        <div className="flex flex-col min-h-screen bg-slate-50/50 -m-6 p-6">
+        <div className="flex flex-col min-h-screen bg-background pb-12">
             {/* 1. HEADER & PROFILE HERO */}
             <div className="max-w-4xl mx-auto w-full space-y-8 pb-32 lg:pb-12">
                 <header className="flex flex-col gap-6">
                     <div>
-                        <h1 className="text-3xl font-bold tracking-tight text-slate-900 leading-tight">Configurações</h1>
-                        <p className="text-slate-500 font-medium text-base mt-2">Gerencie sua conta e preferências pessoais.</p>
+                        <h1 className="text-3xl font-bold tracking-tight text-foreground leading-tight">Configurações</h1>
+                        <p className="text-muted-foreground font-medium text-base mt-1">Gerencie sua conta e preferências pessoais.</p>
                     </div>
 
                     {/* Integrated Profile Hero */}
-                    <div className="bg-white rounded-[32px] p-6 shadow-sm border border-slate-100 flex items-center gap-6 group hover:shadow-md transition-shadow">
+                    <div className="bg-card rounded-card p-6 shadow-sm border border-border flex items-center gap-6 group hover:shadow-md transition-all">
                         <div className="relative">
-                            <Avatar className="h-20 w-20 ring-4 ring-slate-50 transition-all group-hover:ring-blue-50">
+                            <Avatar className="h-20 w-20 ring-4 ring-background transition-all group-hover:ring-primary/10">
                                 <AvatarImage src={avatarUrl || ""} />
-                                <AvatarFallback className="bg-blue-600 text-white text-xl font-bold">
+                                <AvatarFallback className="bg-primary text-white text-xl font-bold">
                                     {fullName?.charAt(0) || email?.charAt(0)}
                                 </AvatarFallback>
                             </Avatar>
                             <label
                                 htmlFor="avatar-upload-hero"
-                                className="absolute -bottom-1 -right-1 bg-slate-900 text-white p-2.5 rounded-full cursor-pointer shadow-lg hover:scale-110 active:scale-95 transition-all outline-none ring-4 ring-white"
+                                className="absolute -bottom-1 -right-1 bg-foreground text-card p-2 rounded-full cursor-pointer shadow-lg hover:scale-110 active:scale-95 transition-all outline-none ring-2 ring-card"
                             >
                                 {uploading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Camera className="h-3.5 w-3.5" />}
                                 <input
@@ -171,13 +171,13 @@ export default function SettingsPage() {
                             </label>
                         </div>
                         <div className="flex-1">
-                            <h2 className="text-xl font-bold text-slate-900 tracking-tight leading-none">{fullName || "Usuário"}</h2>
-                            <p className="text-slate-500 text-sm font-medium mt-2 flex items-center gap-2">
-                                <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+                            <h2 className="text-xl font-bold text-foreground tracking-tight leading-none">{fullName || "Usuário"}</h2>
+                            <p className="text-muted-foreground text-sm font-medium mt-3 flex items-center gap-2">
+                                <span className="w-1.5 h-1.5 rounded-full bg-primary" />
                                 {occupation || "Sua biografia profissional"}
                             </p>
                             <div className="flex items-center gap-4 mt-4">
-                                <div className="flex items-center gap-1.5 px-3 py-1 bg-emerald-50 text-emerald-600 rounded-full text-[10px] font-bold uppercase tracking-wider">
+                                <div className="flex items-center gap-1.5 px-3 py-1 bg-success/10 text-success rounded-full text-[10px] font-bold uppercase tracking-wider">
                                     <ShieldCheck className="h-3 w-3" />
                                     Perfil Integrado
                                 </div>
@@ -187,7 +187,7 @@ export default function SettingsPage() {
                 </header>
 
                 {/* 2. APPLE-STYLE SEGMENTED CONTROL */}
-                <div className="sticky top-4 z-30 p-1.5 bg-slate-200/50 backdrop-blur-xl rounded-[24px] flex items-center gap-1 border border-white/40 shadow-sm overflow-x-auto no-scrollbar scroll-smooth">
+                <div className="sticky top-4 z-30 p-1 bg-secondary/50 backdrop-blur-xl rounded-xl flex items-center gap-1 border border-border shadow-sm overflow-x-auto no-scrollbar scroll-smooth">
                     {tabs.map((tab) => {
                         const isActive = activeTab === tab.value;
                         return (
@@ -195,14 +195,14 @@ export default function SettingsPage() {
                                 key={tab.value}
                                 onClick={() => setActiveTab(tab.value)}
                                 className={cn(
-                                    "relative flex-1 py-3 px-4 rounded-[18px] text-[13px] font-bold tracking-tight transition-all duration-300 min-w-[100px]",
-                                    isActive ? "text-slate-900 shadow-sm" : "text-slate-500 hover:text-slate-700"
+                                    "relative flex-1 py-2.5 px-4 rounded-lg text-[13px] font-bold tracking-tight transition-all duration-300 min-w-[100px]",
+                                    isActive ? "text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
                                 )}
                             >
                                 {isActive && (
                                     <motion.div
                                         layoutId="activeTab"
-                                        className="absolute inset-0 bg-white rounded-[18px] shadow-sm z-0"
+                                        className="absolute inset-0 bg-card rounded-lg shadow-sm z-0"
                                         transition={{ type: "spring", stiffness: 400, damping: 35 }}
                                     />
                                 )}
@@ -224,48 +224,45 @@ export default function SettingsPage() {
                         >
                             {activeTab === "profile" && (
                                 <div className="space-y-6">
-                                    <div className="bg-white rounded-[32px] p-8 border border-slate-100 shadow-sm space-y-10">
+                                    <div className="bg-card rounded-card p-8 border border-border shadow-sm space-y-8">
                                         <div className="grid gap-8">
-                                            <div className="space-y-4">
-                                                <Label htmlFor="email" className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.15em] ml-1 flex items-center gap-2">
-                                                    <Mail className="h-4 w-4 text-slate-300" /> Conta de Acesso
+                                            <div className="space-y-3">
+                                                <Label htmlFor="email" className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1 flex items-center gap-2">
+                                                    <Mail className="h-4 w-4" /> Conta de Acesso
                                                 </Label>
                                                 <div className="relative group">
                                                     <Input
                                                         id="email"
                                                         value={email}
                                                         disabled
-                                                        className="h-16 rounded-[22px] bg-slate-50/50 border-slate-50/50 text-slate-400 font-semibold px-8 cursor-not-allowed text-base shadow-inner transition-all"
+                                                        className="h-14 rounded-xl bg-secondary/20 border-border text-muted-foreground font-bold px-6 cursor-not-allowed text-base shadow-none transition-all"
                                                     />
-                                                    <div className="absolute right-6 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                        <ShieldCheck className="h-5 w-5 text-slate-200" />
-                                                    </div>
                                                 </div>
                                             </div>
 
-                                            <div className="space-y-4">
-                                                <Label htmlFor="name" className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.15em] ml-1 flex items-center gap-2">
-                                                    <User className="h-4 w-4 text-slate-300" /> Nome de Exibição
+                                            <div className="space-y-3">
+                                                <Label htmlFor="name" className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1 flex items-center gap-2">
+                                                    <User className="h-4 w-4" /> Nome de Exibição
                                                 </Label>
                                                 <Input
                                                     id="name"
                                                     value={fullName}
                                                     onChange={(e) => setFullName(e.target.value)}
                                                     placeholder="Seu nome"
-                                                    className="h-16 rounded-[22px] bg-white border-slate-100 focus:bg-white focus:border-slate-900 focus:ring-0 transition-all font-semibold text-slate-900 px-8 text-base shadow-sm group hover:border-slate-300"
+                                                    className="h-14 rounded-xl bg-card border-border focus:bg-card focus:border-primary focus:ring-0 transition-all font-bold text-foreground px-6 text-base shadow-sm group hover:border-border/80"
                                                 />
                                             </div>
 
-                                            <div className="space-y-4">
-                                                <Label htmlFor="occupation" className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.15em] ml-1 flex items-center gap-2">
-                                                    <Pencil className="h-4 w-4 text-slate-300" /> Bio Profissional
+                                            <div className="space-y-3">
+                                                <Label htmlFor="occupation" className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1 flex items-center gap-2">
+                                                    <Pencil className="h-4 w-4" /> Bio Profissional
                                                 </Label>
                                                 <Input
                                                     id="occupation"
                                                     value={occupation}
                                                     onChange={(e) => setOccupation(e.target.value)}
                                                     placeholder="Ex: Designer, Desenvolvedor..."
-                                                    className="h-16 rounded-[22px] bg-white border-slate-100 focus:bg-white focus:border-slate-900 focus:ring-0 transition-all font-semibold text-slate-900 px-8 text-base shadow-sm group hover:border-slate-300"
+                                                    className="h-14 rounded-xl bg-card border-border focus:bg-card focus:border-primary focus:ring-0 transition-all font-bold text-foreground px-6 text-base shadow-sm group hover:border-border/80"
                                                 />
                                             </div>
                                         </div>
@@ -276,7 +273,7 @@ export default function SettingsPage() {
                                         <Button
                                             onClick={updateProfile}
                                             disabled={loading}
-                                            className="h-16 px-12 rounded-[22px] bg-slate-900 text-white font-bold shadow-2xl shadow-slate-900/10 hover:shadow-slate-900/20 active:scale-95 transition-all text-base tracking-tight"
+                                            className="h-14 px-12 rounded-xl bg-primary hover:bg-primary-hover text-white font-bold shadow-lg shadow-primary/10 transition-all active:scale-95 text-base"
                                         >
                                             {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : "Salvar Alterações"}
                                         </Button>
@@ -289,14 +286,14 @@ export default function SettingsPage() {
 
                             {activeTab === "preferences" && (
                                 <div className="space-y-6">
-                                    <div className="bg-white rounded-[32px] p-8 border border-slate-100 shadow-sm space-y-10">
+                                    <div className="bg-card rounded-card p-8 border border-border shadow-sm space-y-8">
                                         <div className="flex items-center gap-3">
-                                            <div className="p-3 bg-slate-900 text-white rounded-[18px]">
+                                            <div className="p-3 bg-secondary rounded-xl text-primary">
                                                 <Sun className="h-5 w-5" />
                                             </div>
                                             <div className="space-y-0.5">
-                                                <h3 className="text-xl font-bold text-slate-900">Tema e Aparência</h3>
-                                                <p className="text-slate-400 text-sm font-medium">Configure a identidade visual.</p>
+                                                <h3 className="text-xl font-bold text-foreground tracking-tight">Tema e Aparência</h3>
+                                                <p className="text-muted-foreground text-sm font-medium">Configure a identidade visual.</p>
                                             </div>
                                         </div>
 
@@ -304,55 +301,55 @@ export default function SettingsPage() {
                                             <button
                                                 onClick={() => setTheme("light")}
                                                 className={cn(
-                                                    "p-8 rounded-[28px] border-2 transition-all flex flex-col items-center gap-4 group",
-                                                    theme === "light" ? "border-slate-900 bg-slate-50 shadow-sm" : "border-slate-100 bg-white hover:bg-slate-50"
+                                                    "p-8 rounded-card border-2 transition-all flex flex-col items-center gap-4 group",
+                                                    theme === "light" ? "border-primary bg-secondary/50 shadow-sm" : "border-border bg-card hover:bg-secondary/20"
                                                 )}
                                             >
                                                 <div className={cn(
-                                                    "p-4 rounded-2xl transition-all",
-                                                    theme === "light" ? "bg-slate-900 text-white" : "bg-slate-50 text-slate-400"
+                                                    "p-4 rounded-xl transition-all",
+                                                    theme === "light" ? "bg-primary text-white" : "bg-secondary text-muted-foreground"
                                                 )}>
                                                     <Sun className="h-8 w-8" />
                                                 </div>
-                                                <span className={cn("text-sm font-bold tracking-tight", theme === "light" ? "text-slate-900" : "text-slate-400")}>Modo Claro</span>
+                                                <span className={cn("text-sm font-bold tracking-tight", theme === "light" ? "text-foreground" : "text-muted-foreground")}>Modo Claro</span>
                                             </button>
                                             <button
                                                 onClick={() => setTheme("dark")}
                                                 className={cn(
-                                                    "p-8 rounded-[28px] border-2 transition-all flex flex-col items-center gap-4 group",
-                                                    theme === "dark" ? "border-slate-900 bg-slate-900 shadow-xl" : "border-slate-100 bg-white hover:bg-slate-50 text-slate-900"
+                                                    "p-8 rounded-card border-2 transition-all flex flex-col items-center gap-4 group",
+                                                    theme === "dark" ? "border-primary bg-[#0f172a] shadow-xl" : "border-border bg-card hover:bg-secondary/20"
                                                 )}
                                             >
                                                 <div className={cn(
-                                                    "p-4 rounded-2xl transition-all",
-                                                    theme === "dark" ? "bg-white text-slate-900" : "bg-slate-50 text-slate-400"
+                                                    "p-4 rounded-xl transition-all",
+                                                    theme === "dark" ? "bg-primary text-white" : "bg-secondary text-muted-foreground"
                                                 )}>
                                                     <Moon className="h-8 w-8" />
                                                 </div>
-                                                <span className={cn("text-sm font-bold tracking-tight", theme === "dark" ? "text-white" : "text-slate-400")}>Modo Escuro</span>
+                                                <span className={cn("text-sm font-bold tracking-tight", theme === "dark" ? "text-white" : "text-muted-foreground")}>Modo Escuro</span>
                                             </button>
                                         </div>
                                     </div>
 
-                                    <div className="bg-white rounded-[32px] p-8 border border-slate-100 shadow-sm space-y-8">
+                                    <div className="bg-card rounded-card p-8 border border-border shadow-sm space-y-8">
                                         <div className="flex items-center gap-3">
-                                            <div className="p-3 bg-blue-50 text-blue-600 rounded-[18px]">
+                                            <div className="p-3 bg-secondary rounded-xl text-primary">
                                                 <Globe className="h-5 w-5" />
                                             </div>
                                             <div className="space-y-0.5">
-                                                <h3 className="text-xl font-bold text-slate-900 tracking-tight">Região e Moeda</h3>
-                                                <p className="text-slate-400 text-sm font-medium">Defina os padrões de exibição monetária.</p>
+                                                <h3 className="text-xl font-bold text-foreground tracking-tight">Região e Moeda</h3>
+                                                <p className="text-muted-foreground text-sm font-medium">Defina os padrões de exibição monetária.</p>
                                             </div>
                                         </div>
 
                                         <Select value={currency} onValueChange={setCurrency}>
-                                            <SelectTrigger className="h-16 rounded-[22px] bg-slate-50/50 border-transparent transition-all font-bold text-slate-900 px-8 text-base focus:bg-white focus:ring-4 focus:ring-blue-50/50">
+                                            <SelectTrigger className="h-14 rounded-xl bg-secondary/30 border-border transition-all font-bold text-foreground px-8 text-base focus:bg-card focus:ring-2 focus:ring-primary/10">
                                                 <SelectValue placeholder="Selecione a moeda" />
                                             </SelectTrigger>
-                                            <SelectContent className="rounded-[28px] border-slate-100 shadow-2xl p-2 bg-white/98 backdrop-blur-xl">
-                                                <SelectItem value="BRL" className="rounded-xl py-4 focus:bg-slate-50 font-semibold">Real Brasileiro (R$)</SelectItem>
-                                                <SelectItem value="USD" className="rounded-xl py-4 focus:bg-slate-50 font-semibold">Dólar Americano ($)</SelectItem>
-                                                <SelectItem value="EUR" className="rounded-xl py-4 focus:bg-slate-50 font-semibold">Euro (€)</SelectItem>
+                                            <SelectContent className="rounded-xl border-border shadow-2xl p-2 bg-card">
+                                                <SelectItem value="BRL" className="rounded-lg py-3 font-semibold">Real Brasileiro (R$)</SelectItem>
+                                                <SelectItem value="USD" className="rounded-lg py-3 font-semibold">Dólar Americano ($)</SelectItem>
+                                                <SelectItem value="EUR" className="rounded-lg py-3 font-semibold">Euro (€)</SelectItem>
                                             </SelectContent>
                                         </Select>
                                     </div>
@@ -362,7 +359,7 @@ export default function SettingsPage() {
                                         <Button
                                             onClick={updateProfile}
                                             disabled={loading}
-                                            className="h-16 px-12 rounded-[22px] bg-slate-900 text-white font-bold shadow-2xl shadow-slate-900/10 hover:shadow-slate-900/20 active:scale-95 transition-all text-base tracking-tight"
+                                            className="h-14 px-12 rounded-xl bg-primary hover:bg-primary-hover text-white font-bold shadow-lg shadow-primary/10 transition-all active:scale-95 text-base"
                                         >
                                             {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : "Aplicar Preferências"}
                                         </Button>
@@ -386,7 +383,7 @@ export default function SettingsPage() {
                             <Button
                                 onClick={updateProfile}
                                 disabled={loading}
-                                className="w-full h-18 rounded-[26px] bg-slate-900 text-white font-bold shadow-[0_20px_50px_-15px_rgba(0,0,0,0.3)] active:scale-95 transition-all text-base py-6"
+                                className="w-full h-14 rounded-xl bg-primary hover:bg-primary-hover text-white font-bold shadow-lg shadow-primary/20 active:scale-95 transition-all text-base py-4"
                             >
                                 {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : "Salvar Alterações"}
                             </Button>

@@ -13,6 +13,7 @@ import {
 import { createClient } from "@/lib/supabase/client";
 import { Plus, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
 
 type Category = {
     id: string;
@@ -83,69 +84,73 @@ export default function CategoriesPage() {
     };
 
     return (
-        <div className="space-y-8">
-            <div>
-                <h1 className="text-2xl font-bold">Gerenciar Categorias</h1>
-                <p className="text-muted-foreground">Crie e organize suas categorias de receitas e despesas.</p>
+        <div className="space-y-6 pb-12">
+            <div className="flex flex-col gap-1">
+                <h1 className="text-2xl font-bold text-foreground tracking-tight">Gerenciar Categorias</h1>
+                <p className="text-sm text-muted-foreground font-medium">Crie e organize suas categorias de receitas e despesas.</p>
             </div>
 
-            <div className="bg-white dark:bg-card p-6 rounded-3xl border border-border shadow-sm">
-                <h3 className="font-bold text-lg mb-4">Nova Categoria</h3>
-                <div className="flex flex-col md:flex-row gap-4 items-end">
+            <div className="bg-card p-6 rounded-card border border-border shadow-sm">
+                <h3 className="font-bold text-lg text-foreground mb-6 tracking-tight">Nova Categoria</h3>
+                <div className="flex flex-col md:flex-row gap-6 items-end">
                     <div className="w-full md:w-1/3 space-y-2">
-                        <Label htmlFor="name">Nome da Categoria</Label>
+                        <Label htmlFor="name" className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1">Nome da Categoria</Label>
                         <Input
                             id="name"
                             value={newName}
                             onChange={(e) => setNewName(e.target.value)}
                             placeholder="Ex: Alimentação, Lazer"
+                            className="h-11 rounded-xl bg-secondary/30 border-border"
                         />
                     </div>
                     <div className="w-full md:w-1/4 space-y-2">
-                        <Label htmlFor="type">Tipo</Label>
+                        <Label htmlFor="type" className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1">Tipo</Label>
                         <Select
                             value={newType}
                             onValueChange={(value) => setNewType(value as "income" | "expense")}
                         >
-                            <SelectTrigger>
+                            <SelectTrigger className="h-11 rounded-xl bg-secondary/30 border-border font-medium">
                                 <SelectValue />
                             </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem value="expense">Despesa</SelectItem>
-                                <SelectItem value="income">Receita</SelectItem>
+                            <SelectContent className="rounded-xl border-border">
+                                <SelectItem value="expense" className="rounded-lg">Despesa</SelectItem>
+                                <SelectItem value="income" className="rounded-lg">Receita</SelectItem>
                             </SelectContent>
                         </Select>
                     </div>
-                    <Button onClick={handleAddCategory} className="w-full md:w-auto gap-2 rounded-xl">
+                    <Button onClick={handleAddCategory} className="w-full md:w-auto h-11 px-8 gap-2 rounded-xl bg-primary hover:bg-primary-hover text-white font-bold transition-all shadow-sm">
                         <Plus className="h-4 w-4" />
                         Adicionar
                     </Button>
                 </div>
             </div>
 
-            <div className="bg-white dark:bg-card rounded-3xl border border-border shadow-sm overflow-hidden">
-                <div className="p-6 border-b border-border">
-                    <h3 className="font-bold text-lg">Minhas Categorias</h3>
+            <div className="bg-card rounded-card border border-border shadow-sm overflow-hidden">
+                <div className="p-6 border-b border-border bg-secondary/10">
+                    <h3 className="font-bold text-lg text-foreground tracking-tight">Minhas Categorias</h3>
                 </div>
                 {loading ? (
-                    <div className="p-8 text-center text-muted-foreground">Carregando...</div>
+                    <div className="p-12 text-center text-muted-foreground font-bold">Carregando...</div>
                 ) : categories.length === 0 ? (
-                    <div className="p-8 text-center text-muted-foreground">Nenhuma categoria encontrada.</div>
+                    <div className="p-12 text-center text-muted-foreground font-bold">Nenhuma categoria encontrada.</div>
                 ) : (
-                    <div className="divide-y divide-border">
+                    <div className="divide-y divide-border/50">
                         {categories.map((category) => (
-                            <div key={category.id} className="p-4 flex justify-between items-center hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-                                <div className="flex items-center gap-3">
-                                    <div className={`w-3 h-3 rounded-full ${category.type === 'income' ? 'bg-green-500' : 'bg-red-500'}`}></div>
-                                    <span className="font-medium text-foreground">{category.name}</span>
-                                    <span className="text-xs text-muted-foreground bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded-full uppercase">
+                            <div key={category.id} className="p-4 flex justify-between items-center hover:bg-secondary/30 transition-all group">
+                                <div className="flex items-center gap-4">
+                                    <div className={`w-2.5 h-2.5 rounded-full ${category.type === 'income' ? 'bg-success' : 'bg-destructive'}`}></div>
+                                    <span className="font-bold text-foreground text-sm tracking-tight">{category.name}</span>
+                                    <span className={cn(
+                                        "text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-tighter",
+                                        category.type === 'income' ? 'bg-success/10 text-success' : 'bg-destructive/10 text-destructive'
+                                    )}>
                                         {category.type === 'income' ? 'Receita' : 'Despesa'}
                                     </span>
                                 </div>
                                 <Button
                                     variant="ghost"
                                     size="icon"
-                                    className="text-muted-foreground hover:text-destructive"
+                                    className="h-9 w-9 text-muted-foreground hover:text-destructive hover:bg-destructive/5 rounded-lg opacity-0 group-hover:opacity-100 transition-all"
                                     onClick={() => handleDeleteCategory(category.id)}
                                 >
                                     <Trash2 className="h-4 w-4" />

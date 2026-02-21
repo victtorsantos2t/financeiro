@@ -118,39 +118,43 @@ export default function BudgetsPage() {
     };
 
     return (
-        <div className="space-y-6">
-            <div>
-                <h1 className="text-2xl font-bold">Orçamentos Mensais</h1>
-                <p className="text-muted-foreground">Defina limites de gastos para o mês atual ({currentMonthYear}).</p>
+        <div className="space-y-6 pb-12">
+            <div className="flex flex-col gap-1">
+                <h1 className="text-2xl font-bold text-foreground tracking-tight">Orçamentos Mensais</h1>
+                <p className="text-sm text-muted-foreground font-medium">Defina limites de gastos para o mês atual ({currentMonthYear}).</p>
             </div>
 
             <div className="grid gap-6">
                 {loading ? (
-                    <p>Carregando...</p>
+                    <div className="flex items-center justify-center py-12 bg-card rounded-card border border-border">
+                        <p className="text-muted-foreground font-bold">Carregando...</p>
+                    </div>
                 ) : budgets.length === 0 ? (
-                    <p>Nenhuma categoria de despesa encontrada.</p>
+                    <div className="flex items-center justify-center py-12 bg-card rounded-card border border-border font-bold">
+                        <p className="text-muted-foreground">Nenhuma categoria de despesa encontrada.</p>
+                    </div>
                 ) : (
                     budgets.map((item) => {
                         const percentage = item.budget > 0 ? (item.spent / item.budget) * 100 : 0;
-                        let progressColor = "bg-green-500";
+                        let progressColor = "bg-success";
                         if (percentage > 80) progressColor = "bg-yellow-500";
-                        if (percentage > 100) progressColor = "bg-red-500";
+                        if (percentage > 100) progressColor = "bg-destructive";
 
                         return (
-                            <div key={item.categoryId} className="bg-white dark:bg-card p-6 rounded-3xl border border-border shadow-sm">
-                                <div className="flex justify-between items-center mb-4">
+                            <div key={item.categoryId} className="bg-card p-6 rounded-card border border-border shadow-sm hover:shadow-md transition-all">
+                                <div className="flex justify-between items-center mb-6">
                                     <div>
-                                        <h3 className="font-bold text-lg">{item.categoryName}</h3>
-                                        <div className="text-sm text-muted-foreground">
-                                            Gasto: <span className="font-medium text-foreground">R$ {item.spent.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+                                        <h3 className="font-bold text-lg text-foreground tracking-tight">{item.categoryName}</h3>
+                                        <div className="text-sm text-muted-foreground font-medium">
+                                            Gasto: <span className="font-bold text-foreground">R$ {item.spent.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
                                         </div>
                                     </div>
-                                    <div className="flex items-center gap-2">
-                                        <Label htmlFor={`budget-${item.categoryId}`} className="whitespace-nowrap">Meta:</Label>
+                                    <div className="flex items-center gap-3">
+                                        <Label htmlFor={`budget-${item.categoryId}`} className="whitespace-nowrap text-xs font-bold text-muted-foreground uppercase tracking-widest">Meta:</Label>
                                         <Input
                                             id={`budget-${item.categoryId}`}
                                             type="number"
-                                            className="w-32"
+                                            className="w-32 bg-secondary/50 rounded-xl border-border h-10 font-bold"
                                             defaultValue={item.budget || ''}
                                             onBlur={(e) => handleUpdateBudget(item.categoryId, parseFloat(e.target.value))}
                                             placeholder="0.00"
@@ -158,12 +162,12 @@ export default function BudgetsPage() {
                                     </div>
                                 </div>
 
-                                <div className="space-y-1">
-                                    <div className="flex justify-between text-xs text-muted-foreground">
-                                        <span>{percentage.toFixed(0)}%</span>
-                                        <span>R$ {item.budget.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+                                <div className="space-y-3">
+                                    <div className="flex justify-between text-[11px] font-bold text-muted-foreground uppercase tracking-widest">
+                                        <span>{percentage.toFixed(0)}% Utilizado</span>
+                                        <span>Meta: R$ {item.budget.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
                                     </div>
-                                    <Progress value={percentage} className={`h-2`} indicatorClassName={progressColor} />
+                                    <Progress value={percentage} className={`h-2 bg-secondary`} indicatorClassName={progressColor} />
                                 </div>
                             </div>
                         );

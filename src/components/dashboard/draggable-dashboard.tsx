@@ -1,11 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors, DragOverlay } from "@dnd-kit/core";
-import { arrayMove, SortableContext, sortableKeyboardCoordinates, rectSortingStrategy } from "@dnd-kit/sortable";
-
 import { useWidgetStore } from "@/core/application/store/widget-store";
-import { SortableWidget } from "@/components/dashboard/widgets/sortable-widget";
 
 // Widgets atuais transformados em componentes mapeáveis
 import { Wallet } from "@/components/dashboard/wallet";
@@ -13,30 +9,18 @@ import { TransactionsTable } from "@/components/dashboard/transactions-table";
 import { MonthlyEarningsChart } from "@/components/dashboard/monthly-earnings-chart";
 import { EarningsDonut } from "@/components/dashboard/earnings-donut";
 import { useDashboard } from "@/context/dashboard-context";
-import { FinancialHealthScorecard } from "@/components/dashboard/financial-health-scorecard";
 import { AddTransactionModal } from "@/components/dashboard/add-transaction-modal";
 import { ImportTransactionsModal } from "@/components/dashboard/import-transactions-modal";
 import { PayableAccounts } from "@/components/dashboard/payable-accounts";
-import { CashFlowForecast } from "@/components/dashboard/cash-flow-forecast";
-import { CreditCard } from "@/components/dashboard/credit-card";
 import { createClient } from "@/lib/supabase/client";
-import { services } from "@/core/application/services/services.factory";
-import { Button } from "@/components/ui/button";
-import { GripVertical } from "lucide-react";
 import { MonthSelector } from "@/components/dashboard/month-selector";
 import { DashboardInsights } from "@/components/dashboard/dashboard-insights";
 
 export default function DraggableDashboard() {
-    const { layout, setLayout } = useWidgetStore();
+    const { layout } = useWidgetStore();
     const { currentDate, setCurrentDate } = useDashboard();
     const [mounted, setMounted] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
-
-
-    const sensors = useSensors(
-        useSensor(PointerSensor),
-        useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
-    );
 
     // Evita hydration mismatch
     useEffect(() => { setMounted(true); }, []);
@@ -63,54 +47,40 @@ export default function DraggableDashboard() {
         updateYields();
     }, []);
 
-    const handleDragEnd = (event: any) => {
-        const { active, over } = event;
-        if (active.id !== over.id) {
-            const oldIndex = layout.indexOf(active.id);
-            const newIndex = layout.indexOf(over.id);
-            setLayout(arrayMove(layout, oldIndex, newIndex));
-        }
-    };
-
     if (!mounted) return <div className="p-8 text-center text-slate-400">Carregando Dashboard...</div>;
 
     const renderWidget = (id: string) => {
         switch (id) {
             case 'smart-insights': return <DashboardInsights currentDate={currentDate} />;
             case 'wallet-summary': return <Wallet />;
-            case 'financial-health': return <FinancialHealthScorecard />;
             case 'transactions-table': return <TransactionsTable />;
             case 'monthly-chart': return <MonthlyEarningsChart currentDate={currentDate} />;
             case 'earnings-donut': return <EarningsDonut currentDate={currentDate} />;
             case 'payable-accounts': return <PayableAccounts />;
-            case 'cash-flow-forecast': return <CashFlowForecast />;
-            case 'credit-card':
-                // CreditCard component requires wallet prop
-                // For now, we'll render null - user should add this via the full dashboard
-                return null;
             default: return null;
         }
     };
 
-    // Versão Mobile (sem drag & drop)
+    // Versão Mobile
     if (isMobile) {
         return (
-            <div className="space-y-6 max-w-[1440px] mx-auto pb-24 px-4">
-                <div className="flex flex-col gap-1 px-0">
-                    <h1 className="text-3xl font-semibold text-slate-900 tracking-tight">Visão Geral</h1>
-                    <p className="text-sm font-medium text-slate-400">Desempenho financeiro consolidado.</p>
+            <div className="space-y-8 max-w-[1440px] mx-auto pb-32 px-5 pt-4">
+                <div className="flex flex-col gap-0 px-1">
+                    <h1 className="text-2xl font-black text-slate-900 tracking-tight leading-tight">Visão Geral</h1>
+                    <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest opacity-80">Insights da sua conta</p>
                 </div>
 
-                <div className="flex items-center justify-center p-2 bg-slate-50/50 rounded-[24px] border border-slate-100/50">
+                <div className="flex items-center justify-center p-3 py-4 bg-white/50 backdrop-blur-xl rounded-[28px] border border-white/60 shadow-sm">
                     <MonthSelector currentDate={currentDate} onMonthChange={setCurrentDate} />
                 </div>
 
-                <div className="flex flex-col gap-6">
-                    {layout.filter(id => renderWidget(id) !== null).map((id) => (
-                        <div key={id}>
-                            {renderWidget(id)}
-                        </div>
-                    ))}
+                <div className="flex flex-col gap-8">
+                    <Wallet />
+                    <PayableAccounts />
+                    <MonthlyEarningsChart currentDate={currentDate} />
+                    <TransactionsTable />
+                    <DashboardInsights currentDate={currentDate} />
+                    <EarningsDonut currentDate={currentDate} />
                 </div>
             </div>
         );
@@ -130,22 +100,34 @@ export default function DraggableDashboard() {
                 </div>
             </div>
 
-            <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-                <SortableContext items={layout} strategy={rectSortingStrategy}>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {layout.map((id) => (
-                            <div key={id} className={id === 'transactions-table' || id === 'smart-insights' ? 'md:col-span-2 lg:col-span-3' : ''}>
-                                <SortableWidget id={id} className="h-full relative group">
-                                    <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 cursor-grab z-10 p-1 bg-white/80 rounded-md backdrop-blur-sm transition-opacity">
-                                        <GripVertical className="w-4 h-4 text-slate-400" />
-                                    </div>
-                                    {renderWidget(id)}
-                                </SortableWidget>
-                            </div>
-                        ))}
+            {/* Layout Principal Estático conforme Referência */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-6">
+                {/* Coluna Mancha Esquerda (8/12 - 2 colunas no LG) */}
+                <div className="lg:col-span-8 space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <Wallet />
+                        <PayableAccounts />
                     </div>
-                </SortableContext>
-            </DndContext>
+                    <div className="w-full">
+                        <MonthlyEarningsChart currentDate={currentDate} />
+                    </div>
+                </div>
+
+                {/* Coluna Direita (4/12 - 1 coluna no LG) */}
+                <div className="lg:col-span-4 h-full">
+                    <TransactionsTable />
+                </div>
+            </div>
+
+            {/* Seção Inferior: Inteligência e Detalhes */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 border-t border-border/50 pt-8">
+                <div className="lg:col-span-8">
+                    <DashboardInsights currentDate={currentDate} />
+                </div>
+                <div className="lg:col-span-4">
+                    <EarningsDonut currentDate={currentDate} />
+                </div>
+            </div>
         </div>
     );
 }

@@ -52,22 +52,22 @@ export function PayableAccounts({ variant = "card" }: PayableAccountsProps) {
         <>
             <div
                 onClick={() => setOpen(true)}
-                className={`${variant === "sidebar" ? "bg-white rounded-[24px] p-8 shadow-[0_2px_12px_-2px_rgba(0,0,0,0.02)] border border-slate-100/40 cursor-pointer hover:bg-slate-50/50 transition-all group" : ""}`}
+                className={`${variant === "sidebar" ? "bg-card rounded-card p-6 shadow-sm border border-border cursor-pointer hover:bg-secondary/50 transition-all group" : ""}`}
             >
-                <div className="mb-6">
-                    <h3 className="text-lg font-semibold text-slate-900 mb-1 tracking-tight group-hover:text-blue-600 transition-colors">Contas a Pagar</h3>
-                    <p className="text-[10px] font-black text-slate-300 uppercase tracking-[0.2em]">
+                <div className="mb-4">
+                    <h3 className="text-lg font-bold text-foreground mb-1 tracking-tight group-hover:text-primary transition-colors">Contas a Pagar</h3>
+                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">
                         Ciclo Atual
                     </p>
                 </div>
 
                 <div>
                     <div className="flex flex-col gap-1">
-                        <span className="font-semibold text-3xl text-slate-900 tracking-[-0.02em]">
+                        <span className="font-bold text-3xl text-foreground tracking-tight">
                             {loading ? "..." : `R$ ${totalAmount.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`}
                         </span>
-                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">
-                            {loading ? "..." : `${pendingCount} lançamentos pendentes`}
+                        <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest mt-1">
+                            {loading ? "..." : `${pendingCount} pendentes`}
                         </span>
                     </div>
                 </div>
@@ -86,7 +86,7 @@ export function PayableAccounts({ variant = "card" }: PayableAccountsProps) {
     }
 
     return (
-        <div className="w-full bg-white rounded-[24px] p-8 flex flex-col justify-between shadow-[0_2px_12px_-2px_rgba(0,0,0,0.02)] border border-slate-100/40 transition-all duration-500">
+        <div className="w-full bg-card rounded-card p-6 flex flex-col justify-between shadow-sm border border-border transition-all duration-300">
             {content}
         </div>
     );

@@ -165,7 +165,7 @@ export function TransactionsTable({
     };
 
     return (
-        <div className="flex flex-col h-full bg-white min-h-[500px]">
+        <div className="flex flex-col h-full bg-card rounded-card border border-border shadow-sm overflow-hidden min-h-[500px]">
             <div className="flex-1 overflow-auto custom-scrollbar">
                 {loading ? (
                     <div className="p-6 space-y-8">
@@ -178,10 +178,10 @@ export function TransactionsTable({
                     </div>
                 ) : transactions.length === 0 ? (
                     <div className="text-center py-20 px-6">
-                        <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <ListFilter className="h-6 w-6 text-slate-300" />
+                        <div className="w-16 h-16 bg-secondary rounded-full flex items-center justify-center mx-auto mb-4">
+                            <ListFilter className="h-6 w-6 text-muted-foreground" />
                         </div>
-                        <p className="text-slate-400 font-medium italic">Sem lançamentos para exibir.</p>
+                        <p className="text-muted-foreground font-medium italic">Sem lançamentos para exibir.</p>
                     </div>
                 ) : (
                     <div className="pb-24">
@@ -191,21 +191,20 @@ export function TransactionsTable({
                                 const isFuture = new Date(date) > new Date();
 
                                 return (
-                                    <div key={date} className="px-6 mb-8">
-                                        {/* Date Header */}
+                                    <div key={date} className="mb-2">
                                         <div className={cn(
-                                            "py-6 border-b border-slate-100/50",
-                                            isFuture && "border-rose-100/50"
+                                            "px-6 py-4 bg-secondary/30 flex justify-between items-center border-y border-border/50 sticky top-0 z-10 backdrop-blur-md",
+                                            isFuture && "bg-destructive/5"
                                         )}>
                                             <h4 className={cn(
-                                                "text-base font-bold mb-1 capitalize",
-                                                isFuture ? "text-rose-600" : "text-slate-900"
+                                                "text-[13px] font-black capitalize flex items-center gap-2",
+                                                isFuture ? "text-destructive" : "text-slate-900"
                                             )}>
-                                                {format(new Date(date + 'T00:00:00'), "d 'de' MMMM 'de' yyyy", { locale: ptBR })}
-                                                {isFuture && <span className="ml-2 text-[10px] uppercase tracking-wider bg-rose-50 text-rose-500 px-2 py-0.5 rounded-full">Agendado</span>}
+                                                {format(new Date(date + 'T00:00:00'), "d 'de' MMMM", { locale: ptBR })}
+                                                {isFuture && <span className="text-[9px] uppercase tracking-wider bg-destructive/10 text-destructive px-2 py-0.5 rounded-full">Agendado</span>}
                                             </h4>
                                             {!isFuture && (
-                                                <p className="text-sm text-slate-500 font-medium">
+                                                <p className="text-[12px] text-muted-foreground font-medium">
                                                     Saldo do dia: {showValues ? new Intl.NumberFormat('pt-BR', {
                                                         style: 'currency',
                                                         currency: 'BRL',
@@ -216,38 +215,44 @@ export function TransactionsTable({
                                         </div>
 
                                         {/* List Items */}
-                                        <div className="space-y-0">
+                                        <div className="divide-y divide-border/50">
                                             {dailyTx.map((t) => (
                                                 <div
                                                     key={t.id}
                                                     onClick={() => handleTransactionClick(t)}
-                                                    className="flex items-center gap-5 py-6 border-b border-slate-50 last:border-none group/item cursor-pointer active:bg-slate-50/50 transition-colors"
+                                                    className="flex items-center gap-4 px-6 py-4 hover:bg-secondary/20 group/item cursor-pointer transition-colors"
                                                 >
                                                     <div className="flex-shrink-0">
                                                         {getCategoryIcon(t.category?.name || "Geral", t.description)}
                                                     </div>
 
-                                                    <div className="flex-1 min-w-0 pr-2">
-                                                        <span className="text-xs text-slate-400 font-medium block mb-1">
-                                                            {t.type === 'income' ? 'Pix recebido' : 'Transferência enviada'}
+                                                    <div className="flex-1 min-w-0 pr-2 py-1">
+                                                        <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-wider block mb-0.5">
+                                                            {t.category?.name || 'Geral'}
                                                         </span>
                                                         <h5 className={cn(
-                                                            "text-[15px] font-bold leading-tight truncate mb-1",
-                                                            isFuture ? "text-rose-600" : "text-slate-900"
+                                                            "text-[15px] font-black leading-tight truncate",
+                                                            isFuture ? "text-destructive" : "text-slate-900"
                                                         )}>
                                                             {t.description}
                                                         </h5>
+                                                    </div>
+
+                                                    <div className="text-right flex flex-col items-end py-1">
                                                         <span className={cn(
-                                                            "text-[15px] font-medium tracking-tight",
-                                                            isFuture ? "text-rose-500" : (t.type === 'income' ? "text-emerald-600" : "text-slate-500")
+                                                            "text-[16px] font-black tracking-tighter",
+                                                            isFuture ? "text-destructive" : (t.type === 'income' ? "text-success" : "text-slate-900")
                                                         )}>
-                                                            {t.type === 'income' ? '' : '- '}
+                                                            {t.type === 'income' ? '+ ' : '- '}
                                                             {showValues ? new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(t.amount) : "R$ ••••"}
+                                                        </span>
+                                                        <span className="text-[10px] font-bold text-muted-foreground uppercase opacity-70">
+                                                            {t.wallet?.name}
                                                         </span>
                                                     </div>
 
-                                                    <div className="flex-shrink-0">
-                                                        <ChevronRight className="h-5 w-5 text-slate-300 group-hover/item:text-slate-900 transition-colors" />
+                                                    <div className="flex-shrink-0 ml-2">
+                                                        <ChevronRight className="h-4 w-4 text-muted-foreground group-hover/item:text-foreground transition-colors" />
                                                     </div>
                                                 </div>
                                             ))}
@@ -259,30 +264,29 @@ export function TransactionsTable({
                     </div>
                 )}
 
-                {/* Pagination moved inside scrollable area to be at the absolute end of the list */}
+                {/* Pagination */}
                 {!loading && totalPages > 1 && (
-                    <div className="flex items-center justify-between p-6 border-t border-slate-100 bg-white mt-4">
+                    <div className="flex items-center justify-between p-6 border-t border-border bg-card sticky bottom-0 z-10">
                         <Button
                             variant="ghost"
                             size="sm"
                             onClick={() => handlePageChange(currentPage - 1)}
                             disabled={currentPage === 1}
-                            className="text-slate-500 hover:bg-slate-50"
+                            className="text-muted-foreground hover:bg-secondary"
                         >
                             <ChevronLeft className="h-4 w-4 mr-1" /> Anterior
                         </Button>
                         <div className="flex flex-col items-center">
-                            <span className="text-xs font-semibold text-slate-400 uppercase tracking-widest">
+                            <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest">
                                 Página {currentPage} de {Math.max(1, totalPages)}
                             </span>
-                            <span className="text-[10px] text-slate-300 font-medium">{totalCount} registros totais</span>
                         </div>
                         <Button
                             variant="ghost"
                             size="sm"
                             onClick={() => handlePageChange(currentPage + 1)}
                             disabled={currentPage >= totalPages}
-                            className="text-slate-500 hover:bg-slate-50"
+                            className="text-muted-foreground hover:bg-secondary"
                         >
                             Próxima <ChevronRight className="h-4 w-4 ml-1" />
                         </Button>

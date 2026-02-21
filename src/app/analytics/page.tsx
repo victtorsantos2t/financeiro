@@ -86,57 +86,60 @@ export default function AnalyticsPage() {
             <div className="flex flex-col md:flex-row md:justify-between md:items-end gap-6">
                 <div>
                     <div className="flex items-center gap-2 mb-2">
-                        <div className="p-1 px-2 rounded-md bg-blue-600/10 text-blue-600 text-[10px] font-bold uppercase tracking-widest">
+                        <div className="p-1 px-2 rounded-lg bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-widest">
                             Inteligência de Dados
                         </div>
-                        <Sparkles className="h-3 w-3 text-blue-600" />
+                        <Sparkles className="h-3 w-3 text-primary" />
                     </div>
-                    <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Cérebro Financeiro</h1>
-                    <p className="text-slate-500 font-medium">Transformando dados em decisões estratégicas para seu futuro.</p>
+                    <h1 className="text-3xl font-bold text-foreground tracking-tight">Cérebro Financeiro</h1>
+                    <p className="text-muted-foreground font-medium">Transformando dados em decisões estratégicas para seu futuro.</p>
                 </div>
                 <div className="flex items-center gap-3">
-                    <Button variant="outline" className="h-11 px-6 gap-2 rounded-2xl border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-slate-900 font-bold transition-all active:scale-95 shadow-sm">
+                    <Button variant="outline" className="h-11 px-6 gap-2 rounded-xl border-border text-muted-foreground hover:bg-secondary hover:text-foreground font-bold transition-all active:scale-95 shadow-sm">
                         <BrainCircuit className="h-4 w-4" />
                         Ajustar Metas
                     </Button>
-                    <Button variant="outline" className="h-11 px-6 gap-2 rounded-2xl border-slate-200 text-slate-600 hover:bg-slate-50 hover:text-slate-900 font-bold transition-all active:scale-95 shadow-sm">
+                    <Button variant="outline" className="h-11 px-6 gap-2 rounded-xl border-border text-muted-foreground hover:bg-secondary hover:text-foreground font-bold transition-all active:scale-95 shadow-sm">
                         <Download className="h-4 w-4" />
                         Relatório IA
                     </Button>
                 </div>
             </div>
 
-            {/* FASE 1: Diagnóstico High-Level */}
-            <div className="grid grid-cols-1 xl:grid-cols-12 gap-8 items-stretch">
-                <div className="xl:col-span-4 h-full">
-                    <FinancialHealthScorecard />
-                </div>
-                <div className="xl:col-span-8 space-y-8">
+            {/* FASE 1: Diagnóstico High-Level - KPIs de Inteligência */}
+            <div className="grid grid-cols-1 xl:grid-cols-12 gap-8 items-start">
+                <div className="xl:col-span-8 space-y-8 order-2 xl:order-1">
                     <CashFlowForecast />
 
-                    {/* Compact KPI Row below Forecast */}
+                    {/* Compact KPI Row - Agora com mais destaque */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div className="bg-white p-6 rounded-[32px] border border-slate-100 shadow-sm">
-                            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-1">Média Mensal</p>
-                            <p className="text-2xl font-black text-slate-900 tracking-tighter">
+                        <div className="bg-card p-6 rounded-card border border-border shadow-sm hover:shadow-md transition-all">
+                            <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest mb-1">Média Mensal</p>
+                            <p className="text-2xl font-bold text-foreground tracking-tight">
                                 R$ {kpis.averageIncome.toLocaleString('pt-BR', { minimumFractionDigits: 0 })}
                             </p>
                         </div>
-                        <div className="bg-white p-6 rounded-[32px] border border-slate-100 shadow-sm">
-                            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-1">Maior Impacto</p>
-                            <p className="text-2xl font-black text-slate-900 tracking-tighter text-orange-600">
+                        <div className="bg-card p-6 rounded-card border border-border shadow-sm hover:shadow-md transition-all">
+                            <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest mb-1">Maior Impacto</p>
+                            <p className="text-2xl font-bold text-foreground tracking-tight text-destructive">
                                 R$ {kpis.highestExpense.amount.toLocaleString('pt-BR', { minimumFractionDigits: 0 })}
                             </p>
                         </div>
-                        <div className="bg-white p-6 rounded-[32px] border border-slate-100 shadow-sm">
-                            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-1">Economia Líquida</p>
+                        <div className="bg-card p-6 rounded-card border border-border shadow-sm hover:shadow-md transition-all">
+                            <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest mb-1">Economia Líquida</p>
                             <p className={cn(
-                                "text-2xl font-black tracking-tighter",
-                                kpis.currentSavings >= 0 ? "text-emerald-600" : "text-rose-600"
+                                "text-2xl font-bold tracking-tight",
+                                kpis.currentSavings >= 0 ? "text-success" : "text-destructive"
                             )}>
                                 R$ {kpis.currentSavings.toLocaleString('pt-BR', { minimumFractionDigits: 0 })}
                             </p>
                         </div>
+                    </div>
+                </div>
+
+                <div className="xl:col-span-4 h-full order-1 xl:order-2">
+                    <div className="sticky top-24">
+                        <FinancialHealthScorecard />
                     </div>
                 </div>
             </div>

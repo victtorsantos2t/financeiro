@@ -32,9 +32,12 @@ export default function WalletPage() {
     };
 
     return (
-        <div className="space-y-8">
-            <div className="flex justify-between items-center">
-                <h1 className="text-2xl font-semibold tracking-tight text-slate-900">Minhas Carteiras</h1>
+        <div className="space-y-6 pb-12">
+            <div className="flex justify-between items-center bg-card p-6 rounded-card border border-border shadow-sm">
+                <div className="flex flex-col gap-1">
+                    <h1 className="text-2xl font-bold tracking-tight text-foreground">Minhas Carteiras</h1>
+                    <p className="text-sm text-muted-foreground font-medium">Gerencie suas contas bancárias e métodos de pagamento.</p>
+                </div>
                 <WalletModal onSuccess={fetchWallets} />
             </div>
 
@@ -42,21 +45,24 @@ export default function WalletPage() {
                 <Wallet />
             </div>
 
-            <div>
-                <h2 className="text-xl font-semibold mb-6 tracking-tight text-slate-900">Meus Cartões</h2>
+            <div className="space-y-6">
+                <div className="flex items-center gap-3">
+                    <div className="h-2 w-8 bg-primary rounded-full" />
+                    <h2 className="text-xl font-bold tracking-tight text-foreground">Meus Cartões</h2>
+                </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-6">
                     {loading ? (
-                        [1, 2, 3].map(i => (
-                            <div key={i} className="w-full h-56 rounded-3xl bg-slate-100/50 animate-pulse-luxury"></div>
+                        [1, 2, 3, 4].map(i => (
+                            <div key={i} className="w-full h-52 rounded-card bg-secondary/30 animate-pulse-luxury border border-border/50"></div>
                         ))
                     ) : wallets.length === 0 ? (
-                        <div className="col-span-full text-center py-20 text-slate-400 font-semibold italic border-2 border-dashed border-slate-100 rounded-3xl">
+                        <div className="col-span-full text-center py-24 text-muted-foreground font-bold italic border-2 border-dashed border-border/50 rounded-card bg-card">
                             Nenhuma carteira configurada.
                         </div>
                     ) : (
                         wallets.map((wallet) => (
-                            <div key={wallet.id} className="w-full">
+                            <div key={wallet.id} className="w-full transition-transform hover:scale-[1.02]">
                                 <CreditCard wallet={wallet} onUpdate={fetchWallets} />
                             </div>
                         ))
