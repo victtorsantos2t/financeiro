@@ -11,19 +11,19 @@ export function BottomNav() {
     const pathname = usePathname();
 
     const navItems = [
-        { icon: LayoutDashboard, label: "Home", href: "/dashboard" },
-        { icon: ArrowRightLeft, label: "Extrato", href: "/transactions" },
-        // FAB goes here logic
-        { icon: Wallet, label: "Carteira", href: "/wallet" },
-        { icon: Menu, label: "Menu", href: "/settings" },
+        { icon: LayoutDashboard, label: "Conta", href: "/dashboard" },
+        { icon: Wallet, label: "Cartões", href: "/wallet" },
+        // FAB (Pix) goes here
+        { icon: ArrowRightLeft, label: "Pagamentos", href: "/transactions" },
+        { icon: Menu, label: "Mais", href: "/settings" },
     ];
 
     const isActive = (path: string) => pathname === path;
 
     return (
-        <div className="md:hidden fixed bottom-6 left-6 right-6 h-18 py-3 bg-white/70 backdrop-blur-3xl border border-white/40 rounded-[32px] shadow-[0_20px_50px_rgba(0,0,0,0.15)] z-50 flex items-center justify-between px-8 transition-all duration-500 hover:bg-white/80">
+        <div className="md:hidden fixed bottom-0 left-0 right-0 h-20 bg-white border-t border-slate-100 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] z-50 flex items-center justify-between px-4 pb-safe">
             {/* Left Items */}
-            <div className="flex gap-4">
+            <div className="flex flex-1 justify-around items-stretch h-full">
                 {navItems.slice(0, 2).map((item) => {
                     const active = isActive(item.href);
                     return (
@@ -31,36 +31,47 @@ export function BottomNav() {
                             key={item.href}
                             href={item.href}
                             className={cn(
-                                "flex flex-col items-center justify-center w-12 h-12 rounded-2xl transition-all duration-300 relative",
-                                active
-                                    ? "text-primary scale-110"
-                                    : "text-slate-400 hover:text-slate-600 active:scale-95"
+                                "relative flex flex-col items-center justify-center min-w-[64px] transition-all duration-300",
+                                active ? "text-primary" : "text-slate-400"
                             )}
                         >
-                            <item.icon
-                                className="h-6 w-6"
-                                strokeWidth={active ? 2.5 : 2}
-                            />
+                            {/* Blue Indicator Line at Top */}
                             {active && (
-                                <span className="absolute -bottom-1 w-1 h-1 rounded-full bg-primary animate-pulse" />
+                                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-10 h-1 bg-primary rounded-b-full shadow-[0_2px_4px_rgba(59,130,246,0.3)]" />
                             )}
-                            <span className="sr-only">{item.label}</span>
+                            <item.icon className="h-6 w-6 mb-1" strokeWidth={active ? 2.5 : 2} />
+                            <span className="text-[11px] font-bold tracking-tight">{item.label}</span>
                         </Link>
                     );
                 })}
             </div>
 
-            {/* Central FAB - Floating Higher with Luxury Glow */}
-            <div className="absolute left-1/2 -translate-x-1/2 -top-8">
+            {/* Central FAB (Style: Pix/Mint Glow) */}
+            <div className="relative -top-6 flex flex-col items-center">
                 <AddTransactionModal>
-                    <button className="h-16 w-16 rounded-[24px] bg-primary shadow-[0_10px_30px_rgba(59,130,246,0.5)] flex items-center justify-center text-white transform transition-all duration-300 hover:scale-105 active:scale-90 hover:shadow-[0_15px_40px_rgba(59,130,246,0.6)] group">
-                        <Plus className="h-8 w-8 transition-transform group-hover:rotate-90 duration-500" strokeWidth={3} />
+                    <button className="h-16 w-16 rounded-full bg-[#10b981] shadow-[0_4px_20px_rgba(16,185,129,0.5)] flex items-center justify-center text-white transform transition-all duration-300 hover:scale-105 active:scale-90 relative overflow-hidden group">
+                        {/* Inner Gradient for Premium Look */}
+                        <div className="absolute inset-0 bg-gradient-to-tr from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="3"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="h-8 w-8"
+                        >
+                            <path d="M12 5v14M5 12h14" />
+                        </svg>
+                        {/* Glow Ring */}
+                        <div className="absolute inset-0 rounded-full border-2 border-white/20 animate-pulse" />
                     </button>
                 </AddTransactionModal>
+                <span className="text-[11px] font-bold text-slate-900 mt-2">Pix</span>
             </div>
 
             {/* Right Items */}
-            <div className="flex gap-4">
+            <div className="flex flex-1 justify-around items-stretch h-full">
                 {navItems.slice(2, 4).map((item) => {
                     const active = isActive(item.href);
                     return (
@@ -68,20 +79,16 @@ export function BottomNav() {
                             key={item.href}
                             href={item.href}
                             className={cn(
-                                "flex flex-col items-center justify-center w-12 h-12 rounded-2xl transition-all duration-300 relative",
-                                active
-                                    ? "text-primary scale-110"
-                                    : "text-slate-400 hover:text-slate-600 active:scale-95"
+                                "relative flex flex-col items-center justify-center min-w-[64px] transition-all duration-300",
+                                active ? "text-primary" : "text-slate-400"
                             )}
                         >
-                            <item.icon
-                                className="h-6 w-6"
-                                strokeWidth={active ? 2.5 : 2}
-                            />
+                            {/* Blue Indicator Line at Top */}
                             {active && (
-                                <span className="absolute -bottom-1 w-1 h-1 rounded-full bg-primary animate-pulse" />
+                                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-10 h-1 bg-primary rounded-b-full shadow-[0_2px_4px_rgba(59,130,246,0.3)]" />
                             )}
-                            <span className="sr-only">{item.label}</span>
+                            <item.icon className="h-6 w-6 mb-1" strokeWidth={active ? 2.5 : 2} />
+                            <span className="text-[11px] font-bold tracking-tight">{item.label}</span>
                         </Link>
                     );
                 })}
