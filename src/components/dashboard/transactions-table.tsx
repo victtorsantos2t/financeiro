@@ -22,6 +22,7 @@ import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Transaction } from "./transaction-form";
 import { useDashboard } from "@/context/dashboard-context";
@@ -38,6 +39,7 @@ interface TransactionsTableProps {
     activeTab?: 'recentes' | 'futuros';
     showValues?: boolean;
     onTransactionClick?: (transaction: TransactionWithDetails) => void;
+    limit?: number;
 }
 
 export function TransactionsTable({
@@ -45,7 +47,8 @@ export function TransactionsTable({
     externalFilters,
     activeTab = 'recentes',
     showValues = true,
-    onTransactionClick
+    onTransactionClick,
+    limit
 }: TransactionsTableProps) {
     const [transactions, setTransactions] = useState<TransactionWithDetails[]>([]);
     const [loading, setLoading] = useState(true);
@@ -97,7 +100,9 @@ export function TransactionsTable({
 
             // Pagination local (since getHistory currently returns all)
             const startIndex = (currentPage - 1) * pageSize;
-            const paginated = filtered.slice(startIndex, startIndex + pageSize);
+            const paginated = limit
+                ? filtered.slice(0, limit)
+                : filtered.slice(startIndex, startIndex + pageSize);
 
             setTransactions(paginated as any);
             setTotalCount(filtered.length);
@@ -261,11 +266,26 @@ export function TransactionsTable({
                                 );
                             })}
                         </AnimatePresence>
+
+                        {limit && transactions.length > 0 && (
+                            <div className="p-4 flex justify-center border-t border-border/40 bg-card/50">
+                                <Link href="/transactions">
+                                    <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        className="text-primary font-bold hover:bg-primary/5 hover:text-primary transition-all group gap-2"
+                                    >
+                                        <span>Ver todas as transações</span>
+                                        <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                                    </Button>
+                                </Link>
+                            </div>
+                        )}
                     </div>
                 )}
 
                 {/* Pagination */}
-                {!loading && totalPages > 1 && (
+                {!loading && totalPages > 1 && !limit && (
                     <div className="flex items-center justify-between p-6 border-t border-border bg-card sticky bottom-0 z-10">
                         <Button
                             variant="ghost"

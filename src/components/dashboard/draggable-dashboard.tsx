@@ -78,7 +78,7 @@ export default function DraggableDashboard() {
                     <Wallet />
                     <PayableAccounts />
                     <MonthlyEarningsChart currentDate={currentDate} />
-                    <TransactionsTable />
+                    <TransactionsTable limit={10} />
                     <DashboardInsights currentDate={currentDate} />
                     <EarningsDonut currentDate={currentDate} />
                 </div>
@@ -115,7 +115,7 @@ export default function DraggableDashboard() {
 
                 {/* Coluna Direita (4/12 - 1 coluna no LG) */}
                 <div className="lg:col-span-4 h-full">
-                    <TransactionsTable />
+                    <TransactionsTable limit={10} />
                 </div>
             </div>
 
