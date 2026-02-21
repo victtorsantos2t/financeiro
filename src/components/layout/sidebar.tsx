@@ -96,15 +96,16 @@ export function Sidebar({
                 isCollapsed ? "pt-6 pb-3 justify-center" : "pt-6 pb-3 px-5 justify-between items-start"
             )}>
                 {!isCollapsed ? (
-                    <div className="flex flex-col animate-in fade-in slide-in-from-left-4 duration-300 px-1">
-                        <Image
-                            src="/images/logo-vicnex.png"
-                            alt="VICNEX Logo"
-                            width={140}
-                            height={40}
-                            className="dark:brightness-0 dark:invert"
-                            priority
-                        />
+                    <div className="flex flex-col items-center text-center animate-in fade-in slide-in-from-left-4 duration-300 px-1 w-full">
+                        <h1 className="text-4xl font-black text-slate-900 dark:text-white tracking-tighter leading-none mb-1">
+                            VICNE<span className="text-[#007AFF]">X</span>
+                        </h1>
+                        <p className="text-[10px] font-bold text-slate-600 dark:text-white uppercase tracking-[0.2em] leading-tight">Conectando Tecnologia</p>
+                        <div className="flex items-center gap-2 mt-0.5 w-full">
+                            <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent via-primary/30 to-primary/50" />
+                            <p className="text-[10px] font-bold text-primary dark:text-white uppercase tracking-[0.15em] whitespace-nowrap">Ao Crescimento</p>
+                            <div className="h-[1px] flex-1 bg-gradient-to-l from-transparent via-primary/30 to-primary/50" />
+                        </div>
                     </div>
                 ) : null}
             </div>
