@@ -1,6 +1,6 @@
 "use client";
 
-import { Search, Bell, MessageSquare } from "lucide-react";
+import { Search, Bell, MessageSquare, Menu, PanelLeftClose, PanelLeft } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { usePathname } from "next/navigation";
 import { useDashboard } from "@/context/dashboard-context";
@@ -11,7 +11,13 @@ import { cn } from "@/lib/utils";
 import { NotificationSheet } from "@/components/dashboard/notification-sheet";
 import { useState } from "react";
 
-export function Header() {
+export function Header({
+    isCollapsed,
+    onToggleCollapse
+}: {
+    isCollapsed?: boolean,
+    onToggleCollapse?: () => void
+}) {
     const pathname = usePathname();
     const isDashboard = pathname === "/dashboard";
     const { currentDate, setCurrentDate } = useDashboard();
@@ -24,13 +30,22 @@ export function Header() {
 
     return (
         <header className="h-16 flex items-center justify-between px-4 md:px-8 bg-background/80 sticky top-0 z-40 backdrop-blur-md border-b border-border/40">
-            <div className="flex items-center gap-4 md:gap-8 flex-1">
+            <div className="flex items-center gap-4 md:gap-6 flex-1">
+                {/* Collapse Toggle (Desktop only) */}
+                <button
+                    onClick={onToggleCollapse}
+                    className="hidden md:flex p-2.5 rounded-xl text-slate-400 hover:text-slate-900 hover:bg-slate-50 transition-all active:scale-95"
+                    title={isCollapsed ? "Expandir Sidebar" : "Recolher Sidebar"}
+                >
+                    {isCollapsed ? <PanelLeft className="h-5 w-5" /> : <PanelLeftClose className="h-5 w-5" />}
+                </button>
+
                 {isDashboard ? (
                     <div className="flex items-center animate-in fade-in slide-in-from-left-4 duration-500">
                         <div className="hidden md:block">
                             <ReportActions currentDate={currentDate} />
                         </div>
-                        <div className="hidden md:ml-5 lg:block border-l border-border pl-4">
+                        <div className="hidden md:ml-4 lg:block border-l border-border pl-4">
                             <h1 className="text-base font-bold text-foreground tracking-tight">Dashboard</h1>
                         </div>
                     </div>

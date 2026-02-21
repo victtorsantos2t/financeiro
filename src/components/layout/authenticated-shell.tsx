@@ -7,10 +7,12 @@ import { Header } from "@/components/layout/header";
 import { BottomNav } from "@/components/layout/bottom-nav";
 import { CommandPalette } from "@/components/layout/command-palette";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
+import { cn } from "@/lib/utils";
 
 export function AuthenticatedShell({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [isCollapsed, setIsCollapsed] = useState(false);
 
     // Routes where the system UI should NOT be visible
     const isAuthPage = pathname === "/login" || pathname === "/register";
@@ -23,7 +25,7 @@ export function AuthenticatedShell({ children }: { children: React.ReactNode }) 
         <div className="flex h-dvh w-full overflow-hidden bg-background">
             {/* Desktop Sidebar */}
             <div className="hidden md:block">
-                <Sidebar />
+                <Sidebar isCollapsed={isCollapsed} />
             </div>
 
             {/* Mobile Sidebar (Drawer) */}
@@ -35,8 +37,8 @@ export function AuthenticatedShell({ children }: { children: React.ReactNode }) 
 
             <BottomNav onMenuClick={() => setIsSidebarOpen(true)} />
 
-            <div className="flex-1 ml-0 md:ml-60 flex flex-col h-full min-h-0 relative overflow-hidden transition-all duration-300">
-                <Header />
+            <div className="flex-1 flex flex-col h-full min-h-0 relative overflow-hidden transition-all duration-300">
+                <Header isCollapsed={isCollapsed} onToggleCollapse={() => setIsCollapsed(!isCollapsed)} />
                 <CommandPalette />
                 <main className="flex-1 overflow-y-auto overflow-x-hidden pt-2 px-4 md:px-6 pb-24 md:pb-6 scrollbar-hide pt-safe pb-safe">
                     {children}
