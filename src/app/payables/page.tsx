@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import Link from "next/link";
 import { AddTransactionModal } from "@/components/dashboard/add-transaction-modal";
+import { IOSPageHeader } from "@/components/layout/ios-page-header";
 
 type Transaction = {
     id: string;
@@ -81,8 +82,13 @@ export default function PayablesPage() {
 
     return (
         <div className="space-y-6 pb-12">
-            {/* Header Card */}
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 bg-card p-6 rounded-card shadow-sm border border-border">
+            <IOSPageHeader
+                title="Contas a Pagar"
+                subtitle="Compromissos financeiros"
+                action={<AddTransactionModal />}
+            />
+            {/* Header Card — Desktop Only */}
+            <div className="hidden md:flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 bg-card p-6 rounded-card shadow-sm border border-border">
                 <div className="flex items-center gap-4">
                     <Link href="/dashboard">
                         <Button variant="outline" size="icon" className="rounded-xl h-10 w-10 hover:bg-secondary transition-all">

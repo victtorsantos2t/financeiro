@@ -70,12 +70,12 @@ export default function DraggableDashboard() {
             >
                 {/* ── iOS Large Title Navigation Bar ───────────────────────────── */}
                 <div
-                    className="sticky top-0 z-40 px-4 pt-[56px] pb-4"
+                    className="sticky top-0 z-40 px-4 pt-[56px] pb-4 transition-colors duration-300"
                     style={{
-                        background: 'rgba(242,242,247,0.92)',
+                        background: 'var(--ios-header-blur, rgba(242,242,247,0.92))',
                         backdropFilter: 'blur(20px) saturate(180%)',
                         WebkitBackdropFilter: 'blur(20px) saturate(180%)',
-                        borderBottom: '0.5px solid rgba(0,0,0,0.12)',
+                        borderBottom: '0.5px solid var(--ios-separator, rgba(0,0,0,0.12))',
                     }}
                 >
                     {/* Large Title */}
@@ -84,7 +84,7 @@ export default function DraggableDashboard() {
                         fontWeight: 700,
                         lineHeight: 1.1,
                         letterSpacing: '-0.5px',
-                        color: '#000000',
+                        color: 'var(--ios-label, #000000)',
                         fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui",
                     }}>
                         Visão Geral
@@ -94,7 +94,7 @@ export default function DraggableDashboard() {
                     <p style={{
                         fontSize: '13px',
                         fontWeight: 400,
-                        color: '#8E8E93',
+                        color: 'var(--ios-label3, #8E8E93)',
                         marginTop: '4px',
                         letterSpacing: '-0.1px',
                     }}>
@@ -114,7 +114,7 @@ export default function DraggableDashboard() {
                         <h2 style={{
                             fontSize: '13px',
                             fontWeight: 500,
-                            color: '#8E8E93',
+                            color: 'var(--ios-label3, #8E8E93)',
                             textTransform: 'uppercase',
                             letterSpacing: '0.06em',
                             marginBottom: '10px',
@@ -130,7 +130,7 @@ export default function DraggableDashboard() {
                         <h2 style={{
                             fontSize: '13px',
                             fontWeight: 500,
-                            color: '#8E8E93',
+                            color: 'var(--ios-label3, #8E8E93)',
                             textTransform: 'uppercase',
                             letterSpacing: '0.06em',
                             marginBottom: '10px',
@@ -146,7 +146,7 @@ export default function DraggableDashboard() {
                         <h2 style={{
                             fontSize: '13px',
                             fontWeight: 500,
-                            color: '#8E8E93',
+                            color: 'var(--ios-label3, #8E8E93)',
                             textTransform: 'uppercase',
                             letterSpacing: '0.06em',
                             marginBottom: '10px',
@@ -162,7 +162,7 @@ export default function DraggableDashboard() {
                         <h2 style={{
                             fontSize: '13px',
                             fontWeight: 500,
-                            color: '#8E8E93',
+                            color: 'var(--ios-label3, #8E8E93)',
                             textTransform: 'uppercase',
                             letterSpacing: '0.06em',
                             marginBottom: '10px',
@@ -178,7 +178,7 @@ export default function DraggableDashboard() {
                         <h2 style={{
                             fontSize: '13px',
                             fontWeight: 500,
-                            color: '#8E8E93',
+                            color: 'var(--ios-label3, #8E8E93)',
                             textTransform: 'uppercase',
                             letterSpacing: '0.06em',
                             marginBottom: '10px',
@@ -194,7 +194,7 @@ export default function DraggableDashboard() {
                         <h2 style={{
                             fontSize: '13px',
                             fontWeight: 500,
-                            color: '#8E8E93',
+                            color: 'var(--ios-label3, #8E8E93)',
                             textTransform: 'uppercase',
                             letterSpacing: '0.06em',
                             marginBottom: '10px',

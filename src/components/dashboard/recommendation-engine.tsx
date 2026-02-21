@@ -86,12 +86,12 @@ export function RecommendationEngine() {
     return (
         <div className="space-y-6">
             <div className="flex items-center gap-3 mb-2">
-                <div className="p-2 bg-amber-50 text-amber-600 rounded-xl">
+                <div className="p-2 bg-amber-500/10 text-amber-500 rounded-xl">
                     <Lightbulb className="h-5 w-5" />
                 </div>
                 <div>
-                    <h3 className="text-xl font-bold text-slate-900 tracking-tight">Estratégias Recomendadas</h3>
-                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Ações baseadas em seu padrão de consumo</p>
+                    <h3 className="text-xl font-bold text-foreground tracking-tight">Estratégias Recomendadas</h3>
+                    <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">Ações baseadas em seu padrão de consumo</p>
                 </div>
             </div>
 
@@ -105,27 +105,27 @@ export function RecommendationEngine() {
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: index * 0.1 }}
-                                className="group bg-white p-6 rounded-[32px] border border-slate-100 shadow-sm hover:shadow-xl hover:scale-[1.02] transition-all duration-500 flex flex-col h-full"
+                                className="group bg-card dark:bg-white/5 p-6 rounded-[32px] border border-border shadow-sm hover:shadow-xl hover:scale-[1.02] transition-all duration-500 flex flex-col h-full"
                             >
                                 <div className="flex items-start justify-between mb-4">
                                     <div className={cn(
                                         "p-4 rounded-2xl",
-                                        rec.impact === 'high' ? 'bg-orange-50 text-orange-600' : 'bg-blue-50 text-blue-600'
+                                        rec.impact === 'high' ? 'bg-orange-500/10 text-orange-500' : 'bg-primary/10 text-primary'
                                     )}>
                                         <Icon className="h-6 w-6" />
                                     </div>
                                     {rec.impact === 'high' && (
-                                        <div className="flex items-center gap-1.5 px-3 py-1 bg-rose-50 text-rose-600 rounded-full">
+                                        <div className="flex items-center gap-1.5 px-3 py-1 bg-destructive/10 text-destructive rounded-full">
                                             <Flame className="h-3 w-3" />
                                             <span className="text-[10px] font-black uppercase tracking-wider">Alto Impacto</span>
                                         </div>
                                     )}
                                 </div>
 
-                                <h4 className="text-lg font-bold text-slate-900 tracking-tight mb-2 group-hover:text-blue-600 transition-colors">
+                                <h4 className="text-lg font-bold text-foreground tracking-tight mb-2 group-hover:text-primary transition-colors">
                                     {rec.title}
                                 </h4>
-                                <p className="text-sm text-slate-500 font-medium leading-relaxed mb-6 flex-1">
+                                <p className="text-sm text-muted-foreground font-medium leading-relaxed mb-6 flex-1">
                                     {rec.description}
                                 </p>
 

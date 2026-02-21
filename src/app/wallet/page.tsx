@@ -7,6 +7,7 @@ import { WalletModal } from "@/components/dashboard/add-wallet-modal";
 import { Wallet as WalletType } from "@/components/dashboard/wallet-form";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { IOSPageHeader } from "@/components/layout/ios-page-header";
 
 export default function WalletPage() {
     const [wallets, setWallets] = useState<WalletType[]>([]);
@@ -33,7 +34,12 @@ export default function WalletPage() {
 
     return (
         <div className="space-y-6 pb-12">
-            <div className="flex justify-between items-center bg-card p-6 rounded-card border border-border shadow-sm">
+            <IOSPageHeader
+                title="Carteiras"
+                subtitle="Contas e métodos de pagamento"
+                action={<WalletModal onSuccess={fetchWallets} />}
+            />
+            <div className="hidden md:flex justify-between items-center bg-card p-6 rounded-card border border-border shadow-sm">
                 <div className="flex flex-col gap-1">
                     <h1 className="text-2xl font-bold tracking-tight text-foreground">Minhas Carteiras</h1>
                     <p className="text-sm text-muted-foreground font-medium">Gerencie suas contas bancárias e métodos de pagamento.</p>

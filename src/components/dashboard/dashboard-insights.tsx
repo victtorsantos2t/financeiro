@@ -89,10 +89,10 @@ export function DashboardInsights({ className, currentDate = new Date() }: Dashb
 
     if (!transactions || transactions.length < 5) {
         return (
-            <div className={cn("p-8 rounded-[32px] bg-slate-50 border border-slate-100 text-center", className)}>
-                <Activity className="w-12 h-12 text-slate-200 mx-auto mb-4" />
-                <h3 className="text-slate-500 font-medium">Dados insuficientes para análise inteligente</h3>
-                <p className="text-slate-400 text-sm mt-1">Continue registrando suas transações para desbloquear insights.</p>
+            <div className={cn("p-8 rounded-[32px] bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10 text-center", className)}>
+                <Activity className="w-12 h-12 text-slate-200 dark:text-slate-700 mx-auto mb-4" />
+                <h3 className="text-slate-500 dark:text-slate-400 font-medium">Dados insuficientes para análise inteligente</h3>
+                <p className="text-slate-400 dark:text-slate-500 text-sm mt-1">Continue registrando suas transações para desbloquear insights.</p>
             </div>
         );
     }
@@ -103,15 +103,15 @@ export function DashboardInsights({ className, currentDate = new Date() }: Dashb
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Insights / Anomalies Column */}
                 <div className="lg:col-span-1 space-y-6">
-                    <div className="p-6 rounded-[32px] bg-slate-50 border border-slate-100">
-                        <h4 className="flex items-center gap-2 text-sm font-bold text-slate-900 mb-4 px-2">
+                    <div className="p-6 rounded-[32px] bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10">
+                        <h4 className="flex items-center gap-2 text-sm font-bold text-slate-900 dark:text-slate-100 mb-4 px-2">
                             <Sparkles className="w-4 h-4 text-amber-500" /> Alertas de Inteligência
                         </h4>
 
                         <div className="space-y-4">
                             {anomalies.length > 0 ? (
                                 anomalies.map((anomaly, idx) => (
-                                    <div key={idx} className="p-4 rounded-2xl bg-white border border-slate-200/50 shadow-sm animate-in zoom-in-95 fill-mode-both duration-500" style={{ animationDelay: `${idx * 150}ms` }}>
+                                    <div key={idx} className="p-4 rounded-2xl bg-white dark:bg-[#2C2C2E] border border-slate-200/50 dark:border-white/5 shadow-sm animate-in zoom-in-95 fill-mode-both duration-500" style={{ animationDelay: `${idx * 150}ms` }}>
                                         <div className="flex items-start justify-between">
                                             <div>
                                                 <span className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">Gasto Atípico</span>
@@ -126,16 +126,16 @@ export function DashboardInsights({ className, currentDate = new Date() }: Dashb
                                         </div>
                                         <div className="mt-4 flex items-center justify-between">
                                             <div className="flex items-center gap-2">
-                                                <div className="w-2 h-2 rounded-full bg-slate-300" />
-                                                <span className="text-xs text-slate-500 font-medium whitespace-nowrap overflow-hidden text-ellipsis max-w-[120px]">
+                                                <div className="w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-700" />
+                                                <span className="text-xs text-slate-500 dark:text-slate-400 font-medium whitespace-nowrap overflow-hidden text-ellipsis max-w-[120px]">
                                                     {categoryMap[anomaly.category] || 'Outros'}
                                                 </span>
                                             </div>
                                             <div className="text-right">
-                                                <div className="flex items-center justify-end font-black text-rose-500 text-xs gap-1">
+                                                <div className="flex items-center justify-end font-black text-rose-500 dark:text-rose-400 text-xs gap-1">
                                                     +{anomaly.percentual_acima_media}% <ArrowUpRight className="w-3 h-3" />
                                                 </div>
-                                                <div className="text-[10px] text-slate-400 font-semibold mt-0.5">
+                                                <div className="text-[10px] text-slate-400 dark:text-slate-500 font-semibold mt-0.5">
                                                     R$ {anomaly.valor_atual.toLocaleString('pt-BR')} vs Méd. R$ {anomaly.valor_medio.toLocaleString('pt-BR')}
                                                 </div>
                                             </div>
@@ -189,18 +189,18 @@ export function DashboardInsights({ className, currentDate = new Date() }: Dashb
                         <div className={cn(
                             "p-6 rounded-3xl border flex flex-col justify-between h-32 transition-colors",
                             analysis.previousMonthComparison >= 0
-                                ? "bg-emerald-50/50 border-emerald-100"
-                                : "bg-rose-50/50 border-rose-100"
+                                ? "bg-emerald-50/50 dark:bg-emerald-500/10 border-emerald-100 dark:border-emerald-500/20"
+                                : "bg-rose-50/50 dark:bg-rose-500/10 border-rose-100 dark:border-rose-500/20"
                         )}>
                             <span className={cn(
                                 "text-[10px] font-bold uppercase tracking-widest",
-                                analysis.previousMonthComparison >= 0 ? "text-emerald-600" : "text-rose-600"
+                                analysis.previousMonthComparison >= 0 ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400"
                             )}>
                                 {analysis.previousMonthComparison >= 0 ? 'Crescimento' : 'Variação'}
                             </span>
                             <div className={cn(
                                 "text-2xl font-black flex items-center gap-1",
-                                analysis.previousMonthComparison >= 0 ? "text-emerald-700" : "text-rose-700"
+                                analysis.previousMonthComparison >= 0 ? "text-emerald-700 dark:text-emerald-300" : "text-rose-700 dark:text-rose-300"
                             )}>
                                 {Math.abs(analysis.growthPercentage).toFixed(1)}%
                                 {analysis.previousMonthComparison >= 0 ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
@@ -209,18 +209,18 @@ export function DashboardInsights({ className, currentDate = new Date() }: Dashb
                         <div className={cn(
                             "p-6 rounded-3xl border flex flex-col justify-between h-32 transition-colors",
                             analysis.monthlyBalance >= 0
-                                ? "bg-indigo-50/50 border-indigo-100"
-                                : "bg-rose-50/50 border-rose-100"
+                                ? "bg-indigo-50/50 dark:bg-indigo-500/10 border-indigo-100 dark:border-indigo-500/20"
+                                : "bg-rose-50/50 dark:bg-rose-500/10 border-rose-100 dark:border-rose-500/20"
                         )}>
                             <span className={cn(
                                 "text-[10px] font-bold uppercase tracking-widest",
-                                analysis.monthlyBalance >= 0 ? "text-indigo-600" : "text-rose-600"
+                                analysis.monthlyBalance >= 0 ? "text-indigo-600 dark:text-indigo-400" : "text-rose-600 dark:text-rose-400"
                             )}>
                                 Balanço do Mês
                             </span>
                             <div className={cn(
                                 "text-xl font-black",
-                                analysis.monthlyBalance >= 0 ? "text-indigo-700" : "text-rose-700"
+                                analysis.monthlyBalance >= 0 ? "text-indigo-700 dark:text-indigo-300" : "text-rose-700 dark:text-rose-300"
                             )}>
                                 R$ {analysis.monthlyBalance.toLocaleString('pt-BR')}
                             </div>
@@ -229,13 +229,13 @@ export function DashboardInsights({ className, currentDate = new Date() }: Dashb
                 </div>
 
                 {/* Monthly Detailed Report Column */}
-                <div className="lg:col-span-2 p-8 rounded-[32px] bg-white border border-slate-100 shadow-xl shadow-slate-100/30 flex flex-col">
+                <div className="lg:col-span-2 p-8 rounded-[32px] bg-white dark:bg-[#1C1C1E]/80 border border-slate-100 dark:border-white/5 shadow-xl shadow-slate-100/30 dark:shadow-none flex flex-col">
                     <div className="flex items-center justify-between mb-8">
-                        <h4 className="text-lg font-black text-slate-900 tracking-tight flex items-center gap-2">
-                            <div className="w-1.5 h-6 bg-slate-900 rounded-full" />
+                        <h4 className="text-lg font-black text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+                            <div className="w-1.5 h-6 bg-slate-900 dark:bg-white rounded-full" />
                             Relatório Especial de Análise
                         </h4>
-                        <div className="text-xs font-bold text-slate-400 tabular-nums">GERADO EM {new Date().toLocaleDateString('pt-BR')}</div>
+                        <div className="text-xs font-bold text-slate-400 dark:text-slate-500 tabular-nums">GERADO EM {new Date().toLocaleDateString('pt-BR')}</div>
                     </div>
 
                     <div className="flex-1 space-y-8">
@@ -245,10 +245,10 @@ export function DashboardInsights({ className, currentDate = new Date() }: Dashb
                             <ul className="space-y-3">
                                 {report.pontosPositivos.map((point, i) => (
                                     <li key={i} className="flex items-start gap-3 group">
-                                        <div className="mt-1 w-4 h-4 rounded-full bg-emerald-100 flex items-center justify-center flex-shrink-0 group-hover:bg-emerald-500 transition-colors">
-                                            <div className="w-1.5 h-1.5 rounded-full bg-emerald-600 group-hover:bg-white" />
+                                        <div className="mt-1 w-4 h-4 rounded-full bg-emerald-100 dark:bg-emerald-500/20 flex items-center justify-center flex-shrink-0 group-hover:bg-emerald-500 transition-colors">
+                                            <div className="w-1.5 h-1.5 rounded-full bg-emerald-600 dark:bg-emerald-400 group-hover:bg-white" />
                                         </div>
-                                        <span className="text-sm text-slate-600 font-medium leading-relaxed">{point}</span>
+                                        <span className="text-sm text-slate-600 dark:text-slate-300 font-medium leading-relaxed">{point}</span>
                                     </li>
                                 ))}
                             </ul>
@@ -261,10 +261,10 @@ export function DashboardInsights({ className, currentDate = new Date() }: Dashb
                                 <ul className="space-y-3">
                                     {report.pontosAtencao.map((point, i) => (
                                         <li key={i} className="flex items-start gap-3 group">
-                                            <div className="mt-1 w-4 h-4 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0">
-                                                <div className="w-1.5 h-1.5 rounded-full bg-amber-600" />
+                                            <div className="mt-1 w-4 h-4 rounded-full bg-amber-100 dark:bg-amber-500/20 flex items-center justify-center flex-shrink-0">
+                                                <div className="w-1.5 h-1.5 rounded-full bg-amber-600 dark:bg-amber-400" />
                                             </div>
-                                            <span className="text-sm text-slate-600 font-medium leading-relaxed">{point}</span>
+                                            <span className="text-sm text-slate-600 dark:text-slate-300 font-medium leading-relaxed">{point}</span>
                                         </li>
                                     ))}
                                 </ul>
@@ -278,7 +278,7 @@ export function DashboardInsights({ className, currentDate = new Date() }: Dashb
                                     <Target className="w-3 h-3" /> Recomendações Profissionais
                                 </h5>
                                 {report.recomendacoes.map((rec, i) => (
-                                    <div key={i} className="text-xs text-slate-500 font-medium leading-relaxed bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                    <div key={i} className="text-xs text-slate-500 dark:text-slate-400 font-medium leading-relaxed bg-slate-50 dark:bg-white/5 p-3 rounded-xl border border-slate-100 dark:border-white/5">
                                         {rec}
                                     </div>
                                 ))}
@@ -289,7 +289,7 @@ export function DashboardInsights({ className, currentDate = new Date() }: Dashb
                                     <Activity className="w-3 h-3" /> Tendências Detectadas
                                 </h5>
                                 {report.tendencias.map((trend, i) => (
-                                    <p key={i} className="text-xs text-slate-500 font-bold leading-relaxed italic border-l-2 border-slate-200 pl-3">
+                                    <p key={i} className="text-xs text-slate-500 dark:text-slate-400 font-bold leading-relaxed italic border-l-2 border-slate-200 dark:border-slate-700 pl-3">
                                         {trend}
                                     </p>
                                 ))}

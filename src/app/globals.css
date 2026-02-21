@@ -15,10 +15,11 @@
 /* ─── iOS Native Font Override (mobile only) ────────────────────────────────
    Usa SF Pro Display nativa no iOS, com fallback system-ui para Android/web.
    ────────────────────────────────────────────────────────────────────────── */
+/* ─── iOS System Colors — Light ─────────────────────────────────────────────── */
 @media (max-width: 767px) {
   :root {
     --font-ios: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif;
-    /* iOS System Colors */
+    /* iOS System Colors — Light */
     --ios-blue: #007AFF;
     --ios-bg: #F2F2F7;
     --ios-bg2: #FFFFFF;
@@ -28,8 +29,12 @@
     --ios-label2: #3C3C43;
     --ios-label3: #8E8E93;
     --ios-separator: rgba(60, 60, 67, 0.12);
+    --ios-separator-opaque: #C6C6C8;
     --ios-fill: rgba(120, 120, 128, 0.12);
-    --ios-tab-blur: rgba(255, 255, 255, 0.85);
+    --ios-tab-blur: rgba(249, 249, 249, 0.94);
+    --ios-header-blur: rgba(242, 242, 247, 0.94);
+    --ios-segment-bg: rgba(118, 118, 128, 0.12);
+    --ios-segment-active: #FFFFFF;
   }
 }
 
@@ -92,15 +97,62 @@
 }
 
 .dark {
-  /* Mantendo consistência mas com inversão suave se necessário, 
-     porém o foco é o padrão SaaS Clean solicitado */
-  --background: #111827;
-  --foreground: #F9FAFB;
-  --card: #1F2937;
-  --card-foreground: #F9FAFB;
-  --border: #374151;
-  --input: #374151;
-  --muted-foreground: #9CA3AF;
+  /* Backgrounds */
+  --background: #0F0F10;
+  --foreground: #F2F2F7;
+
+  /* Surfaces com transparência/glassmorphism */
+  --card: rgba(28, 28, 30, 0.80);
+  --card-foreground: #F2F2F7;
+  --popover: #1C1C1E;
+  --popover-foreground: #F2F2F7;
+
+  /* Primary — iOS Dynamic Blue Dark */
+  --primary: #0A84FF;
+  --primary-hover: #409CFF;
+  --primary-active: #60ADFF;
+  --primary-foreground: #FFFFFF;
+
+  /* Secondary Surfaces */
+  --secondary: rgba(44, 44, 46, 0.95);
+  --secondary-foreground: #F2F2F7;
+
+  /* Muted */
+  --muted: rgba(44, 44, 46, 0.7);
+  --muted-foreground: #A1A1AA;
+
+  /* Borders */
+  --border: rgba(84, 84, 88, 0.4);
+  --input: rgba(58, 58, 60, 0.9);
+  --ring: #0A84FF;
+
+  /* Status */
+  --success: #32D74B;
+  --success-bg: rgba(50, 215, 75, 0.15);
+  --success-foreground: #FFFFFF;
+  --destructive: #FF453A;
+  --destructive-bg: rgba(255, 69, 58, 0.15);
+  --destructive-foreground: #FFFFFF;
+
+  --sidebar-border: rgba(84, 84, 88, 0.35);
+  --sidebar-ring: #0A84FF;
+
+  /* iOS Dynamic Colors Dark */
+  --ios-bg: #000000;
+  --ios-bg2: #1C1C1E;
+  --ios-label: #FFFFFF;
+  --ios-label2: #EBEBF5;
+  --ios-label3: rgba(235, 235, 245, 0.6);
+  --ios-separator: rgba(84, 84, 88, 0.65);
+  --ios-header-blur: rgba(28, 28, 30, 0.85);
+  --ios-tab-blur: rgba(18, 18, 20, 0.95);
+  --ios-segment-bg: rgba(118, 118, 128, 0.24);
+  --ios-segment-active: #636366;
+}
+
+/* ─── iOS Dark System Colors ─────────────────────────────────────────────── */
+.dark body {
+  background-color: #000000;
 }
 
 @theme inline {

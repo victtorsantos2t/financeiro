@@ -13,6 +13,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { startOfMonth, endOfMonth, subMonths, format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { cn } from "@/lib/utils";
+import { IOSPageHeader } from "@/components/layout/ios-page-header";
 
 export default function AnalyticsPage() {
     const [kpis, setKpis] = useState({
@@ -82,8 +83,11 @@ export default function AnalyticsPage() {
 
     return (
         <div className="space-y-12 pb-12">
-            {/* Header Section */}
-            <div className="flex flex-col md:flex-row md:justify-between md:items-end gap-6">
+            {/* iOS Large Title — Mobile Only */}
+            <IOSPageHeader title="Análise" subtitle="Inteligência financeira em tempo real" />
+
+            {/* Header Section — Desktop */}
+            <div className="hidden md:flex flex-col md:flex-row md:justify-between md:items-end gap-6">
                 <div>
                     <div className="flex items-center gap-2 mb-2">
                         <div className="p-1 px-2 rounded-lg bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-widest">
@@ -156,7 +160,7 @@ export default function AnalyticsPage() {
                     <EarningsDonut />
                 </div>
             </div>
-        </div>
+        </div >
     );
 }
 

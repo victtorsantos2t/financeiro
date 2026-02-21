@@ -104,25 +104,25 @@ export function Wallet() {
             </div>
 
             <div className="grid grid-cols-2 gap-4 relative z-10 mt-4">
-                <div className="p-3.5 rounded-[20px] bg-white border border-border shadow-sm">
+                <div className="p-3.5 rounded-[20px] bg-white dark:bg-[#2C2C2E] border border-border dark:border-white/5 shadow-sm transition-colors duration-300">
                     <div className="flex items-center gap-2 mb-2">
                         <div className="w-1.2 h-1.2 rounded-full bg-success shadow-[0_0_8px_rgba(34,197,94,0.4)]" />
-                        <p className="text-[9px] font-black text-muted-foreground uppercase tracking-wider">Receita</p>
+                        <p className="text-[9px] font-black text-muted-foreground dark:text-slate-400 uppercase tracking-wider">Receita</p>
                     </div>
                     <div className="flex items-end gap-2">
-                        <span className="text-base font-black text-slate-900 tracking-tighter">
+                        <span className="text-base font-black text-slate-900 dark:text-white tracking-tighter">
                             {loading ? <Skeleton className="h-5 w-20" /> : `R$ ${income.toLocaleString('pt-BR', { minimumFractionDigits: 0 })}`}
                         </span>
                     </div>
                 </div>
 
-                <div className="p-3.5 rounded-[20px] bg-white border border-border shadow-sm">
+                <div className="p-3.5 rounded-[20px] bg-white dark:bg-[#2C2C2E] border border-border dark:border-white/5 shadow-sm transition-colors duration-300">
                     <div className="flex items-center gap-2 mb-2">
                         <div className="w-1.2 h-1.2 rounded-full bg-destructive shadow-[0_0_8px_rgba(239,68,68,0.4)]" />
-                        <p className="text-[9px] font-black text-muted-foreground uppercase tracking-wider">Despesa</p>
+                        <p className="text-[9px] font-black text-muted-foreground dark:text-slate-400 uppercase tracking-wider">Despesa</p>
                     </div>
                     <div className="flex items-end gap-2">
-                        <span className="text-base font-black text-slate-900 tracking-tighter">
+                        <span className="text-base font-black text-slate-900 dark:text-white tracking-tighter">
                             {loading ? <Skeleton className="h-5 w-20" /> : `R$ ${expense.toLocaleString('pt-BR', { minimumFractionDigits: 0 })}`}
                         </span>
                     </div>

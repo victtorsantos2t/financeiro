@@ -23,15 +23,15 @@ export function AuthenticatedShell({ children }: { children: React.ReactNode }) 
         <>
             {/* ═══ MOBILE — iOS Native Layout ═══════════════════════════════════════ */}
             <div
-                className="md:hidden flex flex-col h-dvh w-full overflow-hidden"
+                className="md:hidden flex flex-col h-dvh w-full overflow-hidden transition-colors duration-300"
                 style={{
-                    background: '#F2F2F7',
+                    background: 'var(--ios-bg, #F2F2F7)',
                     fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif"
                 }}
             >
                 {/* Drawer Sidebar (mobile) */}
                 <Sheet open={isSidebarOpen} onOpenChange={setIsSidebarOpen}>
-                    <SheetContent side="left" className="p-0 border-none w-[85vw] max-w-[340px] bg-white" showCloseButton={false}>
+                    <SheetContent side="left" className="p-0 border-none w-[85vw] max-w-[340px] bg-white dark:bg-[#1C1C1E]" showCloseButton={false}>
                         <Sidebar className="w-full h-full border-none" onNavItemClick={() => setIsSidebarOpen(false)} />
                     </SheetContent>
                 </Sheet>
@@ -44,23 +44,30 @@ export function AuthenticatedShell({ children }: { children: React.ReactNode }) 
                     className="flex-1 overflow-y-auto overflow-x-hidden pb-[83px] scrollbar-hide"
                     style={{ WebkitOverflowScrolling: 'touch' as const }}
                 >
-                    {children}
+                    {/* Páginas com layout próprio não recebem padding extra */}
+                    {['/dashboard', '/settings', '/transactions'].includes(pathname) ? (
+                        children
+                    ) : (
+                        <div className="px-4 pt-5 pb-4">
+                            {children}
+                        </div>
+                    )}
                 </main>
             </div>
 
             {/* ═══ DESKTOP — SaaS Card Layout ═══════════════════════════════════════ */}
-            <div className="hidden md:flex h-dvh w-full overflow-hidden bg-[#ECEEF2] p-4 gap-3">
+            <div className="hidden md:flex h-dvh w-full overflow-hidden bg-[#ECEEF2] dark:bg-[#0F0F10] p-4 gap-3 transition-colors duration-300">
                 {/* Sidebar (desktop) */}
                 <div className="flex shrink-0 relative">
                     <Sidebar
                         isCollapsed={isCollapsed}
                         onToggleCollapse={() => setIsCollapsed(!isCollapsed)}
-                        className="rounded-[24px] shadow-sm border border-white/80 h-full overflow-hidden"
+                        className="rounded-[24px] shadow-sm border border-white/80 dark:border-white/5 h-full overflow-hidden"
                     />
                     {/* Floating toggle button */}
                     <button
                         onClick={() => setIsCollapsed(!isCollapsed)}
-                        className="absolute -right-4 top-10 z-[70] flex items-center justify-center w-8 h-8 rounded-full bg-white border border-slate-200 text-slate-400 shadow-md hover:shadow-lg hover:text-blue-600 hover:border-blue-200 transition-all active:scale-90"
+                        className="absolute -right-4 top-10 z-[70] flex items-center justify-center w-8 h-8 rounded-full bg-white dark:bg-[#2C2C2E] border border-slate-200 dark:border-[rgba(84,84,88,0.5)] text-slate-400 dark:text-slate-500 shadow-md hover:shadow-lg hover:text-blue-600 dark:hover:text-blue-400 hover:border-blue-200 transition-all active:scale-90"
                         title={isCollapsed ? "Expandir" : "Recolher"}
                     >
                         {isCollapsed
@@ -71,7 +78,7 @@ export function AuthenticatedShell({ children }: { children: React.ReactNode }) 
                 </div>
 
                 {/* Main Content Card */}
-                <div className="flex-1 flex flex-col h-full min-h-0 relative overflow-hidden bg-white rounded-[24px] shadow-sm border border-white/80">
+                <div className="flex-1 flex flex-col h-full min-h-0 relative overflow-hidden bg-white dark:bg-[#1C1C1E]/90 rounded-[24px] shadow-sm border border-white/80 dark:border-[rgba(84,84,88,0.25)] backdrop-blur-xl transition-colors duration-300">
                     <Header />
                     <CommandPalette />
                     <main className="flex-1 overflow-y-auto overflow-x-hidden pt-6 px-6 pb-6 scrollbar-hide">

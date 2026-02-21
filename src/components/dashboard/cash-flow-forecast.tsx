@@ -80,15 +80,15 @@ export function CashFlowForecast() {
     if (loading) return <Skeleton className="h-[350px] w-full rounded-[40px]" />;
 
     return (
-        <div className="w-full bg-white rounded-[40px] p-8 shadow-[0_8px_30px_rgb(0,0,0,0.02)] border border-slate-100/50 transition-all duration-700 relative overflow-hidden">
+        <div className="w-full bg-card dark:bg-white/5 rounded-[40px] p-8 shadow-[0_8px_30px_rgb(0,0,0,0.02)] border border-border transition-all duration-700 relative overflow-hidden">
             <div className="mb-10 flex justify-between items-start relative z-10">
                 <div>
-                    <h3 className="text-2xl font-semibold text-slate-900 tracking-tight flex items-center gap-3">
-                        Projeção Preditiva <BrainCircuit className="h-5 w-5 text-blue-600" strokeWidth={2.5} />
+                    <h3 className="text-2xl font-semibold text-foreground tracking-tight flex items-center gap-3">
+                        Projeção Preditiva <BrainCircuit className="h-5 w-5 text-primary" strokeWidth={2.5} />
                     </h3>
                     <div className="flex items-center gap-2 mt-2">
-                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">Fluxo de Caixa / 6 Meses</p>
-                        <span className="h-1 w-1 rounded-full bg-slate-300" />
+                        <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">Fluxo de Caixa / 6 Meses</p>
+                        <span className="h-1 w-1 rounded-full bg-border" />
                         <div className={cn(
                             "flex items-center gap-1 text-[10px] font-black uppercase tracking-wider",
                             riskLevel === 'high' ? 'text-rose-600' : riskLevel === 'medium' ? 'text-amber-600' : 'text-emerald-600'
@@ -98,7 +98,7 @@ export function CashFlowForecast() {
                         </div>
                     </div>
                 </div>
-                <div className="px-5 py-2 rounded-2xl bg-blue-50 text-blue-600 text-[10px] font-bold uppercase tracking-widest border border-blue-100/30 backdrop-blur-sm">
+                <div className="px-5 py-2 rounded-2xl bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-widest border border-primary/20 backdrop-blur-sm">
                     Cérebro Ativo
                 </div>
             </div>
@@ -130,20 +130,20 @@ export function CashFlowForecast() {
                             contentStyle={{
                                 borderRadius: "24px",
                                 border: "none",
-                                boxShadow: "0 20px 40px rgba(0,0,0,0.08)",
-                                backgroundColor: "rgba(255,255,255,0.95)",
+                                boxShadow: "0 20px 40px rgba(0,0,0,0.12)",
+                                backgroundColor: "var(--popover)",
                                 backdropFilter: "blur(8px)",
                                 padding: "16px 20px"
                             }}
-                            cursor={{ stroke: '#3b82f6', strokeWidth: 2, strokeDasharray: '4 4' }}
+                            cursor={{ stroke: 'var(--primary)', strokeWidth: 2, strokeDasharray: '4 4' }}
                             content={({ active, payload }) => {
                                 if (active && payload && payload.length) {
                                     const p = payload[0].payload;
                                     return (
                                         <div className="space-y-3">
-                                            <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{p.monthName}</p>
+                                            <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">{p.monthName}</p>
                                             <div className="space-y-1">
-                                                <p className="text-lg font-black text-slate-900 tracking-tighter">
+                                                <p className="text-lg font-black text-foreground tracking-tighter">
                                                     R$ {p.balance.toLocaleString('pt-BR')}
                                                 </p>
                                                 {p.isPrediction && (
@@ -169,15 +169,15 @@ export function CashFlowForecast() {
                             type="monotone"
                             dataKey="bestCase"
                             stroke="none"
-                            fill="#3b82f6"
-                            fillOpacity={0.05}
+                            fill="var(--primary)"
+                            fillOpacity={0.08}
                             connectNulls
                         />
                         <Area
                             type="monotone"
                             dataKey="worstCase"
                             stroke="none"
-                            fill="#fff" // Cutout effect
+                            fill="var(--background)" // Usa a cor de fundo real para o cutout
                             fillOpacity={1}
                             connectNulls
                         />

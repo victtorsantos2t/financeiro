@@ -25,7 +25,7 @@ function IOSSegmentedControl({
         <div
             className="flex items-center p-[3px] rounded-[10px] overflow-x-auto scrollbar-hide"
             style={{
-                background: 'rgba(118,118,128,0.12)',
+                background: 'var(--ios-segment-bg)',
                 gap: '2px',
                 fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui",
             }}
@@ -38,11 +38,11 @@ function IOSSegmentedControl({
                         onClick={() => onChange(tab.value)}
                         className="relative flex-1 min-w-[72px] py-[6px] px-3 rounded-[8px] transition-none"
                         style={{
-                            background: isActive ? '#FFFFFF' : 'transparent',
+                            background: isActive ? 'var(--ios-segment-active)' : 'transparent',
                             boxShadow: isActive
                                 ? '0 2px 6px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08)'
                                 : 'none',
-                            color: isActive ? '#000000' : '#3C3C43',
+                            color: isActive ? 'var(--ios-label)' : 'var(--ios-label2)',
                             fontSize: '13px',
                             fontWeight: isActive ? 600 : 400,
                             letterSpacing: '-0.1px',
@@ -82,7 +82,7 @@ function IOSRow({
             <div className="flex-1 min-w-0">
                 <span
                     className="block text-[15px] truncate"
-                    style={{ fontWeight: 400, color: '#000' }}
+                    style={{ fontWeight: 400, color: 'var(--ios-label)' }}
                 >
                     {label}
                 </span>
@@ -93,29 +93,24 @@ function IOSRow({
                 <input
                     type="text"
                     value={value}
-                    onChange={e => onChange(e.target.value)}
+                    onChange={(e) => onChange(e.target.value)}
                     placeholder={placeholder}
+                    className="flex-1 bg-transparent text-right outline-none placeholder:text-[#8E8E93]/50 focus:caret-primary"
                     style={{
-                        background: 'transparent',
-                        border: 'none',
-                        outline: 'none',
-                        color: '#3C3C43',
+                        color: 'var(--ios-label2, #3C3C43)',
                         fontSize: '15px',
                         fontWeight: 400,
-                        textAlign: 'right',
-                        width: '150px',
                         fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui",
-                        caretColor: '#3B82F6',
                     }}
                 />
             ) : (
-                <span style={{ color: '#8E8E93', fontSize: '15px', fontWeight: 400, maxWidth: 160, textAlign: 'right', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                <span style={{ color: 'var(--ios-label3, #8E8E93)', fontSize: '15px', fontWeight: 400, maxWidth: 160, textAlign: 'right', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                     {value || placeholder || '—'}
                 </span>
             )}
 
             {disabled && (
-                <ChevronRight size={14} className="shrink-0 ml-1" style={{ color: '#C7C7CC' }} />
+                <ChevronRight size={14} className="shrink-0 ml-1" style={{ color: 'var(--ios-separator-opaque, #C7C7CC)' }} />
             )}
         </div>
     );
@@ -126,10 +121,11 @@ function IOSRow({
 function IOSCard({ children, className }: { children: React.ReactNode; className?: string }) {
     return (
         <div
-            className={cn("bg-white overflow-hidden", className)}
+            className={cn("bg-white dark:bg-[#1C1C1E] overflow-hidden transition-colors duration-300", className)}
             style={{
                 borderRadius: 16,
                 boxShadow: '0 2px 8px rgba(0,0,0,0.07), 0 0 1px rgba(0,0,0,0.04)',
+                background: 'var(--ios-bg2)',
             }}
         >
             {children}
@@ -144,7 +140,7 @@ function SectionHeader({ label }: { label: string }) {
             style={{
                 fontSize: '13px',
                 fontWeight: 400,
-                color: '#8E8E93',
+                color: 'var(--ios-label3, #8E8E93)',
                 textTransform: 'uppercase',
                 letterSpacing: '0.04em',
                 paddingLeft: 16,
@@ -160,7 +156,7 @@ function SectionHeader({ label }: { label: string }) {
 // ─── Separator iOS ────────────────────────────────────────────────────────────
 function IOSSeparator() {
     return (
-        <div style={{ marginLeft: 56, height: '0.5px', background: 'rgba(60,60,67,0.12)' }} />
+        <div style={{ marginLeft: 56, height: '0.5px', background: 'var(--ios-separator, rgba(60,60,67,0.12))' }} />
     );
 }
 
@@ -244,21 +240,21 @@ export default function SettingsPage() {
 
     return (
         <div
-            className="min-h-screen pb-32"
-            style={{ background: '#F2F2F7', fontFamily: iOSFont }}
+            className="min-h-screen pb-40 transition-colors duration-300"
+            style={{ background: 'var(--ios-bg)', fontFamily: iOSFont }}
         >
             {/* ── Large Title (iOS Navigation Bar) ─────────────────────────── */}
             <div
                 className="sticky top-0 z-40 px-4 pb-4"
                 style={{
-                    background: 'rgba(242,242,247,0.94)',
+                    background: 'var(--ios-header-blur)',
                     backdropFilter: 'blur(20px) saturate(180%)',
                     WebkitBackdropFilter: 'blur(20px) saturate(180%)',
-                    borderBottom: '0.5px solid rgba(0,0,0,0.12)',
+                    borderBottom: '0.5px solid var(--ios-separator)',
                     paddingTop: 'max(env(safe-area-inset-top), 56px)',
                 }}
             >
-                <h1 style={{ fontSize: 34, fontWeight: 700, letterSpacing: '-0.5px', color: '#000', lineHeight: 1.1 }}>
+                <h1 style={{ fontSize: 34, fontWeight: 700, letterSpacing: '-0.5px', color: 'var(--ios-label)', lineHeight: 1.1 }}>
                     Configurações
                 </h1>
             </div>
@@ -283,7 +279,7 @@ export default function SettingsPage() {
                                 style={{
                                     width: 22, height: 22,
                                     background: '#636366',
-                                    border: '2px solid white',
+                                    border: '2px solid var(--ios-bg2)',
                                 }}
                             >
                                 {uploading
@@ -294,10 +290,10 @@ export default function SettingsPage() {
                             </label>
                         </div>
                         <div className="flex-1 min-w-0">
-                            <p style={{ fontSize: 17, fontWeight: 600, color: '#000', lineHeight: 1.2 }}>
+                            <p style={{ fontSize: 17, fontWeight: 600, color: 'var(--ios-label)', lineHeight: 1.2 }}>
                                 {fullName || "Usuário"}
                             </p>
-                            <p style={{ fontSize: 13, color: '#8E8E93', marginTop: 2 }}>
+                            <p style={{ fontSize: 13, color: 'var(--ios-label3)', marginTop: 2 }}>
                                 {occupation || "Sua bio profissional"}
                             </p>
                             <div className="flex items-center gap-1 mt-2">
@@ -307,7 +303,7 @@ export default function SettingsPage() {
                                 </span>
                             </div>
                         </div>
-                        <ChevronRight size={18} style={{ color: '#C7C7CC' }} />
+                        <ChevronRight size={18} style={{ color: 'var(--ios-separator-opaque)' }} />
                     </div>
                 </IOSCard>
 
@@ -397,13 +393,13 @@ export default function SettingsPage() {
                                             onClick={() => setTheme("light")}
                                             className="w-full flex items-center gap-3 px-4 py-3 active:opacity-60 transition-opacity"
                                         >
-                                            <div className="shrink-0 w-[26px] flex items-center justify-center" style={{ color: '#3B82F6' }}>
+                                            <div className="shrink-0 w-[26px] flex items-center justify-center" style={{ color: '#007AFF' }}>
                                                 <Sun size={16} />
                                             </div>
-                                            <span style={{ flex: 1, textAlign: 'left', fontSize: 15, color: '#000' }}>Modo Claro</span>
+                                            <span style={{ flex: 1, textAlign: 'left', fontSize: 15, color: 'var(--ios-label)' }}>Modo Claro</span>
                                             {theme === "light" && (
                                                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                                    <path d="M4 10.5L8 14.5L16 6.5" stroke="#3B82F6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                    <path d="M4 10.5L8 14.5L16 6.5" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                                 </svg>
                                             )}
                                         </button>
@@ -413,13 +409,13 @@ export default function SettingsPage() {
                                             onClick={() => setTheme("dark")}
                                             className="w-full flex items-center gap-3 px-4 py-3 active:opacity-60 transition-opacity"
                                         >
-                                            <div className="shrink-0 w-[26px] flex items-center justify-center" style={{ color: '#3B82F6' }}>
+                                            <div className="shrink-0 w-[26px] flex items-center justify-center" style={{ color: '#007AFF' }}>
                                                 <Moon size={16} />
                                             </div>
-                                            <span style={{ flex: 1, textAlign: 'left', fontSize: 15, color: '#000' }}>Modo Escuro</span>
+                                            <span style={{ flex: 1, textAlign: 'left', fontSize: 15, color: 'var(--ios-label)' }}>Modo Escuro</span>
                                             {theme === "dark" && (
                                                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                                    <path d="M4 10.5L8 14.5L16 6.5" stroke="#3B82F6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                    <path d="M4 10.5L8 14.5L16 6.5" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                                 </svg>
                                             )}
                                         </button>
@@ -439,15 +435,15 @@ export default function SettingsPage() {
                                                     onClick={() => setCurrency(opt.value)}
                                                     className="w-full flex items-center gap-3 px-4 py-3 active:opacity-60 transition-opacity"
                                                 >
-                                                    <div className="shrink-0 w-[26px] flex items-center justify-center" style={{ color: '#3B82F6' }}>
+                                                    <div className="shrink-0 w-[26px] flex items-center justify-center" style={{ color: '#007AFF' }}>
                                                         <Globe size={16} />
                                                     </div>
-                                                    <span style={{ flex: 1, textAlign: 'left', fontSize: 15, color: '#000' }}>
+                                                    <span style={{ flex: 1, textAlign: 'left', fontSize: 15, color: 'var(--ios-label)' }}>
                                                         {opt.flag} {opt.label}
                                                     </span>
                                                     {currency === opt.value && (
                                                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                                            <path d="M4 10.5L8 14.5L16 6.5" stroke="#3B82F6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                            <path d="M4 10.5L8 14.5L16 6.5" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                                         </svg>
                                                     )}
                                                 </button>
@@ -460,46 +456,44 @@ export default function SettingsPage() {
                         )}
                     </motion.div>
                 </AnimatePresence>
-            </div>
 
-            {/* ── iOS Save Button (fixed bottom, only profile/preferences) ──── */}
-            <AnimatePresence>
-                {(activeTab === "profile" || activeTab === "preferences") && (
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 20 }}
-                        transition={{ duration: 0.2 }}
-                        className="fixed left-4 right-4 z-50"
-                        style={{ bottom: 'calc(83px + 16px)' }}
-                    >
-                        <button
-                            onClick={updateProfile}
-                            disabled={loading}
-                            className="w-full flex items-center justify-center active:opacity-80 transition-opacity"
-                            style={{
-                                height: 50,
-                                borderRadius: 14,
-                                background: '#007AFF',
-                                color: 'white',
-                                fontSize: 17,
-                                fontWeight: 600,
-                                letterSpacing: '-0.2px',
-                                boxShadow: '0 4px 16px rgba(0,122,255,0.3)',
-                                fontFamily: iOSFont,
-                                border: 'none',
-                                cursor: loading ? 'not-allowed' : 'pointer',
-                                opacity: loading ? 0.7 : 1,
-                            }}
+                {/* ── iOS Save Button (integrado ao fluxo) ─────────────────── */}
+                <AnimatePresence>
+                    {(activeTab === "profile" || activeTab === "preferences") && (
+                        <motion.div
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 10 }}
+                            transition={{ duration: 0.2 }}
+                            className="pt-8 pb-10"
                         >
-                            {loading
-                                ? <Loader2 size={20} className="animate-spin" />
-                                : activeTab === "preferences" ? "Aplicar Preferências" : "Salvar Alterações"
-                            }
-                        </button>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+                            <button
+                                onClick={updateProfile}
+                                disabled={loading}
+                                className="w-full flex items-center justify-center active:opacity-80 transition-opacity shadow-[0_12px_32px_-8px_rgba(0,122,255,0.3)]"
+                                style={{
+                                    height: 54,
+                                    borderRadius: 18,
+                                    background: '#007AFF',
+                                    color: 'white',
+                                    fontSize: 17,
+                                    fontWeight: 600,
+                                    letterSpacing: '-0.2px',
+                                    fontFamily: iOSFont,
+                                    border: 'none',
+                                    cursor: loading ? 'not-allowed' : 'pointer',
+                                    opacity: loading ? 0.7 : 1,
+                                }}
+                            >
+                                {loading
+                                    ? <Loader2 size={20} className="animate-spin" />
+                                    : activeTab === "preferences" ? "Aplicar Preferências" : "Salvar Alterações"
+                                }
+                            </button>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+            </div>
         </div>
     );
 }

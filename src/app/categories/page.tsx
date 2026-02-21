@@ -14,6 +14,7 @@ import { createClient } from "@/lib/supabase/client";
 import { Plus, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
+import { IOSPageHeader } from "@/components/layout/ios-page-header";
 
 type Category = {
     id: string;
@@ -85,7 +86,8 @@ export default function CategoriesPage() {
 
     return (
         <div className="space-y-6 pb-12">
-            <div className="flex flex-col gap-1">
+            <IOSPageHeader title="Categorias" subtitle="Receitas e despesas" />
+            <div className="hidden md:flex flex-col gap-1">
                 <h1 className="text-2xl font-bold text-foreground tracking-tight">Gerenciar Categorias</h1>
                 <p className="text-sm text-muted-foreground font-medium">Crie e organize suas categorias de receitas e despesas.</p>
             </div>

@@ -147,30 +147,30 @@ export function TransactionsTable({
         const cat = categoryName.toLowerCase();
 
         if (desc.includes('pix recebido') || cat.includes('receita')) {
-            return <div className="p-2 rounded-xl border border-emerald-100 text-emerald-600"><ArrowDownRight className="h-4 w-4" /></div>;
+            return <div className="p-2 rounded-xl border border-emerald-100 dark:border-emerald-500/20 text-emerald-600 dark:text-emerald-400 bg-emerald-50/50 dark:bg-emerald-500/5"><ArrowDownRight className="h-4 w-4" /></div>;
         }
 
         if (desc.includes('pix enviado') || cat.includes('transferencia')) {
-            return <div className="p-2 rounded-xl border border-rose-100 text-rose-500"><ArrowUpRight className="h-4 w-4" /></div>;
+            return <div className="p-2 rounded-xl border border-rose-100 dark:border-rose-500/20 text-rose-500 dark:text-rose-400 bg-rose-50/50 dark:bg-rose-500/5"><ArrowUpRight className="h-4 w-4" /></div>;
         }
 
         if (desc.includes('burger') || desc.includes('restaurante') || cat.includes('alimentacao')) {
-            return <div className="p-2 rounded-xl border border-slate-100 text-slate-400"><Utensils className="size-4" /></div>;
+            return <div className="p-2 rounded-xl border border-slate-100 dark:border-white/10 text-slate-400 dark:text-slate-500 bg-slate-50/50 dark:bg-white/5"><Utensils className="size-4" /></div>;
         }
 
         if (cat.includes('compras') || desc.includes('shpp')) {
-            return <div className="p-2 rounded-xl border border-slate-100 text-slate-400"><ShoppingBag className="size-4" /></div>;
+            return <div className="p-2 rounded-xl border border-slate-100 dark:border-white/10 text-slate-400 dark:text-slate-500 bg-slate-50/50 dark:bg-white/5"><ShoppingBag className="size-4" /></div>;
         }
 
         if (cat.includes('servicos') || desc.includes('conveniencia') || desc.includes('mercado')) {
-            return <div className="p-2 rounded-xl border border-slate-100 text-slate-400"><Store className="size-4" /></div>;
+            return <div className="p-2 rounded-xl border border-slate-100 dark:border-white/10 text-slate-400 dark:text-slate-500 bg-slate-50/50 dark:bg-white/5"><Store className="size-4" /></div>;
         }
 
-        return <div className="p-2 rounded-xl border border-slate-100 text-slate-400"><CircleDollarSign className="size-4" strokeWidth={1.5} /></div>;
+        return <div className="p-2 rounded-xl border border-slate-100 dark:border-white/10 text-slate-400 dark:text-slate-500 bg-slate-50/50 dark:bg-white/5"><CircleDollarSign className="size-4" strokeWidth={1.5} /></div>;
     };
 
     return (
-        <div className="flex flex-col h-full bg-card rounded-card border border-border shadow-sm overflow-hidden min-h-[400px]">
+        <div className="flex flex-col h-full bg-card dark:bg-[#1C1C1E]/80 rounded-card border border-border dark:border-white/10 shadow-sm overflow-hidden min-h-[400px] backdrop-blur-sm">
             <div className="flex-1 overflow-auto custom-scrollbar">
                 {loading ? (
                     <div className="p-6 space-y-8">
@@ -198,18 +198,18 @@ export function TransactionsTable({
                                 return (
                                     <div key={date} className="mb-1">
                                         <div className={cn(
-                                            "px-4 py-2.5 bg-secondary/30 flex justify-between items-center border-y border-border/50 sticky top-0 z-10 backdrop-blur-md",
-                                            isFuture && "bg-destructive/5"
+                                            "px-4 py-2.5 bg-secondary/30 dark:bg-white/5 flex justify-between items-center border-y border-border/50 dark:border-white/5 sticky top-0 z-10 backdrop-blur-md",
+                                            isFuture && "bg-destructive/5 dark:bg-destructive/10"
                                         )}>
                                             <h4 className={cn(
                                                 "text-[12px] font-black capitalize flex items-center gap-2",
-                                                isFuture ? "text-destructive" : "text-slate-900"
+                                                isFuture ? "text-destructive" : "text-slate-900 dark:text-white"
                                             )}>
                                                 {format(new Date(date + 'T00:00:00'), "d 'de' MMMM", { locale: ptBR })}
                                                 {isFuture && <span className="text-[8px] uppercase tracking-wider bg-destructive/10 text-destructive px-1.5 py-0.5 rounded-full">Agendado</span>}
                                             </h4>
                                             {!isFuture && (
-                                                <p className="text-[11px] text-muted-foreground font-medium">
+                                                <p className="text-[11px] text-muted-foreground dark:text-slate-400 font-medium">
                                                     Saldo: {showValues ? new Intl.NumberFormat('pt-BR', {
                                                         style: 'currency',
                                                         currency: 'BRL',
@@ -237,7 +237,7 @@ export function TransactionsTable({
                                                         </span>
                                                         <h5 className={cn(
                                                             "text-[13.5px] font-black leading-tight truncate",
-                                                            isFuture ? "text-destructive" : "text-slate-900"
+                                                            isFuture ? "text-destructive" : "text-slate-900 dark:text-slate-100"
                                                         )}>
                                                             {t.description}
                                                         </h5>
@@ -246,7 +246,7 @@ export function TransactionsTable({
                                                     <div className="text-right flex flex-col items-end py-0.5">
                                                         <span className={cn(
                                                             "text-[14.5px] font-black tracking-tighter",
-                                                            isFuture ? "text-destructive" : (t.type === 'income' ? "text-success" : "text-slate-900")
+                                                            isFuture ? "text-destructive" : (t.type === 'income' ? "text-success" : "text-slate-900 dark:text-white")
                                                         )}>
                                                             {t.type === 'income' ? '+ ' : '- '}
                                                             {showValues ? new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(t.amount) : "R$ ••••"}

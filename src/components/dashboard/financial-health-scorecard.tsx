@@ -96,13 +96,13 @@ export function FinancialHealthScorecard() {
 
             {/* Score Hero */}
             <div className="mb-8 text-center relative z-10 flex flex-col items-center">
-                <div className="inline-flex items-center justify-center p-6 rounded-[32px] bg-secondary border border-border mb-3">
+                <div className="inline-flex items-center justify-center p-6 rounded-[32px] bg-secondary/50 dark:bg-white/5 border border-border mb-3">
                     <div className="text-center">
                         <p className="text-5xl font-bold text-foreground tracking-tight">{diagnosis?.score}</p>
                         <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em] mt-1">Score</p>
                     </div>
                 </div>
-                <p className="text-sm text-secondary-foreground font-medium leading-relaxed max-w-[280px] mx-auto">
+                <p className="text-sm text-muted-foreground font-medium leading-relaxed max-w-[280px] mx-auto">
                     {diagnosis?.diagnosis}
                 </p>
             </div>
@@ -116,11 +116,11 @@ export function FinancialHealthScorecard() {
                 <div className="space-y-4">
                     {/* Fixed Needs (50%) */}
                     <div className="space-y-1.5">
-                        <div className="flex justify-between text-[11px] font-bold text-secondary-foreground">
+                        <div className="flex justify-between text-[11px] font-bold text-muted-foreground">
                             <span>ESSENCIAIS (META: 50%)</span>
                             <span>{diagnosis?.benchmarks.needs}%</span>
                         </div>
-                        <div className="h-2 w-full bg-secondary rounded-full overflow-hidden">
+                        <div className="h-2 w-full bg-secondary dark:bg-white/5 rounded-full overflow-hidden">
                             <div className={cn(
                                 "h-full rounded-full transition-all duration-1000",
                                 (diagnosis?.benchmarks.needs || 0) <= 55 ? 'bg-primary' : 'bg-destructive'
@@ -130,11 +130,11 @@ export function FinancialHealthScorecard() {
 
                     {/* Desires (30%) */}
                     <div className="space-y-1.5">
-                        <div className="flex justify-between text-[11px] font-bold text-secondary-foreground">
+                        <div className="flex justify-between text-[11px] font-bold text-muted-foreground">
                             <span>DESEJOS (META: 30%)</span>
                             <span>{diagnosis?.benchmarks.wants}%</span>
                         </div>
-                        <div className="h-2 w-full bg-secondary rounded-full overflow-hidden">
+                        <div className="h-2 w-full bg-secondary dark:bg-white/5 rounded-full overflow-hidden">
                             <div className={cn(
                                 "h-full rounded-full transition-all duration-1000",
                                 (diagnosis?.benchmarks.wants || 0) <= 35 ? 'bg-indigo-500' : 'bg-destructive'

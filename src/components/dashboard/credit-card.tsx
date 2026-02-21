@@ -51,8 +51,8 @@ export function CreditCard({ wallet, onUpdate }: CreditCardProps) {
 
     const currentGradient = generateCardGradient(wallet.color);
     const textColor = getContrastColor(wallet.color);
-    const textSecondary = textColor === 'white' ? 'text-white/70' : 'text-slate-500';
-    const iconColor = textColor === 'white' ? 'text-white/40 group-hover:text-white/60' : 'text-slate-400 group-hover:text-slate-600';
+    const textSecondary = textColor === 'white' ? 'text-white/70' : 'text-muted-foreground';
+    const iconColor = textColor === 'white' ? 'text-white/40 group-hover:text-white/60' : 'text-muted-foreground group-hover:text-foreground';
 
     // Yield Calculation Logic
     const getEstimatedYield = () => {
@@ -115,13 +115,13 @@ export function CreditCard({ wallet, onUpdate }: CreditCardProps) {
 
                     <div>
                         <p className="font-semibold text-xl mb-0.5 tracking-tight leading-tight" style={{ color: textColor }}>{wallet.name}</p>
-                        <p className={`text-[10px] font-semibold uppercase tracking-[0.15em] opacity-70 ${textColor === 'white' ? 'text-white' : 'text-slate-500'}`}>
+                        <p className={`text-[10px] font-bold uppercase tracking-[0.15em] opacity-80 ${textColor === 'white' ? 'text-white' : 'text-muted-foreground'}`}>
                             {wallet.card_type === 'credit' ? 'Crédito' : wallet.card_type === 'debit' ? 'Débito' : wallet.type}
                         </p>
                     </div>
 
                     <div>
-                        <p className={`text-[10px] font-semibold uppercase tracking-[0.15em] opacity-70 mb-0.5 ${textColor === 'white' ? 'text-white' : 'text-slate-500'}`}>
+                        <p className={`text-[10px] font-bold uppercase tracking-[0.15em] opacity-80 mb-0.5 ${textColor === 'white' ? 'text-white' : 'text-muted-foreground'}`}>
                             {wallet.card_type === 'credit' ? 'Fatura Atual' : 'Saldo Atual'}
                         </p>
                         <p className="font-mono text-lg font-medium tracking-tight" style={{ color: textColor }}>
@@ -183,14 +183,14 @@ export function CreditCard({ wallet, onUpdate }: CreditCardProps) {
                     </AlertDialogTrigger>
                     <AlertDialogContent className="rounded-3xl border-none shadow-2xl">
                         <AlertDialogHeader>
-                            <AlertDialogTitle className="text-xl font-semibold">Excluir Carteira</AlertDialogTitle>
-                            <AlertDialogDescription className="text-slate-500">
+                            <AlertDialogTitle className="text-xl font-bold tracking-tight">Excluir Carteira</AlertDialogTitle>
+                            <AlertDialogDescription className="text-muted-foreground">
                                 Tem certeza que deseja excluir "{wallet.name}"? Esta ação é irreversível.
                             </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter className="gap-2 sm:gap-0">
-                            <AlertDialogCancel className="rounded-2xl border-slate-100 hover:bg-slate-50">Cancelar</AlertDialogCancel>
-                            <AlertDialogAction onClick={handleDelete} className="bg-red-500 text-white hover:bg-red-600 rounded-2xl border-none">
+                            <AlertDialogCancel className="rounded-2xl border-border hover:bg-secondary">Cancelar</AlertDialogCancel>
+                            <AlertDialogAction onClick={handleDelete} className="bg-destructive text-white hover:bg-destructive-hover rounded-2xl border-none font-bold">
                                 Excluir
                             </AlertDialogAction>
                         </AlertDialogFooter>

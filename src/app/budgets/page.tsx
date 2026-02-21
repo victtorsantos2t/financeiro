@@ -7,6 +7,7 @@ import { Progress } from "@/components/ui/progress";
 import { createClient } from "@/lib/supabase/client";
 import { Save } from "lucide-react";
 import { useEffect, useState } from "react";
+import { IOSPageHeader } from "@/components/layout/ios-page-header";
 
 type CategoryBudget = {
     categoryId: string;
@@ -119,7 +120,9 @@ export default function BudgetsPage() {
 
     return (
         <div className="space-y-6 pb-12">
-            <div className="flex flex-col gap-1">
+            <IOSPageHeader title="Orçamentos" subtitle="Controle de limites mensais" />
+
+            <div className="hidden md:flex flex-col gap-1">
                 <h1 className="text-2xl font-bold text-foreground tracking-tight">Orçamentos Mensais</h1>
                 <p className="text-sm text-muted-foreground font-medium">Defina limites de gastos para o mês atual ({currentMonthYear}).</p>
             </div>

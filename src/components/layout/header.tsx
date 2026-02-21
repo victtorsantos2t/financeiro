@@ -22,12 +22,12 @@ export function Header() {
     };
 
     return (
-        <header className="h-16 flex items-center justify-between px-4 md:px-8 bg-background/80 sticky top-0 z-40 backdrop-blur-md border-b border-border/40">
+        <header className="h-16 flex items-center justify-between px-4 md:px-8 bg-background/80 dark:bg-background/95 sticky top-0 z-40 backdrop-blur-md border-b border-border/40 dark:border-border/30 transition-colors duration-300">
             <div className="flex items-center gap-4 md:gap-6 flex-1">
                 {isDashboard ? (
                     <div className="flex flex-col animate-in fade-in slide-in-from-left-4 duration-500">
-                        <h1 className="text-xl font-bold text-slate-900 tracking-tight leading-none">Visão Geral</h1>
-                        <p className="text-[11px] font-medium text-slate-400 tracking-wide mt-1">Desempenho financeiro consolidado.</p>
+                        <h1 className="text-xl font-bold text-foreground tracking-tight leading-none">Visão Geral</h1>
+                        <p className="text-[11px] font-medium text-muted-foreground tracking-wide mt-1">Desempenho financeiro consolidado.</p>
                     </div>
                 ) : (
                     <div className="relative w-full max-w-[320px] group flex items-center">
@@ -39,10 +39,10 @@ export function Header() {
                             />
                         </div>
                         <div className="md:hidden">
-                            <h1 className="text-xl font-black text-slate-900 tracking-tight capitalize leading-none">
+                            <h1 className="text-xl font-black text-foreground tracking-tight capitalize leading-none">
                                 {pathname === '/dashboard' ? 'Visão Geral' : pathname.replace('/', '').replace(/-/g, ' ')}
                             </h1>
-                            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">Sistema Integrado</p>
+                            <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mt-0.5">Sistema Integrado</p>
                         </div>
                     </div>
                 )}

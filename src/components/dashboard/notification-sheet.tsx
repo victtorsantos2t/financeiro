@@ -201,18 +201,18 @@ export function NotificationSheet() {
             <SheetTrigger asChild>
                 <motion.button
                     whileTap={{ scale: 0.96 }}
-                    className="p-2 md:p-2.5 rounded-2xl bg-white border border-slate-100/50 hover:bg-slate-50 transition-all text-slate-400 hover:text-blue-500 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.02)] relative group"
+                    className="p-2 md:p-2.5 rounded-2xl bg-white dark:bg-white/5 border border-slate-100/50 dark:border-white/5 hover:bg-slate-50 dark:hover:bg-white/10 transition-all text-slate-400 hover:text-blue-500 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.02)] relative group"
                 >
                     <Bell className="h-5 w-5 transition-transform group-hover:rotate-12" />
                     {hasUnread && (
-                        <span className="absolute top-2.5 right-2.5 h-2 w-2 bg-blue-500 rounded-full border-2 border-white animate-pulse"></span>
+                        <span className="absolute top-2.5 right-2.5 h-2 w-2 bg-blue-500 rounded-full border-2 border-white dark:border-[#1C1C1E] animate-pulse"></span>
                     )}
                 </motion.button>
             </SheetTrigger>
             <SheetContent
                 side={isMobile ? "bottom" : "right"}
                 className={cn(
-                    "p-0 border-none bg-white",
+                    "p-0 border-none bg-white dark:bg-[#1C1C1E]",
                     isMobile
                         ? "h-[90vh] rounded-t-[40px]"
                         : "h-[calc(100vh-32px)] w-[420px] m-4 rounded-[32px] shadow-[0_32px_80px_-20px_rgba(0,0,0,0.12)]"
@@ -221,18 +221,18 @@ export function NotificationSheet() {
             >
                 <div className="h-full flex flex-col relative">
                     {isMobile && (
-                        <div className="absolute top-3 left-1/2 -translate-x-1/2 w-12 h-1.5 bg-slate-100/60 rounded-full z-10" />
+                        <div className="absolute top-3 left-1/2 -translate-x-1/2 w-12 h-1.5 bg-slate-100/60 dark:bg-white/10 rounded-full z-10" />
                     )}
 
                     <SheetHeader className="p-10 pb-2 space-y-6">
                         <div className="flex items-center justify-between">
-                            <SheetTitle className="text-2xl font-semibold text-slate-900 tracking-tight">Notificações</SheetTitle>
+                            <SheetTitle className="text-2xl font-bold text-foreground tracking-tight">Notificações</SheetTitle>
                             <div className="flex items-center gap-2">
-                                <button className="p-2 text-slate-300 hover:text-slate-600 active:scale-90 transition-all">
+                                <button className="p-2 text-muted-foreground hover:text-foreground active:scale-90 transition-all">
                                     <MoreHorizontal className="h-5 w-5" />
                                 </button>
                                 <SheetClose asChild>
-                                    <button className="p-2 text-slate-300 hover:text-slate-900 md:hidden">
+                                    <button className="p-2 text-muted-foreground hover:text-foreground md:hidden">
                                         <X className="h-5 w-5" />
                                     </button>
                                 </SheetClose>
@@ -244,8 +244,10 @@ export function NotificationSheet() {
                             <button
                                 onClick={() => setActiveTab('all')}
                                 className={cn(
-                                    "px-6 py-2.5 rounded-full text-xs font-semibold tracking-wide transition-all",
-                                    activeTab === 'all' ? "bg-slate-900 text-white" : "bg-slate-50 text-slate-400 hover:bg-slate-100"
+                                    "px-6 py-2.5 rounded-full text-xs font-bold tracking-wide transition-all",
+                                    activeTab === 'all'
+                                        ? "bg-slate-900 dark:bg-white text-white dark:text-black shadow-lg shadow-black/10"
+                                        : "bg-slate-50 dark:bg-white/5 text-muted-foreground hover:bg-slate-100 dark:hover:bg-white/10"
                                 )}
                             >
                                 Tudo
@@ -253,8 +255,10 @@ export function NotificationSheet() {
                             <button
                                 onClick={() => setActiveTab('unread')}
                                 className={cn(
-                                    "px-6 py-2.5 rounded-full text-xs font-semibold tracking-wide transition-all",
-                                    activeTab === 'unread' ? "bg-slate-900 text-white" : "bg-slate-50 text-slate-400 hover:bg-slate-100"
+                                    "px-6 py-2.5 rounded-full text-xs font-bold tracking-wide transition-all",
+                                    activeTab === 'unread'
+                                        ? "bg-slate-900 dark:bg-white text-white dark:text-black shadow-lg shadow-black/10"
+                                        : "bg-slate-50 dark:bg-white/5 text-muted-foreground hover:bg-slate-100 dark:hover:bg-white/10"
                                 )}
                             >
                                 Não lidas
@@ -274,12 +278,12 @@ export function NotificationSheet() {
                                 >
                                     <button
                                         onClick={ignoreBanner}
-                                        className="absolute top-6 right-6 text-slate-300 hover:text-slate-600 transition-all"
+                                        className="absolute top-6 right-6 text-muted-foreground hover:text-foreground transition-all"
                                     >
                                         <X className="h-4 w-4" />
                                     </button>
-                                    <h4 className="font-semibold text-slate-900 mb-2 pr-6 text-[15px] tracking-tight">Alertas em Tempo Real</h4>
-                                    <p className="text-[13px] text-slate-500 mb-6 leading-relaxed">
+                                    <h4 className="font-bold text-foreground mb-2 pr-6 text-[15px] tracking-tight">Alertas em Tempo Real</h4>
+                                    <p className="text-[13px] text-muted-foreground mb-6 leading-relaxed">
                                         Ative as notificações para receber atualizações instantâneas sobre seus gastos e metas.
                                     </p>
                                     <div className="flex gap-3">
@@ -302,10 +306,10 @@ export function NotificationSheet() {
 
                         <div className="space-y-6">
                             <div className="flex justify-between items-center px-1">
-                                <h3 className="font-semibold text-slate-400 text-[11px] uppercase tracking-[0.2em]">Recentes</h3>
+                                <h3 className="font-bold text-muted-foreground text-[11px] uppercase tracking-[0.2em]">Recentes</h3>
                                 <button
                                     onClick={() => setActiveTab('all')}
-                                    className="text-[11px] font-semibold text-blue-500 hover:text-blue-600 transition-colors uppercase tracking-wider"
+                                    className="text-[11px] font-bold text-blue-500 hover:text-blue-600 transition-colors uppercase tracking-wider"
                                 >
                                     Limpar tudo
                                 </button>
@@ -328,10 +332,10 @@ export function NotificationSheet() {
                                         animate={{ opacity: 1 }}
                                         className="text-center py-20"
                                     >
-                                        <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4">
-                                            <Check className="h-8 w-8 text-slate-200" />
+                                        <div className="w-16 h-16 bg-slate-50 dark:bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4">
+                                            <Check className="h-8 w-8 text-slate-200 dark:text-muted-foreground/30" />
                                         </div>
-                                        <p className="text-slate-400 text-sm font-medium">Você está em dia</p>
+                                        <p className="text-muted-foreground text-sm font-bold">Você está em dia</p>
                                     </motion.div>
                                 ) : (
                                     <AnimatePresence mode="popLayout">
@@ -345,14 +349,16 @@ export function NotificationSheet() {
                                                 transition={{ ...APPLE_SOFT_SPRING, delay: index * 0.05 } as any}
                                                 onClick={() => markAsRead(n.id)}
                                                 className={cn(
-                                                    "flex gap-5 p-5 rounded-[24px] hover:bg-slate-50/80 transition-all group relative cursor-pointer active:scale-[0.98]",
-                                                    !n.isRead ? "bg-white" : "opacity-40 grayscale"
+                                                    "flex gap-5 p-5 rounded-[24px] hover:bg-slate-50/80 dark:hover:bg-white/5 transition-all group relative cursor-pointer active:scale-[0.98]",
+                                                    !n.isRead ? "bg-white dark:bg-blue-500/[0.03] border border-transparent dark:border-blue-500/10" : "opacity-40 grayscale"
                                                 )}
                                             >
                                                 <div className="relative shrink-0">
                                                     <div className={cn(
                                                         "w-12 h-12 rounded-[18px] flex items-center justify-center overflow-hidden border transition-all",
-                                                        (n as any).isOverdue ? "bg-rose-50 border-rose-100 text-rose-500" : "bg-slate-50 border-slate-100/50 text-slate-400"
+                                                        (n as any).isOverdue
+                                                            ? "bg-rose-50 dark:bg-rose-500/10 border-rose-100 dark:border-rose-500/20 text-rose-500"
+                                                            : "bg-slate-50 dark:bg-white/5 border-slate-100/50 dark:border-white/5 text-slate-400 dark:text-muted-foreground"
                                                     )}>
                                                         {n.type === 'payment' ? (
                                                             <Calendar className={cn("h-5 w-5", (n as any).isOverdue ? "text-rose-500" : "text-orange-400")} />
@@ -365,15 +371,15 @@ export function NotificationSheet() {
                                                 </div>
 
                                                 <div className="flex-1 min-w-0">
-                                                    <p className="text-[14px] font-medium text-slate-900 leading-snug mb-1">
-                                                        <span className="font-semibold">{n.title}</span> {n.description}
+                                                    <p className="text-[14px] font-bold text-foreground leading-snug mb-1">
+                                                        <span className="font-extrabold">{n.title}</span> {n.description}
                                                     </p>
                                                     <div className="flex items-center gap-3">
-                                                        <span className="text-[11px] font-bold text-slate-300 uppercase tracking-tight">
+                                                        <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-tight">
                                                             {formatDistanceToNow(new Date(n.date), { addSuffix: false, locale: ptBR })}
                                                         </span>
                                                         {n.amount && (
-                                                            <span className="text-[12px] font-semibold text-slate-900/80">
+                                                            <span className="text-[12px] font-bold text-foreground/80">
                                                                 R$ {n.amount.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                                                             </span>
                                                         )}
@@ -394,12 +400,12 @@ export function NotificationSheet() {
                     </div>
 
                     {/* Final Action Button */}
-                    <div className="p-10 pt-6 bg-white/80 backdrop-blur-xl border-t border-slate-50/50">
+                    <div className="p-10 pt-6 bg-white/80 dark:bg-[#1C1C1E]/80 backdrop-blur-xl border-t border-slate-50/50 dark:border-white/5">
                         <SheetClose asChild>
                             <motion.button
                                 whileTap={{ scale: 0.98 }}
                                 onClick={markAllAsRead}
-                                className="w-full py-4.5 bg-slate-900 text-white rounded-[20px] font-semibold text-[13px] uppercase tracking-[0.15em] shadow-[0_12px_32px_-8px_rgba(0,0,0,0.12)] hover:bg-slate-800 transition-all"
+                                className="w-full py-4.5 bg-slate-900 dark:bg-white text-white dark:text-black rounded-[20px] font-bold text-[13px] uppercase tracking-[0.15em] shadow-[0_12px_32px_-8px_rgba(0,0,0,0.2)] hover:bg-slate-800 dark:hover:bg-slate-100 transition-all"
                             >
                                 Marcar tudo como lido
                             </motion.button>

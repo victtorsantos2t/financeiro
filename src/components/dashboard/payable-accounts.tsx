@@ -86,7 +86,7 @@ export function PayableAccounts({ variant = "card" }: PayableAccountsProps) {
     }
 
     return (
-        <div className="w-full bg-card rounded-card p-5 flex flex-col justify-between shadow-sm border border-border transition-all duration-300">
+        <div className="w-full bg-card dark:bg-[#1C1C1E]/80 rounded-card p-5 flex flex-col justify-between shadow-sm border border-border dark:border-white/10 transition-all duration-300 backdrop-blur-sm">
             {content}
         </div>
     );
