@@ -14,19 +14,37 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { createClient } from "@/lib/supabase/client";
+import { cn } from "@/lib/utils";
 
-const mainNavItems = [
-    { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard" },
-    { icon: Wallet, label: "Carteira", href: "/wallet" },
-    { icon: ArrowRightLeft, label: "Transações", href: "/transactions" },
-    { icon: LineChart, label: "Análise de Receita", href: "/analytics" },
+const navSections = [
+    {
+        title: "Workspace",
+        items: [
+            { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard" },
+        ]
+    },
+    {
+        title: "Financeiro",
+        items: [
+            { icon: Wallet, label: "Minha Carteira", href: "/wallet" },
+            { icon: ArrowRightLeft, label: "Transações", href: "/transactions" },
+        ]
+    },
+    {
+        title: "Relatórios & BI",
+        items: [
+            { icon: LineChart, label: "Analytics BI", href: "/analytics" },
+        ]
+    },
+    {
+        title: "Sistema",
+        items: [
+            { icon: Settings, label: "Configurações", href: "/settings" },
+        ]
+    }
 ];
 
-const secondaryNavItems = [
-    { icon: Settings, label: "Configurações", href: "/settings" },
-];
-
-export function Sidebar() {
+export function Sidebar({ className, onNavItemClick }: { className?: string, onNavItemClick?: () => void }) {
     const pathname = usePathname();
     const [profile, setProfile] = useState<{ name: string; avatar_url: string | null; occupation: string } | null>(null);
     const supabase = createClient();
@@ -41,12 +59,9 @@ export function Sidebar() {
                     .eq('id', user.id)
                     .single();
 
-                if (data) {
-                    setProfile(data);
-                }
+                if (data) setProfile(data);
             }
         };
-
         fetchProfile();
     }, []);
 
@@ -55,65 +70,73 @@ export function Sidebar() {
 
     const handleLogout = async () => {
         await supabase.auth.signOut();
-        window.location.href = "/login"; // Force a full reload to clear all states/caches
+        window.location.href = "/login";
     };
 
     return (
-        <aside className="hidden md:flex w-60 h-screen fixed left-0 top-0 border-r border-border bg-card text-foreground flex-col p-6 overflow-y-auto">
-            <div className="flex flex-col items-center mb-10 p-2">
-                <Avatar className="h-16 w-16 mb-4 border-4 border-white shadow-sm">
-                    <AvatarImage src={profile?.avatar_url || ""} alt={displayName} />
-                    <AvatarFallback className="bg-primary text-primary-foreground font-semibold text-lg">{initials}</AvatarFallback>
-                </Avatar>
-                <h2 className="font-semibold text-center text-[15px] text-foreground mb-1 tracking-tight">{displayName}</h2>
-                <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider text-center">{profile?.occupation || "Designer"}</p>
+        <aside className={cn(
+            "flex flex-col h-full bg-white border-r border-slate-100 overflow-y-auto scrollbar-hide w-64",
+            className
+        )}>
+            {/* Header / Logo Section */}
+            <div className="p-8 mb-4">
+                <h1 className="text-2xl font-black text-slate-900 tracking-tighter leading-tight">Financeiro</h1>
+                <p className="text-[10px] font-bold text-primary uppercase tracking-[0.2em] mt-0.5">Enterprise System</p>
             </div>
 
-            <nav className="flex-1 space-y-2">
-                {mainNavItems.map((item) => {
-                    const isActive = pathname === item.href;
-                    return (
-                        <Link
-                            key={item.label}
-                            href={item.href}
-                            className={`flex items-center gap-3 px-4 py-2.5 rounded-[12px] transition-all duration-200 group ${isActive
-                                ? "bg-primary text-white font-medium shadow-sm shadow-primary/20"
-                                : "text-secondary-foreground hover:text-foreground hover:bg-secondary/80"
-                                }`}
-                        >
-                            <item.icon className={`h-[18px] w-[18px] ${isActive ? "text-white" : "group-hover:text-foreground"}`} />
-                            <span className="text-[14px] font-medium tracking-tight">{item.label}</span>
-                        </Link>
-                    )
-                })}
-
-                <div className="pt-6 mt-6 border-t border-border space-y-2">
-                    {secondaryNavItems.map((item) => {
-                        const isActive = pathname === item.href;
-                        return (
-                            <Link
-                                key={item.label}
-                                href={item.href}
-                                className={`flex items-center gap-3 px-4 py-2.5 rounded-[12px] transition-all group ${isActive
-                                    ? "bg-primary text-white font-medium shadow-sm shadow-primary/20"
-                                    : "text-secondary-foreground hover:text-foreground hover:bg-secondary/80"
-                                    }`}
-                            >
-                                <item.icon className={`h-[18px] w-[18px] ${isActive ? "text-white" : "group-hover:text-foreground"}`} />
-                                <span className="text-[14px] font-medium tracking-tight">{item.label}</span>
-                            </Link>
-                        )
-                    })}
-
-                    <button
-                        onClick={handleLogout}
-                        className="flex items-center gap-3 px-4 py-2.5 rounded-[12px] text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all group w-full text-left"
-                    >
-                        <LogOut className="h-[18px] w-[18px] group-hover:text-destructive" />
-                        <span className="text-[14px] font-medium tracking-tight">Sair</span>
-                    </button>
-                </div>
+            <nav className="flex-1 px-4 space-y-8">
+                {navSections.map((section) => (
+                    <div key={section.title} className="space-y-2">
+                        <h3 className="px-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">{section.title}</h3>
+                        <div className="space-y-1">
+                            {section.items.map((item) => {
+                                const isActive = pathname === item.href;
+                                return (
+                                    <Link
+                                        key={item.label}
+                                        href={item.href}
+                                        onClick={onNavItemClick}
+                                        className={cn(
+                                            "flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-200 group text-[14px]",
+                                            isActive
+                                                ? "bg-primary/10 text-primary font-bold shadow-sm shadow-primary/5"
+                                                : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"
+                                        )}
+                                    >
+                                        <item.icon className={cn(
+                                            "h-[20px] w-[20px]",
+                                            isActive ? "text-primary" : "text-slate-400 group-hover:text-slate-900"
+                                        )} strokeWidth={isActive ? 2.5 : 2} />
+                                        <span className="tracking-tight">{item.label}</span>
+                                    </Link>
+                                );
+                            })}
+                        </div>
+                    </div>
+                ))}
             </nav>
+
+            {/* User Profile & Logout Section */}
+            <div className="p-4 mt-auto border-t border-slate-100">
+                <div className="flex items-center gap-3 p-2 mb-4">
+                    <Avatar className="h-10 w-10 border-2 border-white shadow-sm ring-1 ring-slate-100">
+                        <AvatarImage src={profile?.avatar_url || ""} />
+                        <AvatarFallback className="bg-primary/10 text-primary font-bold text-xs">{initials}</AvatarFallback>
+                    </Avatar>
+                    <div className="flex flex-col min-w-0">
+                        <span className="text-sm font-bold text-slate-900 truncate leading-none mb-1">{displayName}</span>
+                        <span className="text-[10px] font-semibold text-slate-400 uppercase truncate tracking-wider">{profile?.occupation || "Usuário"}</span>
+                    </div>
+                </div>
+
+                <button
+                    onClick={handleLogout}
+                    className="flex items-center gap-3 px-4 py-3 w-full rounded-2xl text-[14px] font-bold text-slate-400 hover:text-destructive hover:bg-destructive/5 transition-all group"
+                >
+                    <LogOut className="h-[20px] w-[20px] text-slate-300 group-hover:text-destructive transition-colors" />
+                    <span>Sair do Sistema</span>
+                </button>
+            </div>
         </aside>
     );
 }
