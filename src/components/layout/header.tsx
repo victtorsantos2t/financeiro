@@ -1,23 +1,16 @@
 "use client";
 
-import { Search, Bell, MessageSquare, Menu, PanelLeftClose, PanelLeft } from "lucide-react";
+import { Search, Bell, MessageSquare, Menu } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { usePathname } from "next/navigation";
 import { useDashboard } from "@/context/dashboard-context";
 import { MonthSelector } from "@/components/dashboard/month-selector";
 import { AddTransactionModal } from "@/components/dashboard/add-transaction-modal";
-import { ReportActions } from "@/components/dashboard/report-actions";
-import { cn } from "@/lib/utils";
+import { ImportTransactionsModal } from "@/components/dashboard/import-transactions-modal";
 import { NotificationSheet } from "@/components/dashboard/notification-sheet";
 import { useState } from "react";
 
-export function Header({
-    isCollapsed,
-    onToggleCollapse
-}: {
-    isCollapsed?: boolean,
-    onToggleCollapse?: () => void
-}) {
+export function Header() {
     const pathname = usePathname();
     const isDashboard = pathname === "/dashboard";
     const { currentDate, setCurrentDate } = useDashboard();
@@ -31,23 +24,10 @@ export function Header({
     return (
         <header className="h-16 flex items-center justify-between px-4 md:px-8 bg-background/80 sticky top-0 z-40 backdrop-blur-md border-b border-border/40">
             <div className="flex items-center gap-4 md:gap-6 flex-1">
-                {/* Collapse Toggle (Desktop only) */}
-                <button
-                    onClick={onToggleCollapse}
-                    className="hidden md:flex p-2.5 rounded-xl text-slate-400 hover:text-slate-900 hover:bg-slate-50 transition-all active:scale-95"
-                    title={isCollapsed ? "Expandir Sidebar" : "Recolher Sidebar"}
-                >
-                    {isCollapsed ? <PanelLeft className="h-5 w-5" /> : <PanelLeftClose className="h-5 w-5" />}
-                </button>
-
                 {isDashboard ? (
-                    <div className="flex items-center animate-in fade-in slide-in-from-left-4 duration-500">
-                        <div className="hidden md:block">
-                            <ReportActions currentDate={currentDate} />
-                        </div>
-                        <div className="hidden md:ml-4 lg:block border-l border-border pl-4">
-                            <h1 className="text-base font-bold text-foreground tracking-tight">Dashboard</h1>
-                        </div>
+                    <div className="flex flex-col animate-in fade-in slide-in-from-left-4 duration-500">
+                        <h1 className="text-xl font-bold text-slate-900 tracking-tight leading-none">Visão Geral</h1>
+                        <p className="text-[11px] font-medium text-slate-400 tracking-wide mt-1">Desempenho financeiro consolidado.</p>
                     </div>
                 ) : (
                     <div className="relative w-full max-w-[320px] group flex items-center">
@@ -74,18 +54,14 @@ export function Header({
                 </div>
             )}
 
-            <div className="flex items-center gap-2 md:gap-3">
-                <button
-                    onClick={openCommandPalette}
-                    className="md:hidden p-2.5 rounded-xl bg-card border border-border text-muted-foreground active:scale-95 transition-all shadow-sm"
-                >
-                    <Search className="h-5 w-5" />
-                </button>
+            <div className="flex items-center gap-3 md:gap-4">
+                {/* Global Desktop Actions */}
+                <div className="hidden lg:flex items-center gap-3">
+                    <ImportTransactionsModal />
+                    <AddTransactionModal />
+                </div>
 
                 <div className="flex items-center gap-2">
-                    <button className="hidden md:flex p-2.5 rounded-xl bg-card border border-border hover:bg-secondary transition-all text-muted-foreground hover:text-foreground shadow-sm relative group active:scale-95">
-                        <MessageSquare className="h-5 w-5 transition-transform group-hover:scale-110" />
-                    </button>
                     <NotificationSheet />
                 </div>
             </div>

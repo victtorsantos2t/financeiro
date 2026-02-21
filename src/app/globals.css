@@ -12,6 +12,27 @@
   --radius-3xl: 2rem;
 }
 
+/* ─── iOS Native Font Override (mobile only) ────────────────────────────────
+   Usa SF Pro Display nativa no iOS, com fallback system-ui para Android/web.
+   ────────────────────────────────────────────────────────────────────────── */
+@media (max-width: 767px) {
+  :root {
+    --font-ios: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif;
+    /* iOS System Colors */
+    --ios-blue: #007AFF;
+    --ios-bg: #F2F2F7;
+    --ios-bg2: #FFFFFF;
+    --ios-grouped-bg: #F2F2F7;
+    --ios-grouped-card: #FFFFFF;
+    --ios-label: #000000;
+    --ios-label2: #3C3C43;
+    --ios-label3: #8E8E93;
+    --ios-separator: rgba(60, 60, 67, 0.12);
+    --ios-fill: rgba(120, 120, 128, 0.12);
+    --ios-tab-blur: rgba(255, 255, 255, 0.85);
+  }
+}
+
 :root {
   /* SaaS Financeiro Moderno - Paleta Obrigatória */
 
@@ -129,9 +150,51 @@
 
   body {
     @apply h-full w-full overflow-hidden bg-background text-foreground antialiased;
-    /* Prevent pull-to-refresh on mobile if not desired, or just ensure proper height */
     overscroll-behavior-y: none;
+    font-weight: 400;
   }
+
+  /* iOS Native font para mobile */
+  @media (max-width: 767px) {
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background-color: #F2F2F7;
+    }
+  }
+}
+
+/* ─── Redução global de pesos de fonte ─────────────────────────────────────
+   Reduz cada nível um degrau para um visual mais leve e moderno em todas as
+   páginas, sem precisar alterar componente por componente.
+   ────────────────────────────────────────────────────────────────────────── */
+@layer utilities {
+  .font-black {
+    font-weight: 600;
+  }
+
+  /* era 900 → agora semibold */
+  .font-extrabold {
+    font-weight: 600;
+  }
+
+  /* era 800 → agora semibold */
+  .font-bold {
+    font-weight: 500;
+  }
+
+  /* era 700 → agora medium   */
+  .font-semibold {
+    font-weight: 450;
+  }
+
+  /* era 600 → agora leve     */
+  .font-medium {
+    font-weight: 400;
+  }
+
+  /* era 500 → agora regular  */
 }
 
 @utility pt-safe {
@@ -148,6 +211,32 @@
 
 @utility min-h-dvh {
   min-height: 100dvh;
+}
+
+/* ─── iOS Native Card Styles (mobile only) ──────────────────────────────────
+   Todos os bg-card / rounded-card recebem estilo iOS: bordas 16px, sombra leve.
+   ─────────────────────────────────────────────────────────────────────────── */
+@media (max-width: 767px) {
+
+  /* Sombra iOS suave (Apple HIG card shadow) */
+  .shadow-sm,
+  [class*="shadow-sm"] {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 0 1px rgba(0, 0, 0, 0.04) !important;
+  }
+
+  /* Remover radius excessivo nos cards mobile → iOS usa 16px */
+  [class*="rounded-[20px]"],
+  [class*="rounded-[24px]"],
+  [class*="rounded-[28px]"],
+  [class*="rounded-[32px]"],
+  [class*="rounded-3xl"] {
+    border-radius: 16px !important;
+  }
+
+  /* Transações table list → remover bordas pesadas */
+  [class*="rounded-[16px]"] {
+    border-radius: 16px;
+  }
 }
 
 @keyframes luxury-pulse {

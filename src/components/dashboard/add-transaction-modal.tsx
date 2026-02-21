@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import {
     Dialog,
     DialogContent,
@@ -17,6 +16,7 @@ import { TransactionForm, Transaction } from "@/components/dashboard/transaction
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { Plus } from "lucide-react";
 import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 
 interface TransactionModalProps {
     children?: React.ReactNode;
@@ -25,7 +25,7 @@ interface TransactionModalProps {
     onOpenChange?: (open: boolean) => void;
 }
 
-import { motion } from "framer-motion";
+const iOSFont = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui";
 
 export function AddTransactionModal({ children, transaction, open, onOpenChange }: TransactionModalProps) {
     const [internalOpen, setInternalOpen] = useState(false);
@@ -40,26 +40,19 @@ export function AddTransactionModal({ children, transaction, open, onOpenChange 
         if (finalSetOpen) finalSetOpen(newOpen);
     };
 
-    useEffect(() => {
-        setIsMounted(true);
-    }, []);
-
-    // Prevent hydration mismatch
-    if (!isMounted) {
-        return null;
-    }
+    useEffect(() => { setIsMounted(true); }, []);
+    if (!isMounted) return null;
 
     const title = transaction ? "Editar Transação" : "Nova Transação";
 
+    // ── Desktop ───────────────────────────────────────────────────────────────
     if (isDesktop) {
         return (
             <Dialog open={finalOpen} onOpenChange={handleOpenChange}>
                 <DialogTrigger asChild>
                     {children || (
-                        <motion.button
-                            whileTap={{ scale: 0.98 }}
-                            className="flex items-center gap-2 rounded-2xl bg-slate-900 border border-slate-900 hover:bg-slate-800 text-white font-semibold h-11 px-6 shadow-[0_12px_32px_-8px_rgba(0,0,0,0.12)] transition-all"
-                        >
+                        <motion.button whileTap={{ scale: 0.98 }}
+                            className="flex items-center gap-2 rounded-2xl bg-slate-900 border border-slate-900 hover:bg-slate-800 text-white font-semibold h-11 px-6 shadow-[0_12px_32px_-8px_rgba(0,0,0,0.12)] transition-all">
                             <Plus className="h-4 w-4" strokeWidth={2.5} />
                             <span className="text-[13px] tracking-tight">Nova Transação</span>
                         </motion.button>
@@ -85,33 +78,71 @@ export function AddTransactionModal({ children, transaction, open, onOpenChange 
         );
     }
 
+    // ── Mobile: iOS Sheet nativo ───────────────────────────────────────────────
     return (
         <Drawer open={finalOpen} onOpenChange={handleOpenChange} shouldScaleBackground>
             <DrawerTrigger asChild>
                 {children || (
-                    <motion.button
-                        whileTap={{ scale: 0.96 }}
-                        className="flex items-center gap-2 rounded-2xl bg-slate-900 border border-slate-900 hover:bg-slate-800 text-white font-semibold h-11 px-6 shadow-lg shadow-slate-200 transition-all"
-                    >
+                    <motion.button whileTap={{ scale: 0.96 }}
+                        className="flex items-center gap-2 rounded-2xl bg-slate-900 border border-slate-900 hover:bg-slate-800 text-white font-semibold h-11 px-6 shadow-lg shadow-slate-200 transition-all">
                         <Plus className="h-4 w-4" strokeWidth={2.5} />
                         <span className="text-[13px] tracking-tight">Nova Transação</span>
                     </motion.button>
                 )}
             </DrawerTrigger>
-            <DrawerContent className="h-[96vh] rounded-t-[40px] border-none bg-white shadow-2xl overflow-hidden flex flex-col">
+
+            <DrawerContent
+                className="border-none overflow-hidden flex flex-col"
+                style={{
+                    height: '96vh',
+                    borderTopLeftRadius: 20,
+                    borderTopRightRadius: 20,
+                    background: '#F2F2F7',
+                }}
+            >
                 <DrawerTitle className="sr-only">{title}</DrawerTitle>
 
-                {/* Visual Handle */}
-                <div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-slate-100 mt-4 mb-4" />
+                {/* ── Handle Pill ───────────────────────────────────────────── */}
+                <div style={{ display: 'flex', justifyContent: 'center', paddingTop: 12, paddingBottom: 4 }}>
+                    <div style={{ width: 36, height: 5, borderRadius: 99, background: 'rgba(60,60,67,0.18)' }} />
+                </div>
 
-                <div className="flex-1 overflow-y-auto px-6 pb-10 custom-scrollbar mt-2">
-                    <div className="flex items-center justify-between mb-8">
-                        <div>
-                            <h2 className="text-2xl font-semibold text-slate-900 tracking-tight">{title}</h2>
-                            <p className="text-[14px] text-slate-500 font-medium tracking-tight">Registro financeiro de precisão</p>
-                        </div>
-                    </div>
+                {/* ── iOS Navigation Bar ────────────────────────────────────── */}
+                <div style={{
+                    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                    padding: '8px 16px 12px 16px',
+                    borderBottom: '0.5px solid rgba(60,60,67,0.12)',
+                    background: '#F2F2F7',
+                }}>
+                    {/* Cancelar à esquerda */}
+                    <button
+                        type="button"
+                        onClick={() => handleOpenChange(false)}
+                        style={{
+                            background: 'transparent', border: 'none', cursor: 'pointer',
+                            fontSize: 17, color: '#3B82F6', fontFamily: iOSFont, fontWeight: 400,
+                            padding: '4px 0',
+                        }}
+                    >
+                        Cancelar
+                    </button>
 
+                    {/* Título central */}
+                    <span style={{
+                        fontSize: 17, fontWeight: 600, color: '#000', fontFamily: iOSFont, letterSpacing: '-0.3px',
+                    }}>
+                        {title}
+                    </span>
+
+                    {/* Espaço vazio à direita para balancear */}
+                    <span style={{ width: 64, display: 'block' }} />
+                </div>
+
+                {/* ── Conteúdo rolável ──────────────────────────────────────── */}
+                <div
+                    className="flex-1 overflow-y-auto custom-scrollbar"
+                    style={{ padding: '20px 16px 40px 16px', background: '#F2F2F7' }}
+                >
                     <TransactionForm
                         transaction={transaction}
                         onSuccess={() => handleOpenChange(false)}
@@ -122,4 +153,3 @@ export function AddTransactionModal({ children, transaction, open, onOpenChange 
         </Drawer>
     );
 }
-

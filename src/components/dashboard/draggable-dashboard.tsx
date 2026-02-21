@@ -61,44 +61,157 @@ export default function DraggableDashboard() {
         }
     };
 
-    // Versão Mobile
+    // Versão Mobile — iOS Native
     if (isMobile) {
         return (
-            <div className="space-y-8 max-w-[1440px] mx-auto pb-32 px-5 pt-4">
-                <div className="flex flex-col gap-0 px-1">
-                    <h1 className="text-2xl font-black text-slate-900 tracking-tight leading-tight">Visão Geral</h1>
-                    <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest opacity-80">Insights da sua conta</p>
+            <div
+                className="w-full pb-[100px]"
+                style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif" }}
+            >
+                {/* ── iOS Large Title Navigation Bar ───────────────────────────── */}
+                <div
+                    className="sticky top-0 z-40 px-4 pt-[56px] pb-4"
+                    style={{
+                        background: 'rgba(242,242,247,0.92)',
+                        backdropFilter: 'blur(20px) saturate(180%)',
+                        WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+                        borderBottom: '0.5px solid rgba(0,0,0,0.12)',
+                    }}
+                >
+                    {/* Large Title */}
+                    <h1 style={{
+                        fontSize: '34px',
+                        fontWeight: 700,
+                        lineHeight: 1.1,
+                        letterSpacing: '-0.5px',
+                        color: '#000000',
+                        fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui",
+                    }}>
+                        Visão Geral
+                    </h1>
+
+                    {/* Subtitle */}
+                    <p style={{
+                        fontSize: '13px',
+                        fontWeight: 400,
+                        color: '#8E8E93',
+                        marginTop: '4px',
+                        letterSpacing: '-0.1px',
+                    }}>
+                        Desempenho financeiro consolidado
+                    </p>
+
+                    {/* MonthSelector abaixo do subtítulo */}
+                    <div style={{ marginTop: '12px' }}>
+                        <MonthSelector currentDate={currentDate} onMonthChange={setCurrentDate} />
+                    </div>
                 </div>
 
-                <div className="flex items-center justify-center p-3 py-4 bg-white/50 backdrop-blur-xl rounded-[28px] border border-white/60 shadow-sm">
-                    <MonthSelector currentDate={currentDate} onMonthChange={setCurrentDate} />
-                </div>
+                {/* ── Seções de conteúdo estilo grouped iOS ────────────────────── */}
+                <div className="px-4 pt-6 space-y-8">
+                    {/* Saldo & Resumo */}
+                    <section>
+                        <h2 style={{
+                            fontSize: '13px',
+                            fontWeight: 500,
+                            color: '#8E8E93',
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.06em',
+                            marginBottom: '10px',
+                            paddingLeft: '4px',
+                        }}>
+                            Resumo do Mês
+                        </h2>
+                        <Wallet />
+                    </section>
 
-                <div className="flex flex-col gap-8">
-                    <Wallet />
-                    <PayableAccounts />
-                    <MonthlyEarningsChart currentDate={currentDate} />
-                    <TransactionsTable limit={10} />
-                    <DashboardInsights currentDate={currentDate} />
-                    <EarningsDonut currentDate={currentDate} />
+                    {/* Contas a Pagar */}
+                    <section>
+                        <h2 style={{
+                            fontSize: '13px',
+                            fontWeight: 500,
+                            color: '#8E8E93',
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.06em',
+                            marginBottom: '10px',
+                            paddingLeft: '4px',
+                        }}>
+                            Contas a Pagar
+                        </h2>
+                        <PayableAccounts />
+                    </section>
+
+                    {/* Fluxo Mensal */}
+                    <section>
+                        <h2 style={{
+                            fontSize: '13px',
+                            fontWeight: 500,
+                            color: '#8E8E93',
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.06em',
+                            marginBottom: '10px',
+                            paddingLeft: '4px',
+                        }}>
+                            Fluxo de Caixa
+                        </h2>
+                        <MonthlyEarningsChart currentDate={currentDate} />
+                    </section>
+
+                    {/* Transações */}
+                    <section>
+                        <h2 style={{
+                            fontSize: '13px',
+                            fontWeight: 500,
+                            color: '#8E8E93',
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.06em',
+                            marginBottom: '10px',
+                            paddingLeft: '4px',
+                        }}>
+                            Últimas Transações
+                        </h2>
+                        <TransactionsTable limit={10} />
+                    </section>
+
+                    {/* Insights */}
+                    <section>
+                        <h2 style={{
+                            fontSize: '13px',
+                            fontWeight: 500,
+                            color: '#8E8E93',
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.06em',
+                            marginBottom: '10px',
+                            paddingLeft: '4px',
+                        }}>
+                            Inteligência Financeira
+                        </h2>
+                        <DashboardInsights currentDate={currentDate} />
+                    </section>
+
+                    {/* Distribuição */}
+                    <section>
+                        <h2 style={{
+                            fontSize: '13px',
+                            fontWeight: 500,
+                            color: '#8E8E93',
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.06em',
+                            marginBottom: '10px',
+                            paddingLeft: '4px',
+                        }}>
+                            Distribuição
+                        </h2>
+                        <EarningsDonut currentDate={currentDate} />
+                    </section>
                 </div>
             </div>
         );
     }
 
+
     return (
         <div className="space-y-6 max-w-[1440px] mx-auto pb-8 px-2 md:px-0">
-            {/* Header com Ações */}
-            <div className="flex flex-col gap-1 md:flex-row md:items-end justify-between px-2">
-                <div>
-                    <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Visão Geral</h1>
-                    <p className="text-xs font-medium text-slate-400 tracking-wide">Desempenho financeiro consolidado.</p>
-                </div>
-                <div className="hidden md:flex gap-3">
-                    <ImportTransactionsModal />
-                    <AddTransactionModal />
-                </div>
-            </div>
 
             {/* Layout Principal Estático conforme Referência */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-5">

@@ -9,10 +9,9 @@ import {
     ArrowRightLeft,
     LineChart,
     Settings,
-    LogOut
+    LogOut,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Separator } from "@/components/ui/separator";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 
@@ -47,11 +46,13 @@ const navSections = [
 export function Sidebar({
     className,
     onNavItemClick,
-    isCollapsed = false
+    isCollapsed = false,
+    onToggleCollapse
 }: {
     className?: string,
     onNavItemClick?: () => void,
-    isCollapsed?: boolean
+    isCollapsed?: boolean,
+    onToggleCollapse?: () => void
 }) {
     const pathname = usePathname();
     const [profile, setProfile] = useState<{ name: string; avatar_url: string | null; occupation: string } | null>(null);
@@ -83,63 +84,71 @@ export function Sidebar({
 
     return (
         <aside className={cn(
-            "flex flex-col h-full bg-white border-r border-slate-100 overflow-y-auto scrollbar-hide transition-all duration-300",
-            isCollapsed ? "w-20" : "w-60",
+            "flex flex-col h-full bg-white transition-all duration-300 relative z-50",
+            isCollapsed ? "w-[72px]" : "w-60",
             className
         )}>
-            {/* Header / Logo Section */}
-            <div className={cn("mb-2", isCollapsed ? "p-4 flex justify-center" : "p-6")}>
-                {isCollapsed ? (
-                    <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center">
-                        <span className="text-primary font-black text-xl">F</span>
-                    </div>
-                ) : (
-                    <>
+
+            {/* Logo Section */}
+            <div className={cn(
+                "mb-6 flex items-center shrink-0",
+                isCollapsed ? "pt-6 pb-3 justify-center" : "pt-6 pb-3 px-5 justify-between items-start"
+            )}>
+                {!isCollapsed ? (
+                    <div className="flex flex-col animate-in fade-in slide-in-from-left-4 duration-300">
                         <h1 className="text-xl font-black text-slate-900 tracking-tighter leading-tight">Financeiro</h1>
-                        <p className="text-[9px] font-bold text-primary uppercase tracking-[0.2em] mt-0.5">Enterprise System</p>
-                    </>
-                )}
+                        <p className="text-[9px] font-bold text-primary uppercase tracking-[0.2em] mt-0.5 whitespace-nowrap">ENTERPRISE SYSTEM</p>
+                    </div>
+                ) : null}
             </div>
 
-            <nav className={cn("flex-1 space-y-6", isCollapsed ? "px-2" : "px-3")}>
-                {navSections.map((section) => (
-                    <div key={section.title} className="space-y-1">
-                        {!isCollapsed && (
-                            <h3 className="px-3 text-[9px] font-bold text-slate-400 uppercase tracking-widest">{section.title}</h3>
-                        )}
-                        <div className="space-y-0.5">
-                            {section.items.map((item) => {
-                                const isActive = pathname === item.href;
-                                return (
-                                    <Link
-                                        key={item.label}
-                                        href={item.href}
-                                        onClick={onNavItemClick}
-                                        className={cn(
-                                            "flex items-center rounded-xl transition-all duration-200 group text-[13px]",
-                                            isCollapsed ? "justify-center p-2.5" : "gap-2.5 px-3 py-2",
-                                            isActive
-                                                ? "bg-primary/10 text-primary font-bold shadow-sm shadow-primary/5"
-                                                : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"
-                                        )}
-                                        title={isCollapsed ? item.label : undefined}
-                                    >
-                                        <item.icon className={cn(
-                                            "h-[18px] w-[18px]",
-                                            isActive ? "text-primary" : "text-slate-400 group-hover:text-slate-900"
-                                        )} strokeWidth={isActive ? 2.5 : 2} />
-                                        {!isCollapsed && <span className="tracking-tight">{item.label}</span>}
-                                    </Link>
-                                );
-                            })}
-                        </div>
-                    </div>
-                ))}
-            </nav>
+            {/* Scrollable Navigation */}
+            <div className="flex-1 overflow-y-auto scrollbar-hide px-3 py-1">
+                <nav className="space-y-6">
+                    {navSections.map((section) => (
+                        <div key={section.title} className="space-y-1">
+                            {!isCollapsed && (
+                                <h3 className="px-3 py-1 text-[10px] font-bold text-slate-400 uppercase tracking-[0.15em]">{section.title}</h3>
+                            )}
+                            <div className="space-y-0.5">
+                                {section.items.map((item) => {
+                                    const isActive = pathname === item.href;
+                                    return (
+                                        <Link
+                                            key={item.label}
+                                            href={item.href}
+                                            onClick={onNavItemClick}
+                                            className={cn(
+                                                "flex items-center rounded-xl transition-all duration-200 group text-[13px] relative",
+                                                isCollapsed ? "justify-center w-11 h-11 mx-auto" : "gap-3 px-3 py-2.5",
+                                                isActive
+                                                    ? "bg-blue-50 text-blue-600 font-semibold"
+                                                    : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"
+                                            )}
+                                            title={isCollapsed ? item.label : undefined}
+                                        >
+                                            <item.icon className={cn(
+                                                "h-[18px] w-[18px] shrink-0 transition-colors",
+                                                isActive ? "text-blue-600" : "text-slate-400 group-hover:text-slate-700"
+                                            )} strokeWidth={isActive ? 2.5 : 2} />
+                                            {!isCollapsed && <span className="tracking-tight">{item.label}</span>}
 
-            {/* User Profile & Logout Section */}
-            <div className={cn("mt-auto border-t border-slate-100", isCollapsed ? "p-2" : "p-3")}>
-                <div className={cn("flex items-center mb-2", isCollapsed ? "justify-center" : "gap-2.5 p-2")}>
+                                            {/* Active indicator bar */}
+                                            {isActive && !isCollapsed && (
+                                                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 bg-blue-600 rounded-r-full" />
+                                            )}
+                                        </Link>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    ))}
+                </nav>
+            </div>
+
+            {/* Footer Area */}
+            <div className={cn("mt-auto border-t border-slate-100 shrink-0", isCollapsed ? "p-3" : "p-4 px-5")}>
+                <div className={cn("flex items-center mb-4", isCollapsed ? "justify-center" : "gap-3")}>
                     <Avatar className="h-8 w-8 border-2 border-white shadow-sm ring-1 ring-slate-100">
                         <AvatarImage src={profile?.avatar_url || ""} />
                         <AvatarFallback className="bg-primary/10 text-primary font-bold text-[10px]">{initials}</AvatarFallback>
@@ -147,7 +156,7 @@ export function Sidebar({
                     {!isCollapsed && (
                         <div className="flex flex-col min-w-0">
                             <span className="text-[13px] font-bold text-slate-900 truncate leading-none mb-0.5">{displayName}</span>
-                            <span className="text-[9px] font-semibold text-slate-400 uppercase truncate tracking-wider">{profile?.occupation || "Usuário"}</span>
+                            <span className="text-[10px] font-semibold text-slate-400 uppercase truncate tracking-wider">Membro Premium</span>
                         </div>
                     )}
                 </div>
@@ -155,12 +164,12 @@ export function Sidebar({
                 <button
                     onClick={handleLogout}
                     className={cn(
-                        "flex items-center rounded-xl text-[13px] font-bold text-slate-400 hover:text-destructive hover:bg-destructive/5 transition-all group",
-                        isCollapsed ? "justify-center p-2.5" : "gap-2.5 px-3 py-2 w-full"
+                        "flex items-center rounded-xl text-[13px] font-medium text-slate-400 hover:text-destructive hover:bg-destructive/5 transition-all group",
+                        isCollapsed ? "justify-center p-2" : "gap-2.5 px-3 py-2 w-full"
                     )}
                     title={isCollapsed ? "Sair do Sistema" : undefined}
                 >
-                    <LogOut className="h-[18px] w-[18px] text-slate-300 group-hover:text-destructive transition-colors" />
+                    <LogOut className="h-[17px] w-[17px] text-slate-300 group-hover:text-destructive transition-colors" />
                     {!isCollapsed && <span>Sair do Sistema</span>}
                 </button>
             </div>

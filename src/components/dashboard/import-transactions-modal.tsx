@@ -89,7 +89,8 @@ export function ImportTransactionsModal() {
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
                 <Button
-                    className="flex items-center gap-2 rounded-2xl bg-blue-600 border border-blue-600 hover:bg-blue-700 text-white font-semibold h-11 px-6 shadow-[0_12px_32px_-8px_rgba(59,130,246,0.25)] transition-all"
+                    variant="outline"
+                    className="flex items-center gap-2 rounded-2xl bg-white border border-blue-600 hover:bg-blue-50 text-blue-600 hover:text-blue-700 font-semibold h-11 px-6 transition-all"
                 >
                     <FileUp className="w-4 h-4" strokeWidth={2.5} />
                     <span className="text-[13px] tracking-tight">Importar Extrato</span>

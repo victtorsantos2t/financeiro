@@ -90,29 +90,5 @@ export function ReportActions({ currentDate = new Date() }: ReportActionsProps) 
         }
     };
 
-    return (
-        <div className="flex items-center gap-2">
-            <Button
-                variant="outline"
-                size="sm"
-                onClick={handlePdfGeneration}
-                disabled={isGeneratingPdf}
-                className="h-9 rounded-[12px] border-slate-100 bg-white/50 text-slate-500 hover:text-blue-600 hover:bg-white hover:border-blue-500/20 transition-all shadow-none flex items-center gap-2 px-4"
-            >
-                {isGeneratingPdf ? <Loader2 className="h-4 w-4 animate-spin" /> : <FileText className="h-4 w-4" />}
-                <span className="hidden sm:inline text-[13px] font-semibold tracking-tight">PDF</span>
-            </Button>
-
-            <Button
-                variant="outline"
-                size="sm"
-                onClick={handleExcelExport}
-                disabled={isExportingExcel}
-                className="h-9 rounded-[12px] border-slate-100 bg-white/50 text-slate-500 hover:text-emerald-600 hover:bg-white hover:border-emerald-500/20 transition-all shadow-none flex items-center gap-2 px-4"
-            >
-                {isExportingExcel ? <Loader2 className="h-4 w-4 animate-spin" /> : <FileSpreadsheet className="h-4 w-4" />}
-                <span className="hidden sm:inline text-[13px] font-semibold tracking-tight">Excel</span>
-            </Button>
-        </div>
-    );
+    return null;
 }

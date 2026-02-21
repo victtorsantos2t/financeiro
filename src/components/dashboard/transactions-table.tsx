@@ -189,7 +189,7 @@ export function TransactionsTable({
                         <p className="text-muted-foreground font-medium italic">Sem lançamentos para exibir.</p>
                     </div>
                 ) : (
-                    <div className="pb-24">
+                    <div className="pb-4">
                         <AnimatePresence initial={false}>
                             {Object.entries(groupedTransactions).map(([date, dailyTx]) => {
                                 const dailyBalance = calculateDailyBalance(dailyTx);
