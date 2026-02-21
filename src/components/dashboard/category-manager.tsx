@@ -158,48 +158,48 @@ export function CategoryManager() {
     return (
         <div className="space-y-8">
             {/* 1. ADD NEW CATEGORY SECTION */}
-            <div className="bg-white rounded-[32px] p-8 border border-slate-100 shadow-sm space-y-8">
+            <div className="bg-card dark:bg-white/5 rounded-[32px] p-8 border border-border shadow-sm space-y-8">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                        <div className="p-3 bg-blue-600 text-white rounded-[18px]">
+                        <div className="p-3 bg-primary text-primary-foreground rounded-[18px]">
                             <Tag className="h-5 w-5" />
                         </div>
                         <div className="space-y-0.5">
-                            <h3 className="text-xl font-bold text-slate-900 tracking-tight">Nova Categoria</h3>
-                            <p className="text-slate-400 text-sm font-medium">Organize seus lançamentos por tipo.</p>
+                            <h3 className="text-xl font-bold text-foreground tracking-tight">Nova Categoria</h3>
+                            <p className="text-muted-foreground text-sm font-medium">Organize seus lançamentos por tipo.</p>
                         </div>
                     </div>
                 </div>
 
                 <div className="flex flex-col lg:flex-row gap-6 items-end">
                     <div className="space-y-4 w-full flex-1">
-                        <Label className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.15em] ml-1">
+                        <Label className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.15em] ml-1">
                             Identificação da Categoria
                         </Label>
                         <Input
                             value={newCategoryName}
                             onChange={(e) => setNewCategoryName(e.target.value)}
                             placeholder="Ex: Viagens, Assinaturas..."
-                            className="h-16 rounded-[22px] bg-slate-50/50 border-transparent focus:bg-white focus:border-slate-900 focus:ring-0 transition-all font-semibold text-slate-900 px-8 text-base shadow-inner group hover:border-slate-200"
+                            className="h-16 rounded-[22px] bg-secondary/50 border-transparent focus:bg-background focus:border-primary focus:ring-0 transition-all font-semibold text-foreground px-8 text-base shadow-inner group hover:border-border"
                         />
                     </div>
 
                     <div className="space-y-4 w-full lg:w-[220px]">
-                        <Label className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.15em] ml-1">
+                        <Label className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.15em] ml-1">
                             Fluxo Financeiro
                         </Label>
                         <Select
                             value={newCategoryType}
                             onValueChange={(val: "income" | "expense") => setNewCategoryType(val)}
                         >
-                            <SelectTrigger className="h-16 rounded-[22px] bg-slate-50/50 border-transparent transition-all font-bold text-slate-900 px-8 text-base focus:bg-white">
+                            <SelectTrigger className="h-16 rounded-[22px] bg-secondary/50 border-transparent transition-all font-bold text-foreground px-8 text-base focus:bg-background">
                                 <SelectValue />
                             </SelectTrigger>
-                            <SelectContent className="rounded-[28px] border-slate-100 shadow-2xl p-2 bg-white/98 backdrop-blur-xl">
-                                <SelectItem value="expense" className="rounded-xl py-4 focus:bg-slate-50 font-semibold text-slate-900 flex items-center gap-2">
+                            <SelectContent className="rounded-[28px] border-border shadow-2xl p-2 bg-popover/98 backdrop-blur-xl">
+                                <SelectItem value="expense" className="rounded-xl py-4 focus:bg-secondary font-semibold text-foreground flex items-center gap-2">
                                     Despesa
                                 </SelectItem>
-                                <SelectItem value="income" className="rounded-xl py-4 focus:bg-slate-50 font-semibold text-slate-900 flex items-center gap-2">
+                                <SelectItem value="income" className="rounded-xl py-4 focus:bg-secondary font-semibold text-foreground flex items-center gap-2">
                                     Receita
                                 </SelectItem>
                             </SelectContent>
@@ -209,7 +209,7 @@ export function CategoryManager() {
                     <Button
                         onClick={handleAddCategory}
                         disabled={loading || !newCategoryName.trim()}
-                        className="h-16 px-10 rounded-[22px] bg-slate-900 text-white font-bold shadow-xl shadow-slate-900/10 hover:shadow-slate-900/20 active:scale-95 transition-all text-base w-full lg:w-auto"
+                        className="h-16 px-10 rounded-[22px] bg-foreground text-background font-bold shadow-xl shadow-foreground/10 hover:shadow-foreground/20 active:scale-95 transition-all text-base w-full lg:w-auto"
                     >
                         {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Plus className="h-5 w-5 mr-2" />}
                         Adicionar
@@ -218,30 +218,30 @@ export function CategoryManager() {
             </div>
 
             {/* 2. EXISTING CATEGORIES LIST */}
-            <div className="bg-white rounded-[32px] p-8 border border-slate-100 shadow-sm space-y-8">
+            <div className="bg-card dark:bg-white/5 rounded-[32px] p-8 border border-border shadow-sm space-y-8">
                 <div className="flex flex-col gap-6">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div className="space-y-1">
-                            <h3 className="text-xl font-bold text-slate-900 tracking-tight">Categorias Ativas</h3>
-                            <p className="text-slate-400 text-sm font-medium">Lista organizada dos seus tipos de lançamento.</p>
+                            <h3 className="text-xl font-bold text-foreground tracking-tight">Categorias Ativas</h3>
+                            <p className="text-muted-foreground text-sm font-medium">Lista organizada dos seus tipos de lançamento.</p>
                         </div>
 
                         <div className="flex items-center gap-3">
                             <div className="relative group flex-1 sm:w-64">
-                                <Search className="absolute left-6 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-300 group-focus-within:text-slate-900 transition-colors" />
+                                <Search className="absolute left-6 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/60 group-focus-within:text-foreground transition-colors" />
                                 <input
                                     type="text"
                                     placeholder="Buscar..."
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
-                                    className="w-full h-12 rounded-full bg-slate-100/50 border-transparent focus:bg-white focus:border-slate-200 focus:ring-4 focus:ring-slate-100/50 transition-all pl-14 pr-6 text-sm font-semibold text-slate-900 outline-none"
+                                    className="w-full h-12 rounded-full bg-secondary/50 border-transparent focus:bg-background focus:border-border focus:ring-4 focus:ring-primary/10 transition-all pl-14 pr-6 text-sm font-semibold text-foreground outline-none"
                                 />
                             </div>
                             <Button
                                 variant="outline"
                                 onClick={handleLoadDefaults}
                                 disabled={loading}
-                                className="h-12 w-12 rounded-full bg-slate-50 border-transparent hover:bg-blue-50 hover:text-blue-600 transition-all shrink-0 p-0"
+                                className="h-12 w-12 rounded-full bg-secondary border-transparent hover:bg-primary/20 hover:text-primary transition-all shrink-0 p-0"
                                 title="Carregar Padrões"
                             >
                                 <Sparkles className="h-5 w-5" />
@@ -250,7 +250,7 @@ export function CategoryManager() {
                     </div>
 
                     {/* Filter Pills */}
-                    <div className="flex items-center gap-2 p-1.5 bg-slate-100/50 rounded-2xl w-fit">
+                    <div className="flex items-center gap-2 p-1.5 bg-secondary/50 rounded-2xl w-fit">
                         {[
                             { value: 'all', label: 'Tudo' },
                             { value: 'income', label: 'Entradas' },
@@ -262,8 +262,8 @@ export function CategoryManager() {
                                 className={cn(
                                     "px-6 py-2 rounded-xl text-xs font-bold transition-all",
                                     viewFilter === filter.value
-                                        ? "bg-white text-slate-900 shadow-sm"
-                                        : "text-slate-400 hover:text-slate-600"
+                                        ? "bg-background text-foreground shadow-sm"
+                                        : "text-muted-foreground hover:text-foreground"
                                 )}
                             >
                                 {filter.label}
@@ -296,11 +296,11 @@ export function CategoryManager() {
                                         "w-1 h-4 rounded-full",
                                         type === 'income' ? 'bg-emerald-500' : 'bg-rose-500'
                                     )} />
-                                    <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">
+                                    <h4 className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">
                                         {type === 'income' ? 'Entradas de Capital' : 'Saídas de Capital'}
                                     </h4>
-                                    <div className="flex-1 border-t border-slate-100" />
-                                    <span className="text-[10px] font-bold text-slate-300">{typeCategories.length} cat</span>
+                                    <div className="flex-1 border-t border-border" />
+                                    <span className="text-[10px] font-bold text-muted-foreground/50">{typeCategories.length} cat</span>
                                 </div>
 
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -312,7 +312,7 @@ export function CategoryManager() {
                                                 initial={{ opacity: 0, scale: 0.95 }}
                                                 animate={{ opacity: 1, scale: 1 }}
                                                 exit={{ opacity: 0, scale: 0.95 }}
-                                                className="group flex items-center justify-between p-5 rounded-[24px] border border-slate-50 bg-slate-50/30 hover:bg-white hover:border-slate-200 hover:shadow-md transition-all duration-300"
+                                                className="group flex items-center justify-between p-5 rounded-[24px] border border-border bg-secondary/20 hover:bg-secondary hover:border-primary/30 hover:shadow-md transition-all duration-300"
                                             >
                                                 <div className="flex items-center gap-4">
                                                     <div className={cn(
@@ -322,8 +322,8 @@ export function CategoryManager() {
                                                         {cat.type === 'income' ? <ArrowDownCircle className="h-5 w-5" /> : <ArrowUpCircle className="h-5 w-5" />}
                                                     </div>
                                                     <div className="space-y-0.5">
-                                                        <h4 className="font-bold text-slate-900 tracking-tight leading-none group-hover:text-blue-600 transition-colors">{cat.name}</h4>
-                                                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{cat.type === 'income' ? 'Categoria de Entrada' : 'Categoria de Saída'}</p>
+                                                        <h4 className="font-bold text-foreground tracking-tight leading-none group-hover:text-primary transition-colors">{cat.name}</h4>
+                                                        <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">{cat.type === 'income' ? 'Categoria de Entrada' : 'Categoria de Saída'}</p>
                                                     </div>
                                                 </div>
                                                 <AlertDialog>
@@ -331,23 +331,23 @@ export function CategoryManager() {
                                                         <Button
                                                             variant="ghost"
                                                             size="icon"
-                                                            className="h-10 w-10 text-slate-200 hover:text-rose-500 hover:bg-rose-50 rounded-full transition-all group-hover:opacity-100 group-hover:translate-x-0 sm:opacity-0 sm:translate-x-2"
+                                                            className="h-10 w-10 text-muted-foreground/30 hover:text-destructive hover:bg-destructive/10 rounded-full transition-all group-hover:opacity-100 group-hover:translate-x-0 sm:opacity-0 sm:translate-x-2"
                                                         >
                                                             <Trash2 className="h-4 w-4" />
                                                         </Button>
                                                     </AlertDialogTrigger>
-                                                    <AlertDialogContent className="rounded-[32px] border-slate-100 shadow-2xl bg-white/95 backdrop-blur-xl">
+                                                    <AlertDialogContent className="rounded-[32px] border-border shadow-2xl bg-popover/95 backdrop-blur-xl">
                                                         <AlertDialogHeader>
-                                                            <AlertDialogTitle className="text-xl font-bold text-slate-900">Excluir Categoria?</AlertDialogTitle>
-                                                            <AlertDialogDescription className="text-slate-500 font-medium">
+                                                            <AlertDialogTitle className="text-xl font-bold text-foreground">Excluir Categoria?</AlertDialogTitle>
+                                                            <AlertDialogDescription className="text-muted-foreground font-medium">
                                                                 Esta ação não pode ser desfeita. Se houver transações vinculadas a esta categoria, a exclusão poderá falhar.
                                                             </AlertDialogDescription>
                                                         </AlertDialogHeader>
                                                         <AlertDialogFooter className="gap-3 mt-6">
-                                                            <AlertDialogCancel className="rounded-2xl border-slate-100 font-bold text-slate-500 hover:bg-slate-50 h-12">Cancelar</AlertDialogCancel>
+                                                            <AlertDialogCancel className="rounded-2xl border-border font-bold text-muted-foreground hover:bg-secondary h-12">Cancelar</AlertDialogCancel>
                                                             <AlertDialogAction
                                                                 onClick={() => handleDeleteCategory(cat.id)}
-                                                                className="rounded-2xl bg-rose-500 hover:bg-rose-600 font-bold text-white h-12 px-6"
+                                                                className="rounded-2xl bg-destructive hover:bg-destructive/90 font-bold text-destructive-foreground h-12 px-6"
                                                             >
                                                                 Confirmar Exclusão
                                                             </AlertDialogAction>

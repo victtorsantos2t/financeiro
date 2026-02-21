@@ -101,20 +101,20 @@ export function WalletTypeManager() {
     return (
         <div className="space-y-8">
             {/* 1. ADD NEW TYPE SECTION */}
-            <div className="bg-white rounded-[32px] p-8 border border-slate-100 shadow-sm space-y-8">
+            <div className="bg-card dark:bg-white/5 rounded-[32px] p-8 border border-border shadow-sm space-y-8">
                 <div className="flex items-center gap-3">
-                    <div className="p-3 bg-slate-900 text-white rounded-[18px]">
+                    <div className="p-3 bg-foreground text-background rounded-[18px]">
                         <Landmark className="h-5 w-5" />
                     </div>
                     <div className="space-y-0.5">
-                        <h3 className="text-xl font-bold text-slate-900 tracking-tight">Tipos de Conta</h3>
-                        <p className="text-slate-400 text-sm font-medium">Cadastre novas categorias para suas instituições.</p>
+                        <h3 className="text-xl font-bold text-foreground tracking-tight">Tipos de Conta</h3>
+                        <p className="text-muted-foreground text-sm font-medium">Cadastre novas categorias para suas instituições.</p>
                     </div>
                 </div>
 
                 <div className="flex flex-col lg:flex-row gap-6 items-end">
                     <div className="space-y-4 flex-1 w-full">
-                        <Label htmlFor="new-type" className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.15em] ml-1">
+                        <Label htmlFor="new-type" className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.15em] ml-1">
                             Nome do Tipo de Conta
                         </Label>
                         <Input
@@ -123,13 +123,13 @@ export function WalletTypeManager() {
                             value={newName}
                             onChange={(e) => setNewName(e.target.value)}
                             onKeyDown={(e) => e.key === "Enter" && handleAdd()}
-                            className="h-16 rounded-[22px] bg-slate-50/50 border-transparent focus:bg-white focus:border-slate-900 focus:ring-0 transition-all font-semibold text-slate-900 px-8 text-base shadow-inner group hover:border-slate-200"
+                            className="h-16 rounded-[22px] bg-secondary/50 border-transparent focus:bg-background focus:border-foreground focus:ring-0 transition-all font-semibold text-foreground px-8 text-base shadow-inner group hover:border-border"
                         />
                     </div>
                     <Button
                         onClick={handleAdd}
                         disabled={loading || !newName.trim()}
-                        className="h-16 px-10 rounded-[22px] bg-slate-900 text-white font-bold shadow-xl shadow-slate-900/10 hover:shadow-slate-900/20 active:scale-95 transition-all text-base w-full lg:w-auto"
+                        className="h-16 px-10 rounded-[22px] bg-foreground text-background font-bold shadow-xl shadow-foreground/10 hover:shadow-foreground/20 active:scale-95 transition-all text-base w-full lg:w-auto"
                     >
                         {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Plus className="h-5 w-5 mr-2" />}
                         Adicionar
@@ -138,10 +138,10 @@ export function WalletTypeManager() {
             </div>
 
             {/* 2. EXISTING TYPES LIST */}
-            <div className="bg-white rounded-[32px] p-8 border border-slate-100 shadow-sm space-y-8">
+            <div className="bg-card dark:bg-white/5 rounded-[32px] p-8 border border-border shadow-sm space-y-8">
                 <div className="space-y-1">
-                    <h3 className="text-xl font-bold text-slate-900 tracking-tight">Suas Classificações</h3>
-                    <p className="text-slate-400 text-sm font-medium">Tipos de conta disponíveis para uso.</p>
+                    <h3 className="text-xl font-bold text-foreground tracking-tight">Suas Classificações</h3>
+                    <p className="text-muted-foreground text-sm font-medium">Tipos de conta disponíveis para uso.</p>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -162,36 +162,36 @@ export function WalletTypeManager() {
                                     initial={{ opacity: 0, scale: 0.95 }}
                                     animate={{ opacity: 1, scale: 1 }}
                                     exit={{ opacity: 0, scale: 0.95 }}
-                                    className="group flex items-center justify-between p-5 rounded-[24px] border border-slate-50 bg-slate-50/30 hover:bg-white hover:border-slate-200 hover:shadow-md transition-all duration-300"
+                                    className="group flex items-center justify-between p-5 rounded-[24px] border border-border bg-secondary/20 hover:bg-secondary hover:border-primary/30 hover:shadow-md transition-all duration-300"
                                 >
                                     <div className="flex items-center gap-4">
-                                        <div className="p-3 bg-white rounded-2xl shadow-sm border border-slate-100 transition-transform group-hover:scale-110">
-                                            {index % 2 === 0 ? <CreditCard className="h-5 w-5 text-slate-400" /> : <Coins className="h-5 w-5 text-slate-400" />}
+                                        <div className="p-3 bg-secondary rounded-2xl shadow-sm border border-border transition-transform group-hover:scale-110">
+                                            {index % 2 === 0 ? <CreditCard className="h-5 w-5 text-muted-foreground" /> : <Coins className="h-5 w-5 text-muted-foreground" />}
                                         </div>
-                                        <span className="font-bold text-slate-800 text-sm tracking-tight">{type.name}</span>
+                                        <span className="font-bold text-foreground text-sm tracking-tight">{type.name}</span>
                                     </div>
                                     <AlertDialog>
                                         <AlertDialogTrigger asChild>
                                             <Button
                                                 variant="ghost"
                                                 size="icon"
-                                                className="h-10 w-10 text-slate-200 hover:text-rose-500 hover:bg-rose-50 rounded-full transition-all group-hover:opacity-100 group-hover:translate-x-0 sm:opacity-0 sm:translate-x-2"
+                                                className="h-10 w-10 text-muted-foreground/30 hover:text-destructive hover:bg-destructive/10 rounded-full transition-all group-hover:opacity-100 group-hover:translate-x-0 sm:opacity-0 sm:translate-x-2"
                                             >
                                                 <Trash2 className="h-4 w-4" />
                                             </Button>
                                         </AlertDialogTrigger>
-                                        <AlertDialogContent className="rounded-[32px] border-slate-100 shadow-2xl bg-white/95 backdrop-blur-xl">
+                                        <AlertDialogContent className="rounded-[32px] border-border shadow-2xl bg-popover/95 backdrop-blur-xl">
                                             <AlertDialogHeader>
-                                                <AlertDialogTitle className="text-xl font-bold text-slate-900">Excluir Tipo de Conta?</AlertDialogTitle>
-                                                <AlertDialogDescription className="text-slate-500 font-medium">
+                                                <AlertDialogTitle className="text-xl font-bold text-foreground">Excluir Tipo de Conta?</AlertDialogTitle>
+                                                <AlertDialogDescription className="text-muted-foreground font-medium">
                                                     Esta ação removerá este tipo de conta permanentemente. Verifique se ele não está sendo usado em nenhuma carteira ativa.
                                                 </AlertDialogDescription>
                                             </AlertDialogHeader>
                                             <AlertDialogFooter className="gap-3 mt-6">
-                                                <AlertDialogCancel className="rounded-2xl border-slate-100 font-bold text-slate-500 hover:bg-slate-50 h-12">Cancelar</AlertDialogCancel>
+                                                <AlertDialogCancel className="rounded-2xl border-border font-bold text-muted-foreground hover:bg-secondary h-12">Cancelar</AlertDialogCancel>
                                                 <AlertDialogAction
                                                     onClick={() => handleDelete(type.id)}
-                                                    className="rounded-2xl bg-rose-500 hover:bg-rose-600 font-bold text-white h-12 px-6"
+                                                    className="rounded-2xl bg-destructive hover:bg-destructive/90 font-bold text-destructive-foreground h-12 px-6"
                                                 >
                                                     Confirmar Exclusão
                                                 </AlertDialogAction>
