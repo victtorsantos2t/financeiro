@@ -11,6 +11,7 @@ import {
     Settings,
     LogOut,
 } from "lucide-react";
+import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
@@ -95,9 +96,15 @@ export function Sidebar({
                 isCollapsed ? "pt-6 pb-3 justify-center" : "pt-6 pb-3 px-5 justify-between items-start"
             )}>
                 {!isCollapsed ? (
-                    <div className="flex flex-col animate-in fade-in slide-in-from-left-4 duration-300">
-                        <h1 className="text-xl font-black text-slate-900 dark:text-white tracking-tighter leading-tight">Financeiro</h1>
-                        <p className="text-[9px] font-bold text-primary uppercase tracking-[0.2em] mt-0.5 whitespace-nowrap">ENTERPRISE SYSTEM</p>
+                    <div className="flex flex-col animate-in fade-in slide-in-from-left-4 duration-300 px-1">
+                        <Image
+                            src="/images/logo-vicnex.png"
+                            alt="VICNEX Logo"
+                            width={140}
+                            height={40}
+                            className="dark:brightness-0 dark:invert"
+                            priority
+                        />
                     </div>
                 ) : null}
             </div>

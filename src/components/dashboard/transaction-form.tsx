@@ -65,10 +65,9 @@ const iOSFont = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Displ
 function IOSCard({ children }: { children: React.ReactNode }) {
     return (
         <div
-            className="bg-white overflow-hidden"
+            className="bg-card dark:bg-white/5 overflow-hidden border border-border/10"
             style={{
                 borderRadius: 14,
-                boxShadow: '0 2px 8px rgba(0,0,0,0.06), 0 0 0 0.5px rgba(0,0,0,0.08)',
             }}
         >
             {children}
@@ -78,7 +77,7 @@ function IOSCard({ children }: { children: React.ReactNode }) {
 
 // ─── iOS Separator ───────────────────────────────────────────────────────────
 function Sep() {
-    return <div style={{ height: '0.5px', background: 'rgba(60,60,67,0.12)', marginLeft: 16 }} />;
+    return <div className="h-[0.5px] bg-border/20 ml-4" />;
 }
 
 // ─── Section Label ────────────────────────────────────────────────────────────
@@ -138,7 +137,7 @@ function FieldRow({
 }) {
     return (
         <div style={{ display: 'flex', alignItems: 'center', minHeight: 44, paddingLeft: 16, paddingRight: 12 }}>
-            <span style={{ fontSize: 15, color: '#000', fontFamily: iOSFont, fontWeight: 400, flexShrink: 0, minWidth: 90 }}>
+            <span style={{ fontSize: 15, color: 'var(--foreground)', fontFamily: iOSFont, fontWeight: 400, flexShrink: 0, minWidth: 90 }}>
                 {label}
             </span>
             <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 4 }}>
@@ -165,13 +164,7 @@ function IOSSegmented<T extends string>({
     const activeColor = colorMap?.[value] ?? '#3B82F6';
     return (
         <div
-            style={{
-                display: 'flex',
-                background: 'rgba(118,118,128,0.12)',
-                borderRadius: 10,
-                padding: 3,
-                gap: 2,
-            }}
+            className="flex bg-secondary/30 dark:bg-white/10 p-1 rounded-xl gap-1 shadow-inner"
         >
             {options.map(opt => {
                 const isActive = opt.value === value;
@@ -180,20 +173,15 @@ function IOSSegmented<T extends string>({
                         key={opt.value}
                         type="button"
                         onClick={() => onChange(opt.value)}
+                        className={cn(
+                            "flex-1 h-9 rounded-lg text-[13px] transition-all duration-200 border-none cursor-pointer",
+                            isActive
+                                ? "bg-white dark:bg-secondary text-[#007AFF] shadow-[0_2px_8px_rgba(0,0,0,0.12)] font-semibold"
+                                : "bg-transparent text-muted-foreground font-normal hover:text-foreground"
+                        )}
                         style={{
-                            flex: 1,
-                            height: 32,
-                            borderRadius: 8,
-                            background: isActive ? '#fff' : 'transparent',
-                            boxShadow: isActive ? '0 2px 6px rgba(0,0,0,0.10), 0 1px 2px rgba(0,0,0,0.07)' : 'none',
-                            fontSize: 13,
-                            fontWeight: isActive ? 600 : 400,
-                            color: isActive ? activeColor : '#3C3C43',
                             fontFamily: iOSFont,
-                            border: 'none',
-                            cursor: 'pointer',
-                            transition: 'background 0.15s, box-shadow 0.15s',
-                            letterSpacing: '-0.1px',
+                            color: isActive ? activeColor : undefined,
                         }}
                     >
                         {opt.label}
@@ -427,7 +415,7 @@ export function TransactionForm({ className, transaction, onSuccess, onCancel }:
                                     border: 'none',
                                     outline: 'none',
                                     fontSize: 15,
-                                    color: '#000',
+                                    color: 'var(--foreground)',
                                     fontFamily: iOSFont,
                                     caretColor: '#3B82F6',
                                 }}
@@ -503,7 +491,7 @@ export function TransactionForm({ className, transaction, onSuccess, onCancel }:
                                     border: 'none',
                                     outline: 'none',
                                     fontSize: 15,
-                                    color: '#3C3C43',
+                                    color: 'var(--muted-foreground)',
                                     fontFamily: iOSFont,
                                     textAlign: 'right',
                                     cursor: 'pointer',
@@ -522,8 +510,8 @@ export function TransactionForm({ className, transaction, onSuccess, onCancel }:
                             <div style={{ display: 'flex', alignItems: 'center', gap: 10, flex: 1 }}>
                                 <Repeat size={17} style={{ color: '#3B82F6', flexShrink: 0 }} />
                                 <div>
-                                    <p style={{ fontSize: 15, color: '#000', fontFamily: iOSFont, fontWeight: 400 }}>Pagamento Recorrente</p>
-                                    <p style={{ fontSize: 12, color: '#8E8E93', fontFamily: iOSFont }}>Auto-repeat transação</p>
+                                    <p style={{ fontSize: 15, color: 'var(--foreground)', fontFamily: iOSFont, fontWeight: 400 }}>Pagamento Recorrente</p>
+                                    <p style={{ fontSize: 12, color: 'var(--muted-foreground)', fontFamily: iOSFont }}>Auto-repeat transação</p>
                                 </div>
                             </div>
                             <Switch
@@ -646,7 +634,7 @@ export function TransactionForm({ className, transaction, onSuccess, onCancel }:
                     <div className="relative group flex items-center justify-center w-full max-w-[300px]">
                         <span className={cn(
                             "absolute left-4 text-3xl font-medium transition-colors duration-500",
-                            type === 'income' ? 'text-blue-500' : type === 'transfer' ? 'text-violet-500' : 'text-slate-900',
+                            type === 'income' ? 'text-blue-500' : type === 'transfer' ? 'text-violet-500' : 'text-foreground',
                             !amount && "opacity-50"
                         )}>R$</span>
                         <input
@@ -660,8 +648,8 @@ export function TransactionForm({ className, transaction, onSuccess, onCancel }:
                             }}
                             placeholder="0,00"
                             className={cn(
-                                "w-full bg-transparent border-none text-center text-6xl font-semibold tracking-tighter focus:ring-0 placeholder:text-slate-100 transition-colors duration-500 pl-12",
-                                type === 'income' ? 'text-blue-600' : type === 'transfer' ? 'text-violet-600' : 'text-slate-900'
+                                "w-full bg-transparent border-none text-center text-6xl font-semibold tracking-tighter focus:ring-0 placeholder:text-muted/20 transition-colors duration-500 pl-12",
+                                type === 'income' ? 'text-blue-600' : type === 'transfer' ? 'text-violet-600' : 'text-foreground'
                             )}
                         />
                     </div>
@@ -710,10 +698,10 @@ export function TransactionForm({ className, transaction, onSuccess, onCancel }:
                 {/* 3. FIELDS */}
                 <div className="space-y-8">
                     <div className="space-y-3">
-                        <label htmlFor="description" className="text-[10px] font-bold text-slate-300 uppercase tracking-widest ml-1">Descrição</label>
+                        <label htmlFor="description" className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1">Descrição</label>
                         <input id="description" type="text" value={description} onChange={e => setDescription(e.target.value)}
                             placeholder="Ex: Supermercado, Aluguel..."
-                            className="h-14 w-full rounded-2xl bg-white border border-slate-100 shadow-sm focus:ring-4 focus:ring-slate-100/50 text-[15px] px-6 transition-all outline-none" />
+                            className="h-14 w-full rounded-2xl bg-secondary/50 border border-border/10 focus:bg-background focus:border-primary/50 text-foreground text-[15px] px-6 transition-all outline-none" />
                     </div>
 
                     <div className="grid grid-cols-2 gap-6">
