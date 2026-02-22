@@ -26,7 +26,8 @@ export function AuthenticatedShell({ children }: { children: React.ReactNode }) 
                 className="md:hidden flex flex-col h-dvh w-full overflow-hidden transition-colors duration-300"
                 style={{
                     background: 'var(--ios-bg, #F2F2F7)',
-                    fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif"
+                    fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif",
+                    paddingTop: 'env(safe-area-inset-top)'
                 }}
             >
                 {/* Drawer Sidebar (mobile) */}
@@ -41,8 +42,11 @@ export function AuthenticatedShell({ children }: { children: React.ReactNode }) 
 
                 {/* Scrollable content area */}
                 <main
-                    className="flex-1 overflow-y-auto overflow-x-hidden pb-[83px] scrollbar-hide"
-                    style={{ WebkitOverflowScrolling: 'touch' as const }}
+                    className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide"
+                    style={{
+                        WebkitOverflowScrolling: 'touch' as const,
+                        paddingBottom: 'calc(83px + env(safe-area-inset-bottom))'
+                    }}
                 >
                     {/* Páginas com layout próprio não recebem padding extra */}
                     {['/dashboard', '/settings', '/transactions'].includes(pathname) ? (

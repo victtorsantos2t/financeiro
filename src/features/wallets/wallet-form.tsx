@@ -172,7 +172,7 @@ export function WalletForm({ wallet, onSuccess, onCancel }: WalletFormProps) {
             {/* Header Section with Preview */}
             <div
                 className="p-8 pb-12 transition-all duration-500"
-                style={{ background: currentGradient }}
+                style={{ background: currentGradient, paddingTop: 'calc(32px + env(safe-area-inset-top))' }}
             >
                 <div>
                     <h2 className="text-2xl font-bold tracking-tight" style={{ color: textColor }}>

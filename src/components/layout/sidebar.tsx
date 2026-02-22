@@ -93,8 +93,8 @@ export function Sidebar({
             {/* Logo Section */}
             <div className={cn(
                 "mb-6 flex items-center shrink-0",
-                isCollapsed ? "pt-6 pb-3 justify-center" : "pt-6 pb-3 px-5 justify-between items-start"
-            )}>
+                isCollapsed ? "pb-3 justify-center" : "pb-3 px-5 justify-between items-start"
+            )} style={{ paddingTop: 'calc(24px + env(safe-area-inset-top))' }}>
                 {!isCollapsed ? (
                     <div className="flex flex-col items-center text-center animate-in fade-in slide-in-from-left-4 duration-300 px-1 w-full">
                         <h1 className="text-4xl font-black text-slate-900 dark:text-white tracking-tighter leading-none mb-1">

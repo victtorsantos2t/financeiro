@@ -107,7 +107,7 @@ export function AddTransactionModal({ children, transaction, open, onOpenChange 
                 </div>
 
                 {/* ── iOS Navigation Bar ────────────────────────────────────── */}
-                <div className="flex items-center justify-between px-4 py-3 border-b border-border/10 bg-[#F2F2F7] dark:bg-[#1C1C1E]">
+                <div className="flex items-center justify-between px-4 py-3 border-b border-border/10 bg-[#F2F2F7] dark:bg-[#1C1C1E]" style={{ paddingTop: 'calc(12px + env(safe-area-inset-top))' }}>
                     {/* Cancelar à esquerda */}
                     <button
                         type="button"
