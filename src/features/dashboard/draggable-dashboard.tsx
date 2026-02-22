@@ -4,17 +4,17 @@ import { useState, useEffect } from "react";
 import { useWidgetStore } from "@/core/application/store/widget-store";
 
 // Widgets atuais transformados em componentes mapeáveis
-import { Wallet } from "@/components/dashboard/wallet";
-import { TransactionsTable } from "@/components/dashboard/transactions-table";
-import { MonthlyEarningsChart } from "@/components/dashboard/monthly-earnings-chart";
-import { EarningsDonut } from "@/components/dashboard/earnings-donut";
+import { Wallet } from "@/features/wallets/wallet";
+import { TransactionsTable } from "@/features/transactions/transactions-table";
+import { MonthlyEarningsChart } from "@/features/dashboard/monthly-earnings-chart";
+import { EarningsDonut } from "@/features/dashboard/earnings-donut";
 import { useDashboard } from "@/context/dashboard-context";
-import { AddTransactionModal } from "@/components/dashboard/add-transaction-modal";
-import { ImportTransactionsModal } from "@/components/dashboard/import-transactions-modal";
-import { PayableAccounts } from "@/components/dashboard/payable-accounts";
+import { AddTransactionModal } from "@/features/transactions/add-transaction-modal";
+import { ImportTransactionsModal } from "@/features/transactions/import-transactions-modal";
+import { PayableAccounts } from "@/features/payables/payable-accounts";
 import { createClient } from "@/lib/supabase/client";
-import { MonthSelector } from "@/components/dashboard/month-selector";
-import { DashboardInsights } from "@/components/dashboard/dashboard-insights";
+import { MonthSelector } from "@/features/shared/month-selector";
+import { DashboardInsights } from "@/features/dashboard/dashboard-insights";
 
 export default function DraggableDashboard() {
     const { layout } = useWidgetStore();

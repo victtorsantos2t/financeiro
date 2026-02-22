@@ -5,7 +5,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { services } from "@/core/application/services/services.factory";
-import { ImportedTransaction } from "@/core/application/services/import.app-service";
+import { ImportedTransaction } from "@/lib/validations";
 import { toast } from "sonner";
 import { FileUp, Check, AlertCircle, Loader2 } from "lucide-react";
 import { format } from "date-fns";

@@ -29,10 +29,7 @@ import { cn } from '@/lib/utils';
 import { services } from '@/core/application/services/services.factory';
 import { Skeleton } from '@/components/ui/skeleton';
 
-interface TransactionWithDetails extends Transaction {
-    category?: { name: string };
-    wallet?: { name: string };
-}
+// TransactionWithDetails is now redundant as Transaction domain entity has been updated
 
 interface DashboardInsightsProps {
     className?: string;
@@ -40,7 +37,7 @@ interface DashboardInsightsProps {
 }
 
 export function DashboardInsights({ className, currentDate = new Date() }: DashboardInsightsProps) {
-    const [transactions, setTransactions] = React.useState<TransactionWithDetails[]>([]);
+    const [transactions, setTransactions] = React.useState<Transaction[]>([]);
     const [loading, setLoading] = React.useState(true);
 
     React.useEffect(() => {

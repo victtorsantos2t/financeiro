@@ -1,14 +1,5 @@
-import { Transaction } from "../../domain/entities/finance";
+import { importedTransactionSchema, ImportedTransaction } from "@/lib/validations";
 const { parse } = require("ofx-js");
-
-export interface ImportedTransaction {
-    id?: string;
-    description: string;
-    amount: number;
-    date: string;
-    type: 'income' | 'expense';
-    fitid?: string; // Financial Institution Transaction ID
-}
 
 export class ImportAppService {
     async parseOFX(fileContent: string): Promise<ImportedTransaction[]> {
@@ -25,13 +16,14 @@ export class ImportAppService {
 
         for (const item of list) {
             const amount = parseFloat(item.TRNAMT);
-            transactions.push({
+            const imported = {
                 description: item.MEMO || item.NAME || "Transação Importada",
                 amount: Math.abs(amount),
                 date: this.parseOFXDate(item.DTPOSTED),
-                type: amount >= 0 ? 'income' : 'expense',
+                type: (amount >= 0 ? 'income' : 'expense') as 'income' | 'expense',
                 fitid: item.FITID
-            });
+            };
+            transactions.push(importedTransactionSchema.parse(imported));
         }
 
         return transactions;
@@ -50,14 +42,18 @@ export class ImportAppService {
             const data = JSON.parse(fileContent);
             const list = Array.isArray(data) ? data : (data.transactions || []);
 
-            return list.map((item: any) => ({
-                description: item.description || item.memo || "Transação JSON",
-                amount: Math.abs(item.amount),
-                date: item.date || new Date().toISOString().split('T')[0],
-                type: item.amount >= 0 ? 'income' : 'expense',
-                fitid: item.id
-            }));
+            return list.map((item: any) => {
+                const imported = {
+                    description: item.description || item.memo || "Transação JSON",
+                    amount: Math.abs(item.amount),
+                    date: item.date || new Date().toISOString().split('T')[0],
+                    type: (item.amount >= 0 ? 'income' : 'expense') as 'income' | 'expense',
+                    fitid: item.id
+                };
+                return importedTransactionSchema.parse(imported);
+            });
         } catch (e) {
+            if (e instanceof Error && e.name === 'ZodError') throw e;
             throw new Error("Formato JSON inválido para importação.");
         }
     }

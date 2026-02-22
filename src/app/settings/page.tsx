@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { CategoryManager } from "@/components/dashboard/category-manager";
-import { WalletTypeManager } from "@/components/dashboard/wallet-type-manager";
+import { CategoryManager } from "@/features/categories/category-manager";
+import { WalletTypeManager } from "@/features/wallets/wallet-type-manager";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Loader2, Camera, ShieldCheck, ChevronRight, Sun, Moon, Globe, Mail, User, Pencil } from "lucide-react";
 import { toast } from "sonner";

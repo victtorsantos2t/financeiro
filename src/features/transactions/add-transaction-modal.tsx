@@ -12,7 +12,7 @@ import {
     DrawerTitle,
     DrawerTrigger,
 } from "@/components/ui/drawer";
-import { TransactionForm, Transaction } from "@/components/dashboard/transaction-form";
+import { TransactionForm, Transaction } from "./transaction-form";
 import { useMediaQuery } from "@/hooks/use-media-query";
 import { Plus } from "lucide-react";
 import { useState, useEffect } from "react";

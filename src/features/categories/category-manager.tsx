@@ -364,10 +364,10 @@ export function CategoryManager() {
 
                     {displayedCategories.length === 0 && (
                         <div className="col-span-full py-20 flex flex-col items-center justify-center text-center space-y-4">
-                            <div className="p-6 bg-slate-50 rounded-full border border-slate-100">
-                                <Tag className="h-10 w-10 text-slate-200" />
+                            <div className="p-6 bg-slate-50 dark:bg-white/5 rounded-full border border-slate-100 dark:border-white/10">
+                                <Tag className="h-10 w-10 text-slate-200 dark:text-slate-700" />
                             </div>
-                            <p className="text-slate-400 text-sm font-medium">Nenhuma categoria encontrada para sua busca.</p>
+                            <p className="text-slate-400 dark:text-slate-500 text-sm font-medium">Nenhuma categoria encontrada para sua busca.</p>
                         </div>
                     )}
                 </div>

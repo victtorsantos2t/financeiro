@@ -14,17 +14,35 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Dashboard Financeiro",
-  description: "Sistema de gestão financeira pessoal",
+  title: "VICNEX Finance",
+  description: "Sistema de Gerenciamento Financeiro Premium — Mobile-First",
   manifest: "/manifest.json",
+  icons: {
+    icon: [
+      { url: "/icons/icon-192x192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icons/icon-512x512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [
+      { url: "/icons/icon-192x192.png", sizes: "192x192", type: "image/png" },
+    ],
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "VICNEX Finance",
+  },
+  applicationName: "VICNEX Finance",
 };
 
 export const viewport: Viewport = {
-  themeColor: "#ffffff",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f8fafc" },
+    { media: "(prefers-color-scheme: dark)", color: "#0f172a" },
+  ],
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
-  userScalable: false, // Prevents zooming on inputs for iOS
+  userScalable: false,
   viewportFit: "cover",
 };
 
@@ -38,9 +56,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="pt-BR" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} min-h-dvh antialiased bg-gray-50 dark:bg-gray-900 transition-colors duration-300`}
+        className={`${geistSans.variable} ${geistMono.variable} min-h-dvh antialiased bg-slate-50 dark:bg-slate-950 transition-colors duration-300`}
       >
         <ThemeProvider
           attribute="class"

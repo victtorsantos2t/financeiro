@@ -127,7 +127,7 @@ export function Sidebar({
                                             href={item.href}
                                             onClick={onNavItemClick}
                                             className={cn(
-                                                "flex items-center rounded-xl transition-all duration-200 group text-[13px] relative",
+                                                "flex items-center rounded-xl transition-all duration-200 group text-[13px] relative min-h-[44px]",
                                                 isCollapsed ? "justify-center w-11 h-11 mx-auto" : "gap-3 px-3 py-2.5",
                                                 isActive
                                                     ? "bg-blue-50 dark:bg-blue-900/15 text-blue-600 dark:text-blue-400 font-semibold shadow-sm"
@@ -172,7 +172,7 @@ export function Sidebar({
                 <button
                     onClick={handleLogout}
                     className={cn(
-                        "flex items-center rounded-xl text-[13px] font-medium text-muted-foreground hover:text-destructive hover:bg-destructive/5 transition-all group",
+                        "flex items-center rounded-xl text-[13px] font-medium text-muted-foreground hover:text-destructive hover:bg-destructive/5 transition-all group min-h-[44px]",
                         isCollapsed ? "justify-center p-2" : "gap-2.5 px-3 py-2 w-full"
                     )}
                     title={isCollapsed ? "Sair do Sistema" : undefined}

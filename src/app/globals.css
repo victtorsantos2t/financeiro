@@ -42,33 +42,33 @@
   /* SaaS Financeiro Moderno - Paleta Obrigatória */
 
   /* Backgrounds */
-  --background: #F5F7FA;
-  --foreground: #111827;
+  --background: #F8FAFC;
+  --foreground: #0F172A;
 
   /* Surfaces */
   --card: #FFFFFF;
-  --card-foreground: #111827;
+  --card-foreground: #0F172A;
   --popover: #FFFFFF;
-  --popover-foreground: #111827;
+  --popover-foreground: #0F172A;
 
   /* Accents - Primary Blue */
-  --primary: #3B82F6;
-  --primary-hover: #2563EB;
+  --primary: #2563EB;
+  --primary-hover: #1D4ED8;
   --primary-active: #1E40AF;
   --primary-foreground: #FFFFFF;
 
   /* Secondary Surfaces */
-  --secondary: #F3F4F6;
-  --secondary-foreground: #6B7280;
+  --secondary: #F1F5F9;
+  --secondary-foreground: #475569;
 
   /* Muted Text */
-  --muted: #F3F4F6;
-  --muted-foreground: #9CA3AF;
+  --muted: #F1F5F9;
+  --muted-foreground: #64748B;
 
   /* Borders & Inputs */
-  --border: #E5E7EB;
-  --input: #E5E7EB;
-  --ring: #3B82F6;
+  --border: #E2E8F0;
+  --input: #E2E8F0;
+  --ring: #2563EB;
 
   /* Radius */
   --radius: 12px;

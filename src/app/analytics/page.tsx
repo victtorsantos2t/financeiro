@@ -1,10 +1,10 @@
 "use client";
 
-import { MonthlyEarningsChart } from "@/components/dashboard/monthly-earnings-chart";
-import { EarningsDonut } from "@/components/dashboard/earnings-donut";
-import { CashFlowForecast } from "@/components/dashboard/cash-flow-forecast";
-import { FinancialHealthScorecard } from "@/components/dashboard/financial-health-scorecard";
-import { RecommendationEngine } from "@/components/dashboard/recommendation-engine";
+import { MonthlyEarningsChart } from "@/features/dashboard/monthly-earnings-chart";
+import { EarningsDonut } from "@/features/dashboard/earnings-donut";
+import { CashFlowForecast } from "@/features/dashboard/cash-flow-forecast";
+import { FinancialHealthScorecard } from "@/features/dashboard/financial-health-scorecard";
+import { RecommendationEngine } from "@/features/dashboard/recommendation-engine";
 import { Button } from "@/components/ui/button";
 import { Download, TrendingUp, TrendingDown, Wallet, BrainCircuit, Sparkles } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
