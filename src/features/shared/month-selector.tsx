@@ -33,9 +33,9 @@ export function MonthSelector({ currentDate, onMonthChange }: MonthSelectorProps
 
     return (
         <div className="flex items-center justify-center w-full px-4">
-            <div className="flex items-center bg-white/80 dark:bg-[#2C2C2E]/80 backdrop-blur-md rounded-full border border-white/20 dark:border-white/5 shadow-sm p-1 transition-all">
-                <Button variant="ghost" size="icon" onClick={handlePrevious} className="h-9 w-9 rounded-full hover:bg-black/5 dark:hover:bg-white/5 text-muted-foreground hover:text-foreground transition-all">
-                    <ChevronLeft className="h-4 w-4" />
+            <div className="flex items-center bg-white/70 dark:bg-[#1C1C1E]/70 backdrop-blur-xl rounded-full border border-black/[0.03] dark:border-white/[0.03] shadow-[0_2px_8px_rgba(0,0,0,0.04)] p-0.5 transition-all">
+                <Button variant="ghost" size="icon" onClick={handlePrevious} className="h-7 w-7 rounded-full hover:bg-black/5 dark:hover:bg-white/5 text-muted-foreground transition-all">
+                    <ChevronLeft className="h-3.5 w-3.5" />
                 </Button>
 
                 <Popover open={open} onOpenChange={setOpen}>
@@ -43,12 +43,12 @@ export function MonthSelector({ currentDate, onMonthChange }: MonthSelectorProps
                         <Button
                             variant="ghost"
                             className={cn(
-                                "min-w-[130px] px-3 h-8 hover:bg-black/5 dark:hover:bg-white/5 mx-0.5 rounded-full text-foreground transition-all flex items-center justify-center gap-1.5",
+                                "min-w-[120px] px-2 h-7 hover:bg-black/5 dark:hover:bg-white/5 mx-0.5 rounded-full text-foreground transition-all flex items-center justify-center gap-1.5",
                                 !currentDate && "text-muted-foreground"
                             )}
                         >
-                            <CalendarIcon className="h-3.5 w-3.5 text-blue-500" />
-                            <span className="capitalize text-[12px] font-semibold tracking-tight">
+                            <CalendarIcon className="h-3 w-3 text-blue-500" />
+                            <span className="capitalize text-[11px] font-medium tracking-tight">
                                 {format(currentDate, "MMMM yyyy", { locale: ptBR })}
                             </span>
                         </Button>
@@ -69,8 +69,8 @@ export function MonthSelector({ currentDate, onMonthChange }: MonthSelectorProps
                     </PopoverContent>
                 </Popover>
 
-                <Button variant="ghost" size="icon" onClick={handleNext} className="h-9 w-9 rounded-full hover:bg-black/5 dark:hover:bg-white/5 text-muted-foreground hover:text-foreground transition-all">
-                    <ChevronRight className="h-4 w-4" />
+                <Button variant="ghost" size="icon" onClick={handleNext} className="h-7 w-7 rounded-full hover:bg-black/5 dark:hover:bg-white/5 text-muted-foreground transition-all">
+                    <ChevronRight className="h-3.5 w-3.5" />
                 </Button>
             </div>
         </div>
