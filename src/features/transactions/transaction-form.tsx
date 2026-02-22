@@ -552,9 +552,10 @@ export function TransactionForm({ className, transaction, onSuccess, onCancel }:
 
                 {/* BOTÃO SALVAR */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 12, paddingBottom: 8 }}>
-                    <button
+                    <motion.button
                         type="submit"
                         disabled={loading}
+                        whileTap={{ scale: 0.95 }}
                         style={{
                             width: '100%',
                             height: 50,
@@ -565,13 +566,7 @@ export function TransactionForm({ className, transaction, onSuccess, onCancel }:
                             fontWeight: 600,
                             letterSpacing: '-0.2px',
                             border: 'none',
-                            cursor: loading ? 'not-allowed' : 'pointer',
-                            opacity: loading ? 0.7 : 1,
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            fontFamily: iOSFont,
-                            boxShadow: `0 4px 16px ${saveBg}40`,
+                            transition: 'opacity 0.2s'
                         }}
                     >
                         {loading
@@ -580,7 +575,7 @@ export function TransactionForm({ className, transaction, onSuccess, onCancel }:
                                 : type === 'transfer' ? "Confirmar Transferência"
                                     : "Salvar Transação"
                         }
-                    </button>
+                    </motion.button>
 
                     {transaction && (
                         <AlertDialog>
@@ -793,7 +788,7 @@ export function TransactionForm({ className, transaction, onSuccess, onCancel }:
 
             {/* 5. ACTIONS */}
             <div className="pt-8 pb-4 mt-auto flex flex-col gap-4">
-                <motion.button type="submit" disabled={loading} whileTap={{ scale: 0.98 }}
+                <motion.button type="submit" disabled={loading} whileTap={{ scale: 0.95 }}
                     className={cn("w-full h-14 rounded-[18px] text-white font-semibold shadow-2xl transition-all flex items-center justify-center gap-2",
                         type === 'income' ? 'bg-blue-600 shadow-blue-500/20' : type === 'transfer' ? 'bg-violet-600 shadow-violet-500/20' : 'bg-slate-900 shadow-slate-900/10',
                         loading && "opacity-80")}>

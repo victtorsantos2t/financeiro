@@ -85,20 +85,17 @@ export function TransactionsTable({
     const fetchTransactions = async () => {
         setLoading(true);
         try {
-            // Now passing the full externalFilters object which includes dates, types, walletId, etc.
             const data = await services.transactions.getHistory(externalFilters);
 
             let filtered = data;
 
-            // Simple tab filtering if date logic in repo doesn't cover activeTab explicitly
             const todayStr = new Date().toISOString().split('T')[0];
             if (activeTab === 'recentes') {
-                filtered = filtered.filter(t => t.date.split('T')[0] <= todayStr);
+                filtered = filtered.filter(t => t.date.toString().split('T')[0] <= todayStr);
             } else if (activeTab === 'futuros') {
-                filtered = filtered.filter(t => t.date.split('T')[0] > todayStr);
+                filtered = filtered.filter(t => t.date.toString().split('T')[0] > todayStr);
             }
 
-            // Pagination local (since getHistory currently returns all)
             const startIndex = (currentPage - 1) * pageSize;
             const paginated = limit
                 ? filtered.slice(0, limit)

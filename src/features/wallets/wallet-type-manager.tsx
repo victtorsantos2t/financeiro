@@ -148,11 +148,11 @@ export function WalletTypeManager() {
                     <AnimatePresence mode="popLayout">
                         {fetching ? (
                             <div className="col-span-full py-12 flex items-center justify-center">
-                                <Loader2 className="h-8 w-8 text-slate-200 animate-spin" />
+                                <Loader2 className="h-8 w-8 text-slate-200 dark:text-slate-800 animate-spin" />
                             </div>
                         ) : types.length === 0 ? (
                             <div className="col-span-full py-12 text-center">
-                                <p className="text-slate-400 text-sm font-medium italic">Nenhum tipo personalizado cadastrado.</p>
+                                <p className="text-slate-400 dark:text-slate-500 text-sm font-medium italic">Nenhum tipo personalizado cadastrado.</p>
                             </div>
                         ) : (
                             types.map((type, index) => (

@@ -16,7 +16,7 @@ import { ptBR } from "date-fns/locale";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import Link from "next/link";
-import { AddTransactionModal } from "@/components/dashboard/add-transaction-modal";
+import { AddTransactionModal } from "@/features/transactions/add-transaction-modal";
 import { IOSPageHeader } from "@/components/layout/ios-page-header";
 
 type Transaction = {

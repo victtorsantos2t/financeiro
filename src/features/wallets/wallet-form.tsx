@@ -226,7 +226,7 @@ export function WalletForm({ wallet, onSuccess, onCancel }: WalletFormProps) {
                                     <SelectItem value="purple" className="rounded-lg dark:text-slate-200">Roxo Elite</SelectItem>
                                     <SelectItem value="green" className="rounded-lg dark:text-slate-200">Verde Invest</SelectItem>
                                     <SelectItem value="black" className="rounded-lg dark:text-slate-200">Black Card</SelectItem>
-                                    <SelectItem value="gray" className="rounded-lg dark:text-slate-200">Cinza Platinum</SelectItem>
+                                    <SelectItem value="slate" className="rounded-lg dark:text-slate-200">Slate Platinum</SelectItem>
 
                                     <div className="mt-2 px-2 py-1.5 text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest border-t border-slate-100 dark:border-white/5">Bancos Nacionais</div>
                                     <SelectItem value="nubank" className="rounded-lg dark:text-slate-200">Nubank (Roxo)</SelectItem>
@@ -363,7 +363,7 @@ export function WalletForm({ wallet, onSuccess, onCancel }: WalletFormProps) {
                         type="submit"
                         onClick={handleSave}
                         disabled={loading}
-                        className="w-full md:w-auto h-12 rounded-2xl bg-slate-900 dark:bg-blue-600 hover:bg-black dark:hover:bg-blue-700 text-white font-bold shadow-lg transition-all hover:scale-[1.02] active:scale-[0.98] order-1 md:order-2"
+                        className="w-full md:w-auto h-12 rounded-2xl bg-slate-900 dark:bg-blue-600 hover:bg-black dark:hover:bg-blue-700 text-white font-bold shadow-lg transition-all hover:scale-[1.02] active:scale-95 order-1 md:order-2"
                     >
                         {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : "Salvar Alterações"}
                     </Button>

@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/drawer";
 import { Plus } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Wallet, WalletForm } from "@/components/dashboard/wallet-form";
+import { Wallet, WalletForm } from "./wallet-form";
 import { useMediaQuery } from "@/hooks/use-media-query";
 
 interface WalletModalProps {

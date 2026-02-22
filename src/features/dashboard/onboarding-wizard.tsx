@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { WalletModal } from "@/components/dashboard/add-wallet-modal";
+import { WalletModal } from "@/features/wallets/add-wallet-modal";
 import { Wallet } from "lucide-react";
 
 export function OnboardingWizard() {

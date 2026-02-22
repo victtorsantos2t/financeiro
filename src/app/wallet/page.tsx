@@ -1,10 +1,10 @@
 "use client";
 
-import { CreditCard } from "@/components/dashboard/credit-card";
-import { Wallet } from "@/components/dashboard/wallet";
+import { CreditCard } from "@/features/wallets/credit-card";
+import { Wallet } from "@/features/wallets/wallet";
 import { Button } from "@/components/ui/button";
-import { WalletModal } from "@/components/dashboard/add-wallet-modal";
-import { Wallet as WalletType } from "@/components/dashboard/wallet-form";
+import { WalletModal } from "@/features/wallets/add-wallet-modal";
+import { Wallet as WalletType } from "@/features/wallets/wallet-form";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { IOSPageHeader } from "@/components/layout/ios-page-header";

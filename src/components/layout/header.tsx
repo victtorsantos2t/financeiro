@@ -4,10 +4,10 @@ import { Search, Bell, MessageSquare, Menu } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { usePathname } from "next/navigation";
 import { useDashboard } from "@/context/dashboard-context";
-import { MonthSelector } from "@/components/dashboard/month-selector";
-import { AddTransactionModal } from "@/components/dashboard/add-transaction-modal";
-import { ImportTransactionsModal } from "@/components/dashboard/import-transactions-modal";
-import { NotificationSheet } from "@/components/dashboard/notification-sheet";
+import { MonthSelector } from "@/features/shared/month-selector";
+import { AddTransactionModal } from "@/features/transactions/add-transaction-modal";
+import { ImportTransactionsModal } from "@/features/transactions/import-transactions-modal";
+import { NotificationSheet } from "@/features/shared/notification-sheet";
 import { useState } from "react";
 
 export function Header() {

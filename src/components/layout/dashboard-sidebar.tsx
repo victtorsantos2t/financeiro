@@ -1,8 +1,8 @@
 "use client";
 
-import { PayableAccounts } from "./payable-accounts";
-import { ReceiptsList } from "./receipts-list";
-import { PayablesList } from "./payables-list";
+import { PayableAccounts } from "@/features/payables/payable-accounts";
+import { ReceiptsList } from "@/features/payables/receipts-list";
+import { PayablesList } from "@/features/payables/payables-list";
 import { Separator } from "@/components/ui/separator";
 
 export function DashboardSidebar() {

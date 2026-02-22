@@ -20,6 +20,8 @@ export interface Transaction {
     is_recurring: boolean;
     recurrence_interval?: string;
     destination_wallet_id?: string;
+    category?: { name: string };
+    wallet?: { name: string };
 }
 
 export interface Wallet {

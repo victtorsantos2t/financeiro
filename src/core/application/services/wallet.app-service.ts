@@ -1,15 +1,18 @@
 import { IWalletRepository } from "../repositories/wallet.repository.interface";
 import { Wallet } from "../../domain/entities/finance";
+import { walletSchema } from "@/lib/validations";
 
 export class WalletAppService {
     constructor(private readonly walletRepo: IWalletRepository) { }
 
-    async getUserWallets() {
-        return this.walletRepo.list();
+    async getUserWallets(): Promise<Wallet[]> {
+        const wallets = await this.walletRepo.list();
+        return wallets.map(w => walletSchema.parse(w)) as Wallet[];
     }
 
-    async getInfo(id: string) {
-        return this.walletRepo.getById(id);
+    async getInfo(id: string): Promise<Wallet> {
+        const wallet = await this.walletRepo.getById(id);
+        return walletSchema.parse(wallet) as Wallet;
     }
 
     async updateWallet(id: string, data: Partial<Wallet>) {
