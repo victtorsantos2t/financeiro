@@ -65,7 +65,7 @@ export default function DraggableDashboard() {
     if (isMobile) {
         return (
             <div
-                className="w-full pb-[100px]"
+                className="w-full pb-[40px]"
                 style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif" }}
             >
                 {/* ── iOS Large Title Navigation Bar ───────────────────────────── */}
@@ -102,7 +102,7 @@ export default function DraggableDashboard() {
                     </p>
 
                     {/* MonthSelector abaixo do subtítulo */}
-                    <div style={{ marginTop: '12px' }}>
+                    <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'center' }}>
                         <MonthSelector currentDate={currentDate} onMonthChange={setCurrentDate} />
                     </div>
                 </div>

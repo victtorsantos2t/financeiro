@@ -65,14 +65,14 @@ export function BottomNav({ onMenuClick }: { onMenuClick?: () => void }) {
 
     return (
         <div
-            className="md:hidden fixed bottom-0 left-0 right-0 z-50 flex items-end justify-around px-1 transition-colors duration-300"
+            className="md:hidden fixed bottom-0 left-0 right-0 z-50 flex items-center justify-around px-1 transition-colors duration-300"
             style={{
-                height: '83px',
+                height: 'calc(50px + env(safe-area-inset-bottom))',
                 background: 'var(--ios-tab-blur, rgba(249,249,249,0.94))',
                 backdropFilter: 'blur(20px) saturate(180%)',
                 WebkitBackdropFilter: 'blur(20px) saturate(180%)',
                 borderTop: '0.5px solid var(--ios-separator, rgba(0,0,0,0.15))',
-                paddingBottom: 'max(env(safe-area-inset-bottom), 12px)',
+                paddingBottom: 'env(safe-area-inset-bottom)',
             }}
         >
             {navItems.map((item) => {
