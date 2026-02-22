@@ -58,7 +58,7 @@ export function WalletModal({ wallet, trigger, onSuccess }: WalletModalProps) {
                     <DialogTitle className="sr-only">
                         {wallet ? "Editar Carteira" : "Nova Carteira"}
                     </DialogTitle>
-                    <div className="bg-white rounded-[32px] overflow-hidden">
+                    <div className="bg-white dark:bg-[#1C1C1E] rounded-[32px] overflow-hidden">
                         <WalletForm wallet={wallet} onSuccess={handleSuccess} onCancel={() => setOpen(false)} />
                     </div>
                 </DialogContent>
@@ -81,7 +81,7 @@ export function WalletModal({ wallet, trigger, onSuccess }: WalletModalProps) {
                     {wallet ? "Editar Carteira" : "Nova Carteira"}
                 </DrawerTitle>
                 <div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-white/50 mt-4 mb-4 absolute top-0 left-1/2 -translate-x-1/2 z-50 mix-blend-overlay" />
-                <div className="overflow-y-auto w-full bg-white rounded-t-[32px] overflow-hidden">
+                <div className="overflow-y-auto w-full bg-white dark:bg-[#1C1C1E] rounded-t-[32px] overflow-hidden">
                     <WalletForm wallet={wallet} onSuccess={handleSuccess} onCancel={() => setOpen(false)} />
                 </div>
             </DrawerContent>

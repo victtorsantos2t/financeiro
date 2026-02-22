@@ -86,13 +86,23 @@ export function MonthlyEarningsChart({ currentDate = new Date() }: MonthlyEarnin
     // Estilo customizado para o Tooltip estilo "Bubble Blue" da imagem de referência
     const CustomTooltip = ({ active, payload, label }: any) => {
         if (active && payload && payload.length) {
+            const income = payload.find((p: any) => p.dataKey === "income")?.value || 0;
+            const expense = payload.find((p: any) => p.dataKey === "expense")?.value || 0;
+
             return (
                 <div className="relative mb-4">
-                    <div className="bg-primary text-white p-3 px-6 rounded-2xl shadow-xl animate-in zoom-in-95 duration-200">
-                        <p className="text-[10px] font-bold uppercase tracking-wider opacity-80 mb-0.5">Visão Mensal</p>
-                        <p className="text-lg font-black tracking-tight">
-                            R$ {payload[0].value.toLocaleString('pt-BR')}
-                        </p>
+                    <div className="bg-primary text-white p-4 px-6 rounded-2xl shadow-xl animate-in zoom-in-95 duration-200 min-w-[180px]">
+                        <p className="text-[10px] font-bold uppercase tracking-wider opacity-80 mb-2 border-b border-white/10 pb-1.5">Visão Mensal — {label}</p>
+                        <div className="space-y-1.5">
+                            <div className="flex justify-between items-center gap-4">
+                                <span className="text-[11px] font-medium opacity-90">Receitas:</span>
+                                <span className="text-[14px] font-black">R$ {income.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+                            </div>
+                            <div className="flex justify-between items-center gap-4">
+                                <span className="text-[11px] font-medium opacity-90">Despesas:</span>
+                                <span className="text-[14px] font-black">R$ {expense.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+                            </div>
+                        </div>
                     </div>
                     {/* Triângulo do balão */}
                     <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-primary rotate-45" />
