@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { cn } from "@/lib/utils";
 import { AddTransactionModal } from "@/features/transactions/add-transaction-modal";
 
 // Ícones SVG inline no estilo SF Symbols para iOS nativo
@@ -65,14 +64,14 @@ export function BottomNav({ onMenuClick }: { onMenuClick?: () => void }) {
 
     return (
         <div
-            className="md:hidden fixed bottom-0 left-0 right-0 z-50 flex items-end justify-around px-1 transition-colors duration-300"
+            className="md:hidden fixed bottom-0 left-0 right-0 z-50 flex items-center justify-around px-1 transition-colors duration-300"
             style={{
-                height: 'calc(44px + env(safe-area-inset-bottom))',
+                height: 'calc(40px + env(safe-area-inset-bottom))',
                 background: 'var(--ios-tab-blur, rgba(249,249,249,0.94))',
                 backdropFilter: 'blur(20px) saturate(180%)',
                 WebkitBackdropFilter: 'blur(20px) saturate(180%)',
                 borderTop: '0.5px solid var(--ios-separator, rgba(0,0,0,0.15))',
-                paddingBottom: 'calc(4px + env(safe-area-inset-bottom) * 0.4)',
+                paddingBottom: 'env(safe-area-inset-bottom)',
             }}
         >
             {navItems.map((item) => {
