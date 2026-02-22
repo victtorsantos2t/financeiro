@@ -43,12 +43,12 @@ export function MonthSelector({ currentDate, onMonthChange }: MonthSelectorProps
                         <Button
                             variant="ghost"
                             className={cn(
-                                "min-w-[140px] px-4 h-9 hover:bg-black/5 dark:hover:bg-white/5 mx-0.5 rounded-full text-foreground transition-all flex items-center justify-center gap-2",
+                                "min-w-[130px] px-3 h-8 hover:bg-black/5 dark:hover:bg-white/5 mx-0.5 rounded-full text-foreground transition-all flex items-center justify-center gap-1.5",
                                 !currentDate && "text-muted-foreground"
                             )}
                         >
-                            <CalendarIcon className="h-4 w-4 text-blue-500" />
-                            <span className="capitalize text-[13px] font-semibold tracking-tight">
+                            <CalendarIcon className="h-3.5 w-3.5 text-blue-500" />
+                            <span className="capitalize text-[12px] font-semibold tracking-tight">
                                 {format(currentDate, "MMMM yyyy", { locale: ptBR })}
                             </span>
                         </Button>

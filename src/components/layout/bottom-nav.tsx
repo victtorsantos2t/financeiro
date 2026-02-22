@@ -67,7 +67,7 @@ export function BottomNav({ onMenuClick }: { onMenuClick?: () => void }) {
         <div
             className="md:hidden fixed bottom-0 left-0 right-0 z-50 flex items-center justify-around px-1 transition-colors duration-300"
             style={{
-                height: 'calc(50px + env(safe-area-inset-bottom))',
+                height: 'calc(48px + env(safe-area-inset-bottom))',
                 background: 'var(--ios-tab-blur, rgba(249,249,249,0.94))',
                 backdropFilter: 'blur(20px) saturate(180%)',
                 WebkitBackdropFilter: 'blur(20px) saturate(180%)',
@@ -83,7 +83,7 @@ export function BottomNav({ onMenuClick }: { onMenuClick?: () => void }) {
                 if (item.action === "add") {
                     return (
                         <AddTransactionModal key="add">
-                            <button className="flex flex-col items-center justify-center gap-[3px] px-3 pt-2 active:opacity-60 transition-opacity">
+                            <button className="flex flex-col items-center justify-center gap-[2px] px-3 active:opacity-60 transition-opacity">
                                 <TabIcons.add />
                                 <span style={{
                                     fontSize: '10px',
@@ -105,7 +105,7 @@ export function BottomNav({ onMenuClick }: { onMenuClick?: () => void }) {
                         <button
                             key="menu"
                             onClick={onMenuClick}
-                            className="flex flex-col items-center justify-center gap-[3px] px-3 pt-2 active:opacity-60 transition-opacity"
+                            className="flex flex-col items-center justify-center gap-[2px] px-3 active:opacity-60 transition-opacity"
                         >
                             <TabIcons.menu active={false} />
                             <span style={{
@@ -125,7 +125,7 @@ export function BottomNav({ onMenuClick }: { onMenuClick?: () => void }) {
                     <Link
                         key={item.href}
                         href={item.href!}
-                        className="flex flex-col items-center justify-center gap-[3px] px-3 pt-2 active:opacity-60 transition-opacity"
+                        className="flex flex-col items-center justify-center gap-[2px] px-3 active:opacity-60 transition-opacity"
                     >
                         <Icon active={active} />
                         <span style={{

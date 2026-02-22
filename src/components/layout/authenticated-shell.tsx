@@ -45,7 +45,7 @@ export function AuthenticatedShell({ children }: { children: React.ReactNode }) 
                     className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide"
                     style={{
                         WebkitOverflowScrolling: 'touch' as const,
-                        paddingBottom: 'calc(50px + env(safe-area-inset-bottom))'
+                        paddingBottom: 'calc(48px + env(safe-area-inset-bottom))'
                     }}
                 >
                     {/* Páginas com layout próprio não recebem padding extra */}
