@@ -109,13 +109,13 @@
 .dark {
   /* Backgrounds */
   --background: #0F0F10;
-  --foreground: #F2F2F7;
+  --foreground: #FFFFFF;
 
   /* Surfaces com transparência/glassmorphism */
   --card: rgba(28, 28, 30, 0.80);
-  --card-foreground: #F2F2F7;
+  --card-foreground: #FFFFFF;
   --popover: #1C1C1E;
-  --popover-foreground: #F2F2F7;
+  --popover-foreground: #FFFFFF;
   --surface: #1C1C1E;
   --primary-surface: rgba(115, 103, 240, 0.15);
 
@@ -128,15 +128,15 @@
 
   /* Secondary Surfaces */
   --secondary: rgba(44, 44, 46, 0.95);
-  --secondary-foreground: #F2F2F7;
+  --secondary-foreground: #FFFFFF;
 
   /* Text - New Standards */
-  --text-primary: #F2F2F7;
-  --text-secondary: #A1A1AA;
+  --text-primary: #FFFFFF;
+  --text-secondary: rgba(255, 255, 255, 0.85);
 
   /* Muted */
   --muted: rgba(44, 44, 46, 0.7);
-  --muted-foreground: #A1A1AA;
+  --muted-foreground: rgba(255, 255, 255, 0.7);
 
   /* Borders */
   --border: rgba(84, 84, 88, 0.4);
@@ -158,8 +158,8 @@
   --ios-bg: #000000;
   --ios-bg2: #1C1C1E;
   --ios-label: #FFFFFF;
-  --ios-label2: #EBEBF5;
-  --ios-label3: rgba(235, 235, 245, 0.6);
+  --ios-label2: rgba(255, 255, 255, 0.85);
+  --ios-label3: rgba(255, 255, 255, 0.7);
   --ios-separator: rgba(84, 84, 88, 0.65);
   --ios-header-blur: rgba(28, 28, 30, 0.85);
   --ios-tab-blur: rgba(18, 18, 20, 0.95);

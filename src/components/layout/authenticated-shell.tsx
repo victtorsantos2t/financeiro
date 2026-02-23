@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { Sidebar } from "@/components/layout/sidebar";
 import { Header } from "@/components/layout/header";
 import { BottomNav } from "@/components/layout/bottom-nav";
@@ -38,7 +38,9 @@ export function AuthenticatedShell({ children }: { children: React.ReactNode }) 
                 </Sheet>
 
                 {/* iOS Tab Bar (fixed bottom) */}
-                <BottomNav onMenuClick={() => setIsSidebarOpen(true)} />
+                <Suspense fallback={null}>
+                    <BottomNav onMenuClick={() => setIsSidebarOpen(true)} />
+                </Suspense>
 
                 {/* Scrollable content area */}
                 <main
