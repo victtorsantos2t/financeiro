@@ -52,13 +52,13 @@ export function AddTransactionModal({ children, transaction, open, onOpenChange 
                 <DialogTrigger asChild>
                     {children || (
                         <motion.button whileTap={{ scale: 0.98 }}
-                            className="flex items-center gap-2 rounded-2xl bg-slate-900 border border-slate-900 hover:bg-slate-800 text-white font-semibold h-11 px-6 shadow-[0_12px_32px_-8px_rgba(0,0,0,0.12)] transition-all">
+                            className="flex items-center gap-2 rounded-2xl bg-zinc-900 dark:bg-zinc-50 border border-zinc-900 dark:border-zinc-50 hover:bg-zinc-800 dark:hover:bg-zinc-200 text-zinc-50 dark:text-zinc-900 font-bold h-11 px-6 shadow-md transition-all">
                             <Plus className="h-4 w-4" strokeWidth={2.5} />
                             <span className="text-[13px] tracking-tight">Nova Transação</span>
                         </motion.button>
                     )}
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-[540px] p-0 overflow-hidden gap-0 bg-card border border-border shadow-[0_32px_80px_-20px_rgba(0,0,0,0.15)] rounded-[32px] animate-in fade-in zoom-in-95 duration-300">
+                <DialogContent className="sm:max-w-[540px] p-0 overflow-hidden gap-0 bg-background border border-border shadow-[0_32px_80px_-20px_rgba(0,0,0,0.15)] rounded-[32px] animate-in fade-in zoom-in-95 duration-300">
                     <DialogTitle className="sr-only">{title}</DialogTitle>
                     <div className="p-10 max-h-[90vh] overflow-y-auto custom-scrollbar">
                         <div className="flex items-center justify-between mb-8">
@@ -114,7 +114,7 @@ export function AddTransactionModal({ children, transaction, open, onOpenChange 
                         onClick={() => handleOpenChange(false)}
                         style={{
                             background: 'transparent', border: 'none', cursor: 'pointer',
-                            fontSize: 17, color: '#007AFF', fontFamily: iOSFont, fontWeight: 400,
+                            fontSize: 17, color: 'var(--primary)', fontFamily: iOSFont, fontWeight: 400,
                             padding: '4px 0',
                         }}
                     >

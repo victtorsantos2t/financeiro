@@ -158,15 +158,13 @@ export function PayableAccounts({ variant = "card" }: PayableAccountsProps) {
     );
 
     if (variant === "sidebar") {
-        return (
-            <div className="bg-card rounded-card p-6 shadow-sm border border-border">
-                {content}
-            </div>
-        );
+        <div className="bg-card rounded-card p-6 shadow-[0_8px_24px_rgba(0,0,0,0.08)] border-none">
+            {content}
+        </div>
     }
 
     return (
-        <div className="w-full h-full bg-white dark:bg-[#1C1C1E]/80 rounded-lg p-6 flex flex-col shadow-sm hover:shadow-md border border-[#E0E2E7] dark:border-white/10 transition-all duration-300 backdrop-blur-sm">
+        <div className="w-full h-full bg-surface dark:bg-[#1C1C1E]/80 rounded-lg p-6 flex flex-col shadow-[0_8px_24px_rgba(0,0,0,0.08)] border-none transition-all duration-300 backdrop-blur-sm">
             {content}
         </div>
     );

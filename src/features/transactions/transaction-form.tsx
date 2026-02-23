@@ -652,11 +652,11 @@ export function TransactionForm({ className, transaction, onSuccess, onCancel }:
 
                 {/* 2. SEGMENT CONTROLS */}
                 <div className="space-y-6">
-                    <div className="relative flex p-1.5 bg-slate-100/50 rounded-[22px] gap-1 overflow-hidden">
+                    <div className="relative flex p-1.5 bg-slate-100/50 dark:bg-white/5 rounded-[22px] gap-1 overflow-hidden">
                         <motion.div
                             className={cn(
                                 "absolute top-1.5 bottom-1.5 left-1.5 w-[calc(33.33%-4px)] rounded-[18px] shadow-sm z-0",
-                                type === 'income' ? 'bg-blue-600' : type === 'expense' ? 'bg-slate-900' : 'bg-violet-600'
+                                type === 'income' ? 'bg-blue-600' : type === 'expense' ? 'bg-slate-900 dark:bg-secondary' : 'bg-violet-600'
                             )}
                             initial={false}
                             animate={{ x: type === 'income' ? '200%' : type === 'transfer' ? '100%' : '0%' }}
@@ -665,7 +665,7 @@ export function TransactionForm({ className, transaction, onSuccess, onCancel }:
                         {(['expense', 'transfer', 'income'] as const).map((t, i) => (
                             <button key={t} type="button" onClick={() => setType(t)}
                                 className={cn("flex-1 py-3 px-4 rounded-[18px] text-[13px] font-semibold tracking-tight transition-colors duration-300 relative z-10",
-                                    type === t ? 'text-white' : 'text-slate-500')}>
+                                    type === t ? 'text-white' : 'text-slate-500 dark:text-muted-foreground')}>
                                 {t === 'expense' ? 'Despesa' : t === 'transfer' ? 'Transferência' : 'Receita'}
                             </button>
                         ))}
@@ -674,14 +674,14 @@ export function TransactionForm({ className, transaction, onSuccess, onCancel }:
                         {type === 'expense' && (
                             <motion.div initial={{ opacity: 0, scale: 0.98, y: -10 }} animate={{ opacity: 1, scale: 1, y: 0 }}
                                 exit={{ opacity: 0, scale: 0.98, y: -10 }} transition={{ type: "spring", stiffness: 400, damping: 40 }}
-                                className="relative flex p-1 bg-slate-50 rounded-[18px] gap-1 overflow-hidden w-full max-w-[280px] mx-auto border border-slate-100/50">
-                                <motion.div className="absolute top-1 bottom-1 left-1 w-[calc(50%-4px)] rounded-[14px] bg-white shadow-sm z-0 border border-slate-100"
+                                className="relative flex p-1 bg-slate-50 dark:bg-white/5 rounded-[18px] gap-1 overflow-hidden w-full max-w-[280px] mx-auto border border-slate-100/50 dark:border-white/5">
+                                <motion.div className="absolute top-1 bottom-1 left-1 w-[calc(50%-4px)] rounded-[14px] bg-white dark:bg-secondary shadow-sm z-0 border border-slate-100 dark:border-white/5"
                                     initial={false} animate={{ x: status === 'pending' ? '100.5%' : '0.5%' }}
                                     transition={{ type: "spring", stiffness: 300, damping: 30 }} />
                                 {(['completed', 'pending'] as const).map(s => (
                                     <button key={s} type="button" onClick={() => setStatus(s)}
                                         className={cn("flex-1 py-2 px-3 rounded-[14px] text-[11px] font-semibold tracking-wide transition-colors duration-300 relative z-10",
-                                            status === s ? 'text-slate-900' : 'text-slate-400')}>
+                                            status === s ? 'text-slate-900 dark:text-foreground' : 'text-slate-400 dark:text-muted-foreground')}>
                                         {s === 'completed' ? 'Já Pago' : 'Agendar'}
                                     </button>
                                 ))}
@@ -701,30 +701,30 @@ export function TransactionForm({ className, transaction, onSuccess, onCancel }:
 
                     <div className="grid grid-cols-2 gap-6">
                         <div className="space-y-3">
-                            <label className="text-[10px] font-bold text-slate-300 uppercase tracking-widest ml-1">{type === 'transfer' ? 'De onde sai?' : 'Carteira'}</label>
+                            <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1">{type === 'transfer' ? 'De onde sai?' : 'Carteira'}</label>
                             <Select value={walletId} onValueChange={setWalletId}>
-                                <SelectTrigger className="h-14 rounded-2xl bg-white border-slate-100 shadow-sm transition-all text-[14px] px-6"><SelectValue placeholder="Selecione..." /></SelectTrigger>
-                                <SelectContent className="rounded-[28px] border-slate-100 shadow-2xl p-2">
+                                <SelectTrigger className="h-14 rounded-2xl bg-white dark:bg-white/5 border border-slate-100 dark:border-white/5 shadow-sm transition-all text-[14px] px-6 text-foreground"><SelectValue placeholder="Selecione..." /></SelectTrigger>
+                                <SelectContent className="rounded-[28px] border-slate-100 dark:border-white/10 shadow-2xl p-2 dark:bg-popover">
                                     {wallets.map(w => <SelectItem key={w.id} value={w.id} className="rounded-xl py-3">{w.name}</SelectItem>)}
                                 </SelectContent>
                             </Select>
                         </div>
                         {type === 'transfer' ? (
                             <div className="space-y-3">
-                                <label className="text-[10px] font-bold text-slate-300 uppercase tracking-widest ml-1">Para onde vai?</label>
+                                <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1">Para onde vai?</label>
                                 <Select value={destinationWalletId} onValueChange={setDestinationWalletId}>
-                                    <SelectTrigger className="h-14 rounded-2xl bg-white border-slate-100 shadow-sm transition-all text-[14px] px-6"><SelectValue placeholder="Selecione..." /></SelectTrigger>
-                                    <SelectContent className="rounded-[28px] border-slate-100 shadow-2xl p-2">
+                                    <SelectTrigger className="h-14 rounded-2xl bg-white dark:bg-white/5 border border-slate-100 dark:border-white/5 shadow-sm transition-all text-[14px] px-6 text-foreground"><SelectValue placeholder="Selecione..." /></SelectTrigger>
+                                    <SelectContent className="rounded-[28px] border-slate-100 dark:border-white/10 shadow-2xl p-2 dark:bg-popover">
                                         {wallets.filter(w => w.id !== walletId).map(w => <SelectItem key={w.id} value={w.id} className="rounded-xl py-3">{w.name}</SelectItem>)}
                                     </SelectContent>
                                 </Select>
                             </div>
                         ) : (
                             <div className="space-y-3">
-                                <label className="text-[10px] font-bold text-slate-300 uppercase tracking-widest ml-1">Categoria</label>
+                                <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1">Categoria</label>
                                 <Select value={categoryId} onValueChange={setCategoryId}>
-                                    <SelectTrigger className="h-14 rounded-2xl bg-white border-slate-100 shadow-sm transition-all text-[14px] px-6"><SelectValue placeholder="O quê?" /></SelectTrigger>
-                                    <SelectContent className="rounded-[28px] border-slate-100 shadow-2xl p-2">
+                                    <SelectTrigger className="h-14 rounded-2xl bg-white dark:bg-white/5 border border-slate-100 dark:border-white/5 shadow-sm transition-all text-[14px] px-6 text-foreground"><SelectValue placeholder="O quê?" /></SelectTrigger>
+                                    <SelectContent className="rounded-[28px] border-slate-100 dark:border-white/10 shadow-2xl p-2 dark:bg-popover">
                                         {categories.map(c => <SelectItem key={c.id} value={c.id} className="rounded-xl py-3">{c.name}</SelectItem>)}
                                     </SelectContent>
                                 </Select>
@@ -734,10 +734,10 @@ export function TransactionForm({ className, transaction, onSuccess, onCancel }:
 
                     <div className="grid grid-cols-2 gap-6">
                         <div className="space-y-3">
-                            <label className="text-[10px] font-bold text-slate-300 uppercase tracking-widest ml-1">Método</label>
+                            <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1">Método</label>
                             <Select value={paymentMethod} onValueChange={setPaymentMethod}>
-                                <SelectTrigger className="h-14 rounded-2xl bg-white border-slate-100 shadow-sm transition-all text-[14px] px-6"><SelectValue placeholder="Como?" /></SelectTrigger>
-                                <SelectContent className="rounded-[28px] border-slate-100 shadow-2xl p-2">
+                                <SelectTrigger className="h-14 rounded-2xl bg-white dark:bg-white/5 border border-slate-100 dark:border-white/5 shadow-sm transition-all text-[14px] px-6 text-foreground"><SelectValue placeholder="Como?" /></SelectTrigger>
+                                <SelectContent className="rounded-[28px] border-slate-100 dark:border-white/10 shadow-2xl p-2 dark:bg-popover">
                                     <SelectItem value="pix" className="rounded-xl py-3">PIX</SelectItem>
                                     <SelectItem value="boleto" className="rounded-xl py-3">Boleto</SelectItem>
                                     <SelectItem value="card" className="rounded-xl py-3">Cartão</SelectItem>
@@ -746,23 +746,23 @@ export function TransactionForm({ className, transaction, onSuccess, onCancel }:
                             </Select>
                         </div>
                         <div className="space-y-3">
-                            <label className="text-[10px] font-bold text-slate-300 uppercase tracking-widest ml-1">Data</label>
+                            <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1">Data</label>
                             <input type="date" value={date} onChange={e => setDate(e.target.value)}
-                                className="h-14 w-full rounded-2xl bg-white border border-slate-100 shadow-sm text-[14px] px-6 transition-all outline-none" />
+                                className="h-14 w-full rounded-2xl bg-white dark:bg-white/5 border border-slate-100 dark:border-white/5 shadow-sm text-[14px] px-6 transition-all outline-none text-foreground dark:[color-scheme:dark]" />
                         </div>
                     </div>
                 </div>
 
                 {/* 4. RECURRENCE */}
                 <div className="pt-2">
-                    <div className="flex items-center justify-between p-5 rounded-[22px] bg-slate-50 border border-slate-100/60">
+                    <div className="flex items-center justify-between p-5 rounded-[22px] bg-slate-50 dark:bg-white/5 border border-slate-100/60 dark:border-white/5">
                         <div className="flex items-center gap-4">
-                            <div className="p-2.5 bg-white rounded-xl shadow-sm border border-slate-100/50">
-                                <Repeat className="h-4 w-4 text-slate-400 stroke-[2]" />
+                            <div className="p-2.5 bg-white dark:bg-secondary rounded-xl shadow-sm border border-slate-100/50 dark:border-white/5">
+                                <Repeat className="h-4 w-4 text-slate-400 dark:text-muted-foreground stroke-[2]" />
                             </div>
                             <div>
-                                <p className="text-[13px] font-semibold text-slate-800 tracking-tight">Pagamento Recorrente</p>
-                                <p className="text-[10px] text-slate-400 font-medium">Auto-repeat transação</p>
+                                <p className="text-[13px] font-semibold text-slate-800 dark:text-foreground tracking-tight">Pagamento Recorrente</p>
+                                <p className="text-[10px] text-slate-400 dark:text-muted-foreground font-medium">Auto-repeat transação</p>
                             </div>
                         </div>
                         <Switch checked={isRecurring} onCheckedChange={setIsRecurring} className="data-[state=checked]:bg-blue-600" />
@@ -772,8 +772,8 @@ export function TransactionForm({ className, transaction, onSuccess, onCancel }:
                             <motion.div initial={{ opacity: 0, height: 0, marginTop: 0 }} animate={{ opacity: 1, height: 'auto', marginTop: 12 }}
                                 exit={{ opacity: 0, height: 0, marginTop: 0 }} className="overflow-hidden">
                                 <Select value={recurrenceInterval} onValueChange={setRecurrenceInterval}>
-                                    <SelectTrigger className="h-12 rounded-2xl bg-white border-slate-100 shadow-sm px-6 text-[13px]"><SelectValue placeholder="Frequência" /></SelectTrigger>
-                                    <SelectContent className="rounded-2xl shadow-xl border-slate-50">
+                                    <SelectTrigger className="h-12 rounded-2xl bg-white dark:bg-white/5 border border-slate-100 dark:border-white/5 shadow-sm px-6 text-[13px] text-foreground"><SelectValue placeholder="Frequência" /></SelectTrigger>
+                                    <SelectContent className="rounded-2xl shadow-xl border-slate-50 dark:border-white/10 dark:bg-popover">
                                         <SelectItem value="daily" className="rounded-lg py-2">Diária</SelectItem>
                                         <SelectItem value="weekly" className="rounded-lg py-2">Semanal</SelectItem>
                                         <SelectItem value="monthly" className="rounded-lg py-2">Mensal</SelectItem>

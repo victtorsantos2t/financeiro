@@ -113,7 +113,7 @@ export function MonthlyEarningsChart({ currentDate = new Date() }: MonthlyEarnin
     };
 
     return (
-        <div className="w-full bg-white dark:bg-zinc-900/50 rounded-lg p-6 shadow-sm border border-[#E0E2E7] dark:border-white/5 hover:shadow-md transition-all duration-300">
+        <div className="w-full bg-surface dark:bg-zinc-900/50 rounded-lg p-6 shadow-[0_8px_24px_rgba(0,0,0,0.08)] border-none hover:shadow-md transition-all duration-300">
             <div className="mb-8 flex justify-between items-start">
                 <div>
                     <h3 className="text-xl font-bold text-foreground tracking-tight mb-2">Fluxo de Caixa Mensal</h3>

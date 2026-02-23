@@ -50,8 +50,12 @@ export function FinancialHealthScorecard() {
 
             setMetrics(mockMetrics);
             setDiagnosis(diagnosisData);
-        } catch (error) {
-            console.error("Erro ao carregar métricas de saúde:", error);
+        } catch (error: any) {
+            // Ignora AbortError natural do modo estrito do React ou navegação
+            if (error?.name === 'AbortError' || error?.message?.includes('aborted')) {
+                return;
+            }
+            console.error("Erro ao carregar métricas de saúde:", error?.message || error);
         } finally {
             setLoading(false);
         }

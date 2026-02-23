@@ -92,119 +92,64 @@ export function Wallet() {
     const expenseTrend = -4.2;
 
     return (
-        <div className="flex flex-col gap-4 w-full">
-            {/* Main Balance Card */}
-            <div className="w-full bg-white dark:bg-zinc-900/50 rounded-lg p-6 shadow-sm border border-[#E0E2E7] dark:border-white/5 relative overflow-hidden group hover:shadow-md transition-all duration-300">
-                <div className="flex items-center justify-between gap-4 relative z-10">
-                    <div className="flex items-center gap-4">
-                        {/* Circular Progress Indicator - Reduced size */}
-                        <div className="relative w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center">
-                            <svg className="w-full h-full transform -rotate-90">
-                                <circle
-                                    cx="50%"
-                                    cy="50%"
-                                    r="32%"
-                                    stroke="currentColor"
-                                    strokeWidth="5"
-                                    fill="transparent"
-                                    className="text-zinc-100 dark:text-zinc-800"
-                                />
-                                <circle
-                                    cx="50%"
-                                    cy="50%"
-                                    r="32%"
-                                    stroke="currentColor"
-                                    strokeWidth="5"
-                                    fill="transparent"
-                                    strokeDasharray="100"
-                                    strokeDashoffset="25"
-                                    strokeLinecap="round"
-                                    className="text-blue-500 drop-shadow-[0_0_8px_rgba(59,130,246,0.3)]"
-                                />
-                            </svg>
-                            <div className="absolute inset-0 flex items-center justify-center">
-                                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-50 dark:bg-blue-500/10 rounded-full flex items-center justify-center text-blue-600 dark:text-blue-400">
-                                    <Coins size={16} className="sm:w-5 sm:h-5" />
-                                </div>
-                            </div>
-                        </div>
+        <div className="w-full bg-primary rounded-[20px] p-6 lg:p-8 shadow-[0_8px_24px_rgba(0,0,0,0.08)] relative flex flex-col gap-6 overflow-hidden border-none text-primary-foreground">
+            {/* Decorative background gradients for depth */}
+            <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-white/10 to-transparent pointer-events-none rounded-r-[20px]" />
+            <div className="absolute -top-12 -right-12 w-48 h-48 bg-white/10 rounded-full blur-3xl pointer-events-none" />
 
-                        <div className="space-y-0.5">
-                            <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">Saldo Total</span>
-                            <div className="text-xl sm:text-2xl font-bold text-zinc-900 dark:text-white tracking-tight whitespace-nowrap">
-                                {loading ? <Skeleton className="h-8 w-28" /> : `R$ ${totalBalance.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`}
-                            </div>
-                        </div>
+            {/* Linha 1: Resumo Financeiro */}
+            <div className="flex flex-col z-10 w-full mb-1">
+                <h2 className="text-primary-foreground/90 font-bold text-[15px] mb-2">Resumo Financeiro</h2>
+                <div className="flex items-center gap-3">
+                    <span className="text-4xl sm:text-5xl font-extrabold tracking-tight">
+                        {loading ? <Skeleton className="h-10 w-40 bg-white/20" /> : `R$ ${totalBalance.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`}
+                    </span>
+                </div>
+                <div className="flex items-center gap-2 mt-3">
+                    <div className="flex items-center gap-1 py-1 px-2.5 bg-white/20 rounded-full shrink-0">
+                        <TrendingUp size={12} className="text-white" />
+                        <span className="text-[10px] font-bold text-white">+{totalTrend}%</span>
                     </div>
-
-                    {/* Total Trend info */}
-                    <div className="hidden lg:flex flex-col items-end gap-1 shrink-0">
-                        <span className="text-[10px] font-medium text-zinc-400 dark:text-zinc-500">Mês anterior</span>
-                        <div className="flex items-center gap-1 py-1 px-2.5 bg-emerald-50 dark:bg-emerald-500/10 rounded-full">
-                            <TrendingUp size={10} className="text-emerald-500" />
-                            <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400">+{totalTrend}%</span>
-                        </div>
-                    </div>
+                    <span className="text-primary-foreground/70 text-[12px] font-medium">Mês Anterior</span>
                 </div>
             </div>
 
-            {/* Sub Stats Grid */}
-            <div className="grid grid-cols-2 gap-3">
-                {/* Income Card */}
-                <div className="bg-white dark:bg-zinc-900/50 rounded-lg p-4 shadow-sm border border-[#E0E2E7] dark:border-white/5 transition-all duration-300 hover:shadow-md active:scale-[0.98] group">
-                    <span className="text-[10px] font-medium text-zinc-500 dark:text-zinc-400 block mb-1.5 uppercase tracking-wider">Receita</span>
-                    <div className="flex flex-col gap-1">
-                        <span className="text-base sm:text-xl font-bold text-zinc-900 dark:text-white tracking-tighter whitespace-nowrap">
-                            {loading ? <Skeleton className="h-6 w-16" /> : `R$ ${income.toLocaleString('pt-BR', { minimumFractionDigits: 0 })}`}
-                        </span>
-                        {!loading && (
-                            <div className="flex items-center gap-1 py-0.5 px-1.5 bg-emerald-50 dark:bg-emerald-500/10 rounded-lg w-fit">
-                                <ArrowUpRight size={10} className="text-emerald-500" />
-                                <span className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400">+{incomeTrend}%</span>
-                            </div>
-                        )}
-                    </div>
+            {/* Linha 2: Duas colunas para Receitas e Despesas */}
+            <div className="w-full grid grid-cols-2 gap-4 z-10 mt-1">
+                {/* Metric: Income */}
+                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 sm:p-5 flex flex-col justify-center transition-all duration-300 hover:bg-white/15">
+                    <span className="text-primary-foreground/70 text-[11px] font-semibold uppercase tracking-wider mb-1">Receitas</span>
+                    <span className="text-xl sm:text-2xl font-bold tracking-tight mb-1">
+                        {loading ? <Skeleton className="h-6 w-20 bg-white/20" /> : `R$ ${income.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`}
+                    </span>
+                    {!loading && (
+                        <span className="text-emerald-400 text-[11px] font-bold">+{incomeTrend}%</span>
+                    )}
                 </div>
 
-                {/* Expense Card */}
-                <div className="bg-white dark:bg-zinc-900/50 rounded-lg p-4 shadow-sm border border-[#E0E2E7] dark:border-white/5 transition-all duration-300 hover:shadow-md active:scale-[0.98] group">
-                    <span className="text-[10px] font-medium text-zinc-500 dark:text-zinc-400 block mb-1.5 uppercase tracking-wider">Despesa</span>
-                    <div className="flex flex-col gap-1">
-                        <span className="text-base sm:text-xl font-bold text-zinc-900 dark:text-white tracking-tighter whitespace-nowrap">
-                            {loading ? <Skeleton className="h-6 w-16" /> : `R$ ${expense.toLocaleString('pt-BR', { minimumFractionDigits: 0 })}`}
-                        </span>
-                        {!loading && (
-                            <div className="flex items-center gap-1 py-0.5 px-1.5 bg-rose-50 dark:bg-rose-500/10 rounded-lg w-fit">
-                                <ArrowDownRight size={10} className="text-rose-500" />
-                                <span className="text-[10px] font-bold text-rose-600 dark:text-rose-400">{expenseTrend}%</span>
-                            </div>
-                        )}
-                    </div>
+                {/* Metric: Expense */}
+                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 sm:p-5 flex flex-col justify-center transition-all duration-300 hover:bg-white/15">
+                    <span className="text-primary-foreground/70 text-[11px] font-semibold uppercase tracking-wider mb-1">Despesas</span>
+                    <span className="text-xl sm:text-2xl font-bold tracking-tight mb-1">
+                        {loading ? <Skeleton className="h-6 w-20 bg-white/20" /> : `R$ ${expense.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`}
+                    </span>
+                    {!loading && (
+                        <span className="text-rose-400 text-[11px] font-bold">{expenseTrend}%</span>
+                    )}
                 </div>
             </div>
 
-            {/* Daily Expense Card */}
-            <div className="flex-1 bg-white dark:bg-zinc-900/50 rounded-lg p-5 shadow-sm border border-[#E0E2E7] dark:border-white/5 relative overflow-hidden group hover:shadow-md transition-all duration-300 min-h-[110px]">
-                <div className="flex flex-col justify-between h-full relative z-10">
-                    <div className="flex items-center gap-2 mb-2">
-                        <div className="p-2 bg-rose-50 dark:bg-rose-500/10 rounded-xl text-rose-500 shadow-sm border border-rose-100/50 dark:border-rose-500/20">
-                            <TrendingDown size={14} />
-                        </div>
-                        <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 uppercase tracking-widest">Gasto do Dia</span>
+            {/* Linha 3: Gasto do Dia */}
+            <div className="w-full z-10 mt-1">
+                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 sm:p-5 flex items-center justify-between transition-all duration-300 hover:bg-white/15">
+                    <div className="flex flex-col">
+                        <span className="text-primary-foreground/70 text-[11px] font-semibold uppercase tracking-wider mb-1">Gasto do Dia</span>
+                        <span className="text-xl sm:text-2xl font-bold tracking-tight">
+                            {loading ? <Skeleton className="h-6 w-20 bg-white/20" /> : `R$ ${dailyExpenses.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`}
+                        </span>
                     </div>
-
-                    <div className="space-y-0.5">
-                        <div className="text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">
-                            {loading ? <Skeleton className="h-8 w-32" /> : `R$ ${dailyExpenses.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`}
-                        </div>
-                        <p className="text-[10px] font-medium text-zinc-400 dark:text-zinc-500">
-                            Total de despesas confirmadas hoje
-                        </p>
-                    </div>
+                    <span className="text-primary-foreground/60 text-[11px] font-medium bg-white/10 px-3 py-1.5 rounded-full">Hoje</span>
                 </div>
-
-                {/* Decorative background icon */}
-                <TrendingDown size={80} className="absolute -right-4 -bottom-4 text-zinc-100/50 dark:text-white/5 rotate-12 pointer-events-none group-hover:scale-110 transition-transform duration-500" />
             </div>
         </div>
     );

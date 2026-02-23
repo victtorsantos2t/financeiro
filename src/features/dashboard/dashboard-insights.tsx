@@ -86,7 +86,7 @@ export function DashboardInsights({ className, currentDate = new Date() }: Dashb
 
     if (!transactions || transactions.length < 5) {
         return (
-            <div className={cn("p-8 rounded-lg bg-white dark:bg-[#2C2C2E] border border-[#E0E2E7] dark:border-white/5 shadow-sm group hover:shadow-md transition-all duration-300 text-center", className)}>
+            <div className={cn("p-8 rounded-lg bg-surface dark:bg-[#2C2C2E] border-none shadow-[0_8px_24px_rgba(0,0,0,0.08)] group transition-all duration-300 text-center", className)}>
                 <Activity className="w-12 h-12 text-slate-200 dark:text-slate-700 mx-auto mb-4 group-hover:scale-110 transition-transform duration-300" />
                 <h3 className="text-slate-500 dark:text-slate-400 font-medium">Dados insuficientes para análise inteligente</h3>
                 <p className="text-slate-400 dark:text-slate-500 text-sm mt-1">Continue registrando suas transações para desbloquear insights.</p>
@@ -100,7 +100,7 @@ export function DashboardInsights({ className, currentDate = new Date() }: Dashb
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {/* Insights / Anomalies Column */}
                 <div className="lg:col-span-1 space-y-6">
-                    <div className="p-6 rounded-lg bg-white dark:bg-[#2C2C2E] border border-[#E0E2E7] dark:border-white/5 shadow-sm hover:shadow-md transition-all duration-300">
+                    <div className="p-6 rounded-lg bg-surface dark:bg-[#2C2C2E] border-none shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-all duration-300">
                         <h4 className="flex items-center gap-2 text-[15px] font-bold text-slate-800 dark:text-slate-100 mb-4">
                             <Sparkles className="w-4 h-4 text-amber-500" /> Alertas de Inteligência
                         </h4>
@@ -149,7 +149,7 @@ export function DashboardInsights({ className, currentDate = new Date() }: Dashb
                     </div>
 
                     {/* Top 5 Categorias Card */}
-                    <div className="p-6 rounded-lg bg-white dark:bg-[#2C2C2E] border border-[#E0E2E7] dark:border-white/5 shadow-sm hover:shadow-md transition-all duration-300">
+                    <div className="p-6 rounded-lg bg-surface dark:bg-[#2C2C2E] border-none shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-all duration-300">
                         <h4 className="flex items-center gap-2 text-[15px] font-bold text-slate-800 dark:text-slate-100 mb-6">
                             <TrendingDown className="w-4 h-4 text-[#7367F0]" /> Top 5 Maiores Gastos
                         </h4>
@@ -233,7 +233,7 @@ export function DashboardInsights({ className, currentDate = new Date() }: Dashb
                 </div>
 
                 {/* Monthly Detailed Report Column */}
-                <div className="lg:col-span-2 p-6 rounded-lg bg-white dark:bg-[#2C2C2E] border border-[#E0E2E7] dark:border-white/5 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col">
+                <div className="lg:col-span-2 p-6 rounded-lg bg-surface dark:bg-[#2C2C2E] border-none shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-all duration-300 flex flex-col">
                     <div className="flex items-center justify-between mb-8 pb-4 border-b border-slate-100 dark:border-white/5">
                         <h4 className="text-[17px] font-bold text-slate-800 dark:text-white tracking-tight flex items-center gap-2">
                             <div className="w-1.5 h-6 bg-slate-900 dark:bg-white rounded-full" />

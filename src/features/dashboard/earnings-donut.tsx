@@ -70,7 +70,7 @@ export function EarningsDonut({ currentDate = new Date() }: EarningsDonutProps) 
     const totalIncome = data.find(d => d.name === "Receitas")?.value || 0;
 
     return (
-        <div className="w-full bg-white dark:bg-[#2C2C2E] rounded-lg p-6 shadow-sm hover:shadow-md border border-[#E0E2E7] dark:border-white/5 flex flex-col items-center justify-between transition-all duration-300">
+        <div className="w-full bg-surface dark:bg-[#2C2C2E] rounded-lg p-6 shadow-[0_8px_24px_rgba(0,0,0,0.08)] border-none flex flex-col items-center justify-between transition-all duration-300">
             <h3 className="text-[15px] font-bold text-slate-800 dark:text-white w-full text-left mb-6">Balanço do Mês</h3>
 
             <div className="h-[240px] w-full relative flex items-center justify-center">
@@ -88,7 +88,7 @@ export function EarningsDonut({ currentDate = new Date() }: EarningsDonutProps) 
                             cornerRadius={8}
                         >
                             {data.map((entry, index) => (
-                                <Cell key={`cell-${index}`} fill={index === 0 ? 'var(--primary)' : 'var(--secondary)'} />
+                                <Cell key={`cell-${index}`} fill={index === 0 ? 'var(--primary)' : 'var(--accent)'} />
                             ))}
                         </Pie>
                         <Tooltip
@@ -121,7 +121,7 @@ export function EarningsDonut({ currentDate = new Date() }: EarningsDonutProps) 
                     <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest">Receitas</span>
                 </div>
                 <div className="flex items-center gap-2 justify-center">
-                    <div className="w-2.5 h-2.5 bg-secondary rounded-full"></div>
+                    <div className="w-2.5 h-2.5 bg-accent rounded-full"></div>
                     <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest">Despesas</span>
                 </div>
             </div>

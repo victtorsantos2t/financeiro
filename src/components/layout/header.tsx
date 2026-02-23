@@ -35,7 +35,7 @@ export function Header() {
                             <Search className="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400 group-focus-within:text-[#7367F0] transition-colors" />
                             <Input
                                 placeholder="Search (Ctrl+K)"
-                                className="pl-8 bg-transparent border-none rounded-none h-10 focus-visible:ring-0 focus-visible:border-none transition-all text-[14px] text-slate-500 shadow-none px-0"
+                                className="pl-8 pr-0 bg-transparent border-none rounded-none h-10 focus-visible:ring-0 focus-visible:border-none transition-all text-[14px] text-slate-500 shadow-none"
                             />
                         </div>
                         <div className="md:hidden">

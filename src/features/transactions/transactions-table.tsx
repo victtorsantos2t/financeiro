@@ -180,7 +180,7 @@ export function TransactionsTable({
     };
 
     return (
-        <div className="flex flex-col h-full bg-white dark:bg-[#2C2C2E] rounded-lg border border-[#E0E2E7] dark:border-white/5 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden min-h-[400px]">
+        <div className="flex flex-col h-full bg-surface dark:bg-[#2C2C2E] rounded-lg border-none shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-all duration-300 overflow-hidden min-h-[400px]">
             {/* Novo Cabeçalho Estilizado */}
             <div className="p-5 border-b border-[#E0E2E7] dark:border-white/5 bg-slate-50 dark:bg-black/20 flex items-center justify-between">
                 <div className="flex items-center gap-3">

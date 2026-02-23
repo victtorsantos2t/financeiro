@@ -50,6 +50,10 @@
   --card-foreground: #0F172A;
   --popover: #FFFFFF;
   --popover-foreground: #0F172A;
+  --surface: #FFFFFF;
+  /* New standard */
+  --primary-surface: #E8E5FF;
+  /* New standard */
 
   /* Accents - Enterprise Palette (Based on Image) */
   --primary: #7367F0;
@@ -57,10 +61,16 @@
   --primary-hover: #5E50EE;
   --primary-active: #4839E3;
   --primary-foreground: #FFFFFF;
+  --accent: #00CFE8;
+  /* New standard */
 
   /* Secondary Surfaces */
   --secondary: #F1F5F9;
   --secondary-foreground: #475569;
+
+  /* Text - New Standards */
+  --text-primary: #0F172A;
+  --text-secondary: #64748B;
 
   /* Muted Text */
   --muted: #F1F5F9;
@@ -106,16 +116,23 @@
   --card-foreground: #F2F2F7;
   --popover: #1C1C1E;
   --popover-foreground: #F2F2F7;
+  --surface: #1C1C1E;
+  --primary-surface: rgba(115, 103, 240, 0.15);
 
   /* Primary — iOS Dynamic Blue Dark */
-  --primary: #0A84FF;
-  --primary-hover: #409CFF;
-  --primary-active: #60ADFF;
+  --primary: #7367F0;
+  --primary-hover: #5E50EE;
+  --primary-active: #4839E3;
   --primary-foreground: #FFFFFF;
+  --accent: #00CFE8;
 
   /* Secondary Surfaces */
   --secondary: rgba(44, 44, 46, 0.95);
   --secondary-foreground: #F2F2F7;
+
+  /* Text - New Standards */
+  --text-primary: #F2F2F7;
+  --text-secondary: #A1A1AA;
 
   /* Muted */
   --muted: rgba(44, 44, 46, 0.7);
@@ -170,6 +187,10 @@
   --color-muted-foreground: var(--muted-foreground);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
+  --color-surface: var(--surface);
+  --color-primary-surface: var(--primary-surface);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
