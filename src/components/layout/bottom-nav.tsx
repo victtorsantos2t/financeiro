@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { AddTransactionModal } from "@/features/transactions/add-transaction-modal";
 
 // Ícones SVG inline no estilo SF Symbols para iOS nativo
@@ -51,6 +51,12 @@ const TabIcons = {
 
 export function BottomNav({ onMenuClick }: { onMenuClick?: () => void }) {
     const pathname = usePathname();
+    const searchParams = useSearchParams();
+
+    const view = searchParams?.get('v');
+    if (view === 'export' || view === 'details') {
+        return null;
+    }
 
     const navItems = [
         { key: "dashboard", label: "Conta", href: "/dashboard" },
