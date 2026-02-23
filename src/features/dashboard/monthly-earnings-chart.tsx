@@ -113,17 +113,17 @@ export function MonthlyEarningsChart({ currentDate = new Date() }: MonthlyEarnin
     };
 
     return (
-        <div className="w-full bg-card rounded-card p-6 shadow-sm border border-border transition-all duration-300 hover:shadow-md">
+        <div className="w-full bg-surface dark:bg-zinc-900/50 rounded-lg p-6 shadow-[0_8px_24px_rgba(0,0,0,0.08)] border-none hover:shadow-md transition-all duration-300">
             <div className="mb-8 flex justify-between items-start">
                 <div>
                     <h3 className="text-xl font-bold text-foreground tracking-tight mb-2">Fluxo de Caixa Mensal</h3>
                     <div className="flex items-center gap-6 text-[11px] font-bold">
-                        <div className="flex items-center gap-2 text-primary">
-                            <span className="w-3 h-3 rounded-full bg-primary shadow-sm shadow-primary/40"></span>
+                        <div className="flex items-center gap-2 text-[#7367F0]">
+                            <span className="w-3 h-3 rounded-full bg-[#7367F0] shadow-sm shadow-[#7367F0]/40"></span>
                             Receitas
                         </div>
-                        <div className="flex items-center gap-2 text-cyan-500">
-                            <span className="w-3 h-3 rounded-full bg-cyan-500 shadow-sm shadow-cyan-400/40"></span>
+                        <div className="flex items-center gap-2 text-[#00CFE8]">
+                            <span className="w-3 h-3 rounded-full bg-[#00CFE8] shadow-sm shadow-[#00CFE8]/40"></span>
                             Despesas
                         </div>
                     </div>
@@ -137,18 +137,18 @@ export function MonthlyEarningsChart({ currentDate = new Date() }: MonthlyEarnin
 
             <div className="h-[300px] w-full mt-4">
                 {data.length === 0 ? (
-                    <Skeleton className="w-full h-full rounded-card" />
+                    <Skeleton className="w-full h-full rounded-[32px]" />
                 ) : (
                     <ResponsiveContainer width="100%" height="100%">
                         <AreaChart data={data} margin={{ top: 40, right: 0, left: -20, bottom: 0 }}>
                             <defs>
                                 <linearGradient id="colorIncome" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.15} />
-                                    <stop offset="95%" stopColor="#3B82F6" stopOpacity={0} />
+                                    <stop offset="5%" stopColor="#7367F0" stopOpacity={0.15} />
+                                    <stop offset="95%" stopColor="#7367F0" stopOpacity={0} />
                                 </linearGradient>
                                 <linearGradient id="colorExpense" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="5%" stopColor="#06B6D4" stopOpacity={0.15} />
-                                    <stop offset="95%" stopColor="#06B6D4" stopOpacity={0} />
+                                    <stop offset="5%" stopColor="#00CFE8" stopOpacity={0.15} />
+                                    <stop offset="95%" stopColor="#00CFE8" stopOpacity={0} />
                                 </linearGradient>
                             </defs>
                             <CartesianGrid
@@ -169,20 +169,20 @@ export function MonthlyEarningsChart({ currentDate = new Date() }: MonthlyEarnin
                             />
                             <Tooltip
                                 content={<CustomTooltip />}
-                                cursor={{ stroke: '#3B82F6', strokeWidth: 2, strokeDasharray: '5 5' }}
+                                cursor={{ stroke: '#7367F0', strokeWidth: 2, strokeDasharray: '5 5' }}
                                 offset={-40}
                             />
                             <Area
                                 type="monotone"
                                 dataKey="income"
-                                stroke="#3B82F6"
+                                stroke="#7367F0"
                                 strokeWidth={4}
                                 fillOpacity={1}
                                 fill="url(#colorIncome)"
                                 activeDot={{
                                     r: 6,
                                     fill: "white",
-                                    stroke: "#3B82F6",
+                                    stroke: "#7367F0",
                                     strokeWidth: 3,
                                     className: "shadow-xl"
                                 }}
@@ -191,7 +191,7 @@ export function MonthlyEarningsChart({ currentDate = new Date() }: MonthlyEarnin
                             <Area
                                 type="monotone"
                                 dataKey="expense"
-                                stroke="#06B6D4"
+                                stroke="#00CFE8"
                                 strokeWidth={3}
                                 strokeDasharray="5 5"
                                 fillOpacity={1}
@@ -199,7 +199,7 @@ export function MonthlyEarningsChart({ currentDate = new Date() }: MonthlyEarnin
                                 activeDot={{
                                     r: 5,
                                     fill: "white",
-                                    stroke: "#06B6D4",
+                                    stroke: "#00CFE8",
                                     strokeWidth: 2,
                                 }}
                                 animationDuration={2000}

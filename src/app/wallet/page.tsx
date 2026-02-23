@@ -39,7 +39,7 @@ export default function WalletPage() {
                 subtitle="Contas e métodos de pagamento"
                 action={<WalletModal onSuccess={fetchWallets} />}
             />
-            <div className="hidden md:flex justify-between items-center bg-card p-6 rounded-card border border-border shadow-sm">
+            <div className="hidden md:flex justify-between items-center bg-white dark:bg-zinc-900/50 p-6 rounded-[32px] border border-zinc-100 dark:border-white/5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-none transition-all duration-300">
                 <div className="flex flex-col gap-1">
                     <h1 className="text-2xl font-bold tracking-tight text-foreground">Minhas Carteiras</h1>
                     <p className="text-sm text-muted-foreground font-medium">Gerencie suas contas bancárias e métodos de pagamento.</p>
@@ -60,10 +60,10 @@ export default function WalletPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-6">
                     {loading ? (
                         [1, 2, 3, 4].map(i => (
-                            <div key={i} className="w-full h-52 rounded-card bg-secondary/30 animate-pulse-luxury border border-border/50"></div>
+                            <div key={i} className="w-full h-52 rounded-[32px] bg-secondary/30 animate-pulse-luxury border border-border/50"></div>
                         ))
                     ) : wallets.length === 0 ? (
-                        <div className="col-span-full text-center py-24 text-muted-foreground font-bold italic border-2 border-dashed border-border/50 rounded-card bg-card">
+                        <div className="col-span-full text-center py-24 text-muted-foreground font-black italic border-2 border-dashed border-border/50 rounded-[32px] bg-white dark:bg-zinc-900/50 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-none">
                             Nenhuma carteira configurada.
                         </div>
                     ) : (

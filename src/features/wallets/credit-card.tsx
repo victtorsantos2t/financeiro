@@ -87,7 +87,7 @@ export function CreditCard({ wallet, onUpdate }: CreditCardProps) {
 
     return (
         <div
-            className="relative group w-full h-56 rounded-3xl p-8 flex flex-col justify-between overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.06)] transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.1)] border border-white/20 select-none"
+            className="relative group w-full h-64 rounded-[20px] p-6 flex flex-col justify-between overflow-hidden shadow-[0_4px_24px_rgba(0,0,0,0.06)] transition-all duration-500 hover:shadow-[0_12px_40px_rgba(0,0,0,0.08)] border border-white/20 select-none"
             style={{ background: currentGradient }}
         >
             {/* Investment Badge */}
@@ -107,95 +107,109 @@ export function CreditCard({ wallet, onUpdate }: CreditCardProps) {
             <div className="absolute -right-10 -top-10 w-48 h-48 bg-white/20 rounded-full blur-3xl transition-transform duration-1000 group-hover:scale-150"></div>
             <div className="absolute left-10 bottom-0 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
 
-            <div className="flex justify-between items-start relative z-10">
-                <div className="space-y-4">
-                    <div className="font-mono text-xl tracking-[0.25em] mb-4 drop-shadow-sm opacity-90" style={{ color: textColor }}>
+            <div className="flex flex-col h-full relative z-10">
+                {/* Top Section: Number & Logo */}
+                <div className="flex justify-between items-start mb-auto">
+                    <div className="font-mono text-lg tracking-[0.25em] drop-shadow-sm opacity-90" style={{ color: textColor }}>
                         {displayNum}
                     </div>
 
-                    <div>
-                        <p className="font-semibold text-xl mb-0.5 tracking-tight leading-tight" style={{ color: textColor }}>{wallet.name}</p>
-                        <p className={`text-[10px] font-bold uppercase tracking-[0.15em] opacity-80 ${textColor === 'white' ? 'text-white' : 'text-muted-foreground'}`}>
-                            {wallet.card_type === 'credit' ? 'Crédito' : wallet.card_type === 'debit' ? 'Débito' : wallet.type}
-                        </p>
+                    <div className="flex flex-col items-end">
+                        <div className="flex -space-x-3 mb-3 opacity-80">
+                            <div className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border border-white/10"></div>
+                            <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md border border-white/20 -translate-x-1"></div>
+                        </div>
+                        <CardIcon className={`h-6 w-6 transition-all duration-300 ${iconColor}`} strokeWidth={1.5} />
+                    </div>
+                </div>
+
+                {/* Middle Section: Name & Type */}
+                <div className="mb-4">
+                    <p className="font-semibold text-xl mb-0.5 tracking-tight leading-tight" style={{ color: textColor }}>{wallet.name}</p>
+                    <p className={`text-[10px] font-bold uppercase tracking-[0.15em] opacity-80 ${textColor === 'white' ? 'text-white' : 'text-muted-foreground'}`}>
+                        {wallet.card_type === 'credit' ? 'Crédito' : wallet.card_type === 'debit' ? 'Débito' : wallet.type}
+                    </p>
+                </div>
+
+                {/* Bottom Section: Balance & Actions (Full Width) */}
+                <div className="w-full">
+                    <div className="flex items-end justify-between w-full">
+                        <div className="flex-1">
+                            <p className={`text-[10px] font-bold uppercase tracking-[0.15em] opacity-80 mb-0.5 ${textColor === 'white' ? 'text-white' : 'text-muted-foreground'}`}>
+                                {wallet.card_type === 'credit' ? 'Fatura Atual' : 'Saldo Atual'}
+                            </p>
+                            <p className="font-mono text-lg font-medium tracking-tight" style={{ color: textColor }}>
+                                {wallet.balance.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                            </p>
+                        </div>
+
+                        {/* Actions — Garantindo alinhamento total à direita */}
+                        <div className="flex gap-2 z-10 ml-4">
+                            <WalletModal
+                                wallet={wallet}
+                                onSuccess={onUpdate}
+                                trigger={
+                                    <Button
+                                        type="button"
+                                        size="icon"
+                                        variant="secondary"
+                                        className={`h-9 w-9 rounded-xl ${textColor === 'white' ? 'bg-white/20 hover:bg-white/40' : 'bg-black/5 hover:bg-black/10'} backdrop-blur-md border-none shadow-sm transition-transform active:scale-95`}
+                                    >
+                                        <Pencil className={`h-4 w-4 ${textColor === 'white' ? 'text-white' : 'text-foreground'}`} />
+                                    </Button>
+                                }
+                            />
+
+                            <AlertDialog>
+                                <AlertDialogTrigger asChild>
+                                    <Button
+                                        type="button"
+                                        size="icon"
+                                        variant="secondary"
+                                        className={`h-9 w-9 rounded-xl ${textColor === 'white' ? 'bg-red-500/20 hover:bg-red-500/40 text-red-100' : 'bg-red-500/10 hover:bg-red-500/20 text-red-600'} backdrop-blur-md border-none shadow-sm transition-transform active:scale-95`}
+                                    >
+                                        <Trash2 className="h-4 w-4" />
+                                    </Button>
+                                </AlertDialogTrigger>
+                                <AlertDialogContent className="rounded-[20px] border-none shadow-2xl">
+                                    <AlertDialogHeader>
+                                        <AlertDialogTitle className="text-xl font-bold tracking-tight">Excluir Carteira</AlertDialogTitle>
+                                        <AlertDialogDescription className="text-muted-foreground">
+                                            Tem certeza que deseja excluir "{wallet.name}"? Esta ação é irreversível.
+                                        </AlertDialogDescription>
+                                    </AlertDialogHeader>
+                                    <AlertDialogFooter className="gap-2 sm:gap-0">
+                                        <AlertDialogCancel className="rounded-2xl border-border hover:bg-secondary">Cancelar</AlertDialogCancel>
+                                        <AlertDialogAction onClick={handleDelete} className="bg-destructive text-white hover:bg-destructive-hover rounded-2xl border-none font-bold">
+                                            Excluir
+                                        </AlertDialogAction>
+                                    </AlertDialogFooter>
+                                </AlertDialogContent>
+                            </AlertDialog>
+                        </div>
                     </div>
 
-                    <div>
-                        <p className={`text-[10px] font-bold uppercase tracking-[0.15em] opacity-80 mb-0.5 ${textColor === 'white' ? 'text-white' : 'text-muted-foreground'}`}>
-                            {wallet.card_type === 'credit' ? 'Fatura Atual' : 'Saldo Atual'}
-                        </p>
-                        <p className="font-mono text-lg font-medium tracking-tight" style={{ color: textColor }}>
-                            {wallet.balance.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
-                        </p>
-                        {monthlyYield && (
-                            <div className="flex flex-col mt-3 space-y-0.5">
-                                <p className="text-[9px] font-bold uppercase tracking-wider opacity-60" style={{ color: textColor }}>Rendimento Estimado</p>
+                    {monthlyYield && (
+                        <div className="flex flex-col mt-3 space-y-1">
+                            <p className="text-[9px] font-bold uppercase tracking-wider opacity-60" style={{ color: textColor }}>Rendimento Estimado</p>
+                            <div className="flex items-center gap-4">
                                 <div className="flex flex-col">
                                     <p className="text-[11px] font-bold flex items-center gap-1" style={{ color: textColor === 'white' ? '#4ade80' : '#16a34a' }}>
-                                        + {(monthlyYield / 30).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} <span className="text-[9px] opacity-80 font-normal text-white">/ dia</span>
+                                        + {(monthlyYield / 30).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                                        <span className={`text-[9px] font-medium ${textColor === 'white' ? 'opacity-70 text-white' : 'opacity-60 text-foreground'}`}>/ dia</span>
                                     </p>
-                                    <p className="text-[10px] font-medium flex items-center gap-1 opacity-80" style={{ color: textColor }}>
-                                        + {monthlyYield.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })} <span className="text-[9px] opacity-80 font-normal">/ mês</span>
+                                </div>
+                                <div className={`h-3 w-px ${textColor === 'white' ? 'bg-white/20' : 'bg-black/10'}`}></div>
+                                <div className="flex flex-col">
+                                    <p className="text-[11px] font-bold flex items-center gap-1" style={{ color: textColor === 'white' ? '#4ade80' : '#16a34a' }}>
+                                        + {monthlyYield.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                                        <span className={`text-[9px] font-medium ${textColor === 'white' ? 'opacity-70 text-white' : 'opacity-60 text-foreground'}`}>/ mês</span>
                                     </p>
                                 </div>
                             </div>
-                        )}
-                    </div>
+                        </div>
+                    )}
                 </div>
-
-                <div className="flex flex-col items-end">
-                    <div className="flex -space-x-3 mb-4 opacity-80">
-                        <div className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border border-white/10"></div>
-                        <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md border border-white/20 -translate-x-1"></div>
-                    </div>
-
-                    <CardIcon className={`h-6 w-6 transition-all duration-300 ${iconColor}`} strokeWidth={1.5} />
-                </div>
-            </div>
-
-            {/* Actions overlay */}
-            <div className="absolute top-6 right-6 flex gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-300 z-50">
-                <WalletModal
-                    wallet={wallet}
-                    onSuccess={onUpdate}
-                    trigger={
-                        <Button
-                            type="button"
-                            size="icon"
-                            variant="secondary"
-                            className="h-8 w-8 rounded-xl bg-white/20 hover:bg-white/40 backdrop-blur-md text-white border-none shadow-sm transition-transform active:scale-95"
-                        >
-                            <Pencil className="h-3.5 w-3.5" />
-                        </Button>
-                    }
-                />
-
-                <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                        <Button
-                            type="button"
-                            size="icon"
-                            variant="destructive"
-                            className="h-8 w-8 rounded-xl bg-red-500/10 hover:bg-red-500/20 backdrop-blur-md text-red-500 border-none shadow-sm transition-transform active:scale-95"
-                        >
-                            <Trash2 className="h-3.5 w-3.5" />
-                        </Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent className="rounded-3xl border-none shadow-2xl">
-                        <AlertDialogHeader>
-                            <AlertDialogTitle className="text-xl font-bold tracking-tight">Excluir Carteira</AlertDialogTitle>
-                            <AlertDialogDescription className="text-muted-foreground">
-                                Tem certeza que deseja excluir "{wallet.name}"? Esta ação é irreversível.
-                            </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter className="gap-2 sm:gap-0">
-                            <AlertDialogCancel className="rounded-2xl border-border hover:bg-secondary">Cancelar</AlertDialogCancel>
-                            <AlertDialogAction onClick={handleDelete} className="bg-destructive text-white hover:bg-destructive-hover rounded-2xl border-none font-bold">
-                                Excluir
-                            </AlertDialogAction>
-                        </AlertDialogFooter>
-                    </AlertDialogContent>
-                </AlertDialog>
             </div>
 
             {/* Subtle decorative pattern */}

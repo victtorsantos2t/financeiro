@@ -22,6 +22,7 @@ export interface Transaction {
     destination_wallet_id?: string;
     category?: { name: string };
     wallet?: { name: string };
+    created_at?: string;
 }
 
 export interface Wallet {

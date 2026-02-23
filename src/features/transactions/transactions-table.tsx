@@ -13,10 +13,10 @@ import {
     ArrowUpRight,
     ArrowDownRight,
     CircleDollarSign,
-    ListFilter,
-    LayoutGrid,
     Maximize2,
-    Minimize2
+    Minimize2,
+    ArrowLeftRight,
+    ListFilter
 } from "lucide-react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -31,6 +31,7 @@ import { useDashboard } from "@/context/dashboard-context";
 interface TransactionWithDetails extends Transaction {
     category?: { name: string };
     wallet?: { name: string };
+    created_at?: string;
 }
 
 interface TransactionsTableProps {
@@ -139,35 +140,65 @@ export function TransactionsTable({
         }, 0);
     };
 
-    const getCategoryIcon = (categoryName: string, description: string) => {
+    const getCategoryIcon = (categoryName: string, description: string, type: 'income' | 'expense') => {
         const desc = description.toLowerCase();
         const cat = categoryName.toLowerCase();
 
+        const isIncome = type === 'income';
+
+        // Base styles for icons based on type
+        const iconContainerStyles = cn(
+            "p-2.5 rounded-xl border transition-colors duration-300",
+            isIncome
+                ? "border-emerald-100 dark:border-emerald-500/20 text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10 group-hover/item:bg-emerald-100 dark:group-hover/item:bg-emerald-500/20"
+                : "border-rose-100 dark:border-rose-500/20 text-rose-500 dark:text-rose-400 bg-rose-50 dark:bg-rose-500/10 group-hover/item:bg-rose-100 dark:group-hover/item:bg-rose-500/20"
+        );
+
+        const iconProps = { className: "h-4 w-4", strokeWidth: 2 };
+
         if (desc.includes('pix recebido') || cat.includes('receita')) {
-            return <div className="p-2 rounded-xl border border-emerald-100 dark:border-emerald-500/20 text-emerald-600 dark:text-emerald-400 bg-emerald-50/50 dark:bg-emerald-500/5"><ArrowDownRight className="h-4 w-4" /></div>;
+            return <div className={iconContainerStyles}><ArrowDownRight {...iconProps} /></div>;
         }
 
         if (desc.includes('pix enviado') || cat.includes('transferencia')) {
-            return <div className="p-2 rounded-xl border border-rose-100 dark:border-rose-500/20 text-rose-500 dark:text-rose-400 bg-rose-50/50 dark:bg-rose-500/5"><ArrowUpRight className="h-4 w-4" /></div>;
+            return <div className={iconContainerStyles}><ArrowUpRight {...iconProps} /></div>;
         }
 
         if (desc.includes('burger') || desc.includes('restaurante') || cat.includes('alimentacao')) {
-            return <div className="p-2 rounded-xl border border-slate-100 dark:border-white/10 text-slate-400 dark:text-slate-500 bg-slate-50/50 dark:bg-white/5"><Utensils className="size-4" /></div>;
+            return <div className={iconContainerStyles}><Utensils {...iconProps} /></div>;
         }
 
         if (cat.includes('compras') || desc.includes('shpp')) {
-            return <div className="p-2 rounded-xl border border-slate-100 dark:border-white/10 text-slate-400 dark:text-slate-500 bg-slate-50/50 dark:bg-white/5"><ShoppingBag className="size-4" /></div>;
+            return <div className={iconContainerStyles}><ShoppingBag {...iconProps} /></div>;
         }
 
         if (cat.includes('servicos') || desc.includes('conveniencia') || desc.includes('mercado')) {
-            return <div className="p-2 rounded-xl border border-slate-100 dark:border-white/10 text-slate-400 dark:text-slate-500 bg-slate-50/50 dark:bg-white/5"><Store className="size-4" /></div>;
+            return <div className={iconContainerStyles}><Store {...iconProps} /></div>;
         }
 
-        return <div className="p-2 rounded-xl border border-slate-100 dark:border-white/10 text-slate-400 dark:text-slate-500 bg-slate-50/50 dark:bg-white/5"><CircleDollarSign className="size-4" strokeWidth={1.5} /></div>;
+        return <div className={iconContainerStyles}><CircleDollarSign {...iconProps} /></div>;
     };
 
     return (
-        <div className="flex flex-col h-full bg-card dark:bg-[#1C1C1E]/80 rounded-card border border-border dark:border-white/10 shadow-sm overflow-hidden min-h-[400px] backdrop-blur-sm">
+        <div className="flex flex-col h-full bg-surface dark:bg-[#2C2C2E] rounded-lg border-none shadow-[0_8px_24px_rgba(0,0,0,0.08)] transition-all duration-300 overflow-hidden min-h-[400px]">
+            {/* Novo Cabeçalho Estilizado */}
+            <div className="p-5 border-b border-[#E0E2E7] dark:border-white/5 bg-slate-50 dark:bg-black/20 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-lg bg-[#7367F0]/10 flex items-center justify-center text-[#7367F0]">
+                        <ArrowLeftRight className="h-5 w-5" />
+                    </div>
+                    <div>
+                        <h3 className="text-[15px] font-bold text-slate-800 dark:text-white">Transações Recentes</h3>
+                        <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider">Últimos lançamentos</p>
+                    </div>
+                </div>
+                {!limit && (
+                    <div className="px-3 py-1.5 rounded-lg bg-white dark:bg-zinc-800 border border-border/50 text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
+                        {totalCount} Total
+                    </div>
+                )}
+            </div>
+
             <div className="flex-1 overflow-auto custom-scrollbar">
                 {loading ? (
                     <div className="p-6 space-y-8">
@@ -195,11 +226,11 @@ export function TransactionsTable({
                                 return (
                                     <div key={date} className="mb-1">
                                         <div className={cn(
-                                            "px-4 py-2.5 bg-secondary/30 dark:bg-white/5 flex justify-between items-center border-y border-border/50 dark:border-white/5 sticky top-0 z-10 backdrop-blur-md",
-                                            isFuture && "bg-destructive/5 dark:bg-destructive/10"
+                                            "px-4 py-2 bg-slate-50 dark:bg-black/20 flex justify-between items-center border-y border-slate-100 dark:border-white/5 sticky top-0 z-10",
+                                            isFuture && "bg-rose-50 dark:bg-rose-500/10"
                                         )}>
                                             <h4 className={cn(
-                                                "text-[12px] font-black capitalize flex items-center gap-2",
+                                                "text-[12px] font-bold capitalize flex items-center gap-2",
                                                 isFuture ? "text-destructive" : "text-slate-900 dark:text-white"
                                             )}>
                                                 {format(new Date(date + 'T00:00:00'), "d 'de' MMMM", { locale: ptBR })}
@@ -216,25 +247,30 @@ export function TransactionsTable({
                                             )}
                                         </div>
 
-                                        {/* List Items */}
-                                        <div className="divide-y divide-border/50">
+                                        <div className="divide-y divide-slate-100 dark:divide-white/5">
                                             {dailyTx.map((t) => (
                                                 <div
                                                     key={t.id}
                                                     onClick={() => handleTransactionClick(t)}
-                                                    className="flex items-center gap-4 px-4 py-2.5 hover:bg-secondary/20 group/item cursor-pointer transition-colors"
+                                                    className="flex items-center gap-4 px-4 py-3 hover:bg-slate-50 dark:hover:bg-white/5 group/item cursor-pointer transition-colors"
                                                 >
                                                     <div className="flex-shrink-0">
-                                                        {getCategoryIcon(t.category?.name || "Geral", t.description)}
+                                                        {getCategoryIcon(t.category?.name || "Geral", t.description, t.type)}
                                                     </div>
 
                                                     <div className="flex-1 min-w-0 pr-2 py-0.5">
-                                                        <span className="text-[9px] text-muted-foreground font-bold uppercase tracking-wider block mb-0">
-                                                            {t.category?.name || 'Geral'}
-                                                        </span>
+                                                        <div className="flex items-center gap-2 mb-0.5">
+                                                            <span className="text-[9px] text-muted-foreground font-bold uppercase tracking-wider">
+                                                                {t.category?.name || 'Geral'}
+                                                            </span>
+                                                            <span className="w-1 h-1 rounded-full bg-border" />
+                                                            <span className="text-[9px] text-muted-foreground font-bold opacity-60">
+                                                                {t.created_at ? format(new Date(t.created_at), "HH:mm") : format(new Date(t.date + 'T12:00:00'), "HH:mm")}
+                                                            </span>
+                                                        </div>
                                                         <h5 className={cn(
-                                                            "text-[13.5px] font-black leading-tight truncate",
-                                                            isFuture ? "text-destructive" : "text-slate-900 dark:text-slate-100"
+                                                            "text-[13.5px] font-bold leading-tight truncate",
+                                                            isFuture ? "text-destructive" : "text-slate-900 dark:text-zinc-100"
                                                         )}>
                                                             {t.description}
                                                         </h5>
@@ -242,8 +278,8 @@ export function TransactionsTable({
 
                                                     <div className="text-right flex flex-col items-end py-0.5">
                                                         <span className={cn(
-                                                            "text-[14.5px] font-black tracking-tighter",
-                                                            isFuture ? "text-destructive" : (t.type === 'income' ? "text-success" : "text-slate-900 dark:text-white")
+                                                            "text-[14.5px] font-bold tracking-tighter",
+                                                            isFuture ? "text-destructive" : (t.type === 'income' ? "text-emerald-500" : "text-slate-900 dark:text-white")
                                                         )}>
                                                             {t.type === 'income' ? '+ ' : '- '}
                                                             {showValues ? new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(t.amount) : "R$ ••••"}
@@ -265,7 +301,7 @@ export function TransactionsTable({
                         </AnimatePresence>
 
                         {limit && transactions.length > 0 && (
-                            <div className="p-4 flex justify-center border-t border-border/40 bg-card/50">
+                            <div className="p-4 flex justify-center border-t border-border/40 bg-white/30 dark:bg-white/5">
                                 <Link href="/transactions">
                                     <Button
                                         variant="ghost"

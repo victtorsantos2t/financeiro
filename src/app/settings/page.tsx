@@ -119,13 +119,14 @@ function IOSRow({
 
 // ─── iOS Grouped Card ────────────────────────────────────────────────────────
 function IOSCard({ children, className }: { children: React.ReactNode; className?: string }) {
+    const { theme } = useTheme();
     return (
         <div
-            className={cn("bg-white dark:bg-[#1C1C1E] overflow-hidden transition-colors duration-300", className)}
+            className={cn("bg-white dark:bg-zinc-900/50 overflow-hidden transition-all duration-300", className)}
             style={{
-                borderRadius: 16,
-                boxShadow: '0 2px 8px rgba(0,0,0,0.07), 0 0 1px rgba(0,0,0,0.04)',
-                background: 'var(--ios-bg2)',
+                borderRadius: 20,
+                boxShadow: theme === 'dark' ? 'none' : '0 8px 30px rgba(0,0,0,0.04)',
+                border: '1px solid var(--ios-separator)',
             }}
         >
             {children}
@@ -240,12 +241,12 @@ export default function SettingsPage() {
 
     return (
         <div
-            className="min-h-screen pb-40 transition-colors duration-300"
-            style={{ background: 'var(--ios-bg)', fontFamily: iOSFont }}
+            className="min-h-screen pb-40 transition-colors duration-300 bg-[var(--ios-bg)] md:bg-transparent font-sans md:px-6"
+            style={{ fontFamily: iOSFont }}
         >
-            {/* ── Large Title (iOS Navigation Bar) ─────────────────────────── */}
+            {/* ── Large Title (iOS Navigation Bar) - Mobile Only ──────────── */}
             <div
-                className="sticky top-0 z-40 px-4 pb-4"
+                className="md:hidden sticky top-0 z-40 px-4 pb-4"
                 style={{
                     background: 'var(--ios-header-blur)',
                     backdropFilter: 'blur(20px) saturate(180%)',
@@ -259,7 +260,14 @@ export default function SettingsPage() {
                 </h1>
             </div>
 
-            <div className="px-4 pt-6 space-y-5 max-w-2xl mx-auto">
+            {/* ── Desktop Title ────────────────────────────────────────────── */}
+            <div className="hidden md:block pt-4 pb-8 max-w-2xl mx-auto px-4">
+                <h1 className="text-3xl font-bold tracking-tight text-foreground">
+                    Configurações
+                </h1>
+            </div>
+
+            <div className="px-4 md:px-0 pt-6 md:pt-0 space-y-5 max-w-2xl mx-auto">
 
                 {/* ── Profile Hero Card ─────────────────────────────────────── */}
                 <IOSCard>
@@ -268,7 +276,7 @@ export default function SettingsPage() {
                             <Avatar className="h-[60px] w-[60px]">
                                 <AvatarImage src={avatarUrl || ""} />
                                 <AvatarFallback
-                                    style={{ background: '#007AFF', color: 'white', fontSize: 24, fontWeight: 600 }}
+                                    style={{ background: 'var(--primary)', color: 'white', fontSize: 24, fontWeight: 600 }}
                                 >
                                     {fullName?.charAt(0) || email?.charAt(0) || "U"}
                                 </AvatarFallback>
@@ -393,13 +401,13 @@ export default function SettingsPage() {
                                             onClick={() => setTheme("light")}
                                             className="w-full flex items-center gap-3 px-4 py-3 active:opacity-60 transition-opacity"
                                         >
-                                            <div className="shrink-0 w-[26px] flex items-center justify-center" style={{ color: '#007AFF' }}>
+                                            <div className="shrink-0 w-[26px] flex items-center justify-center" style={{ color: 'var(--primary)' }}>
                                                 <Sun size={16} />
                                             </div>
                                             <span style={{ flex: 1, textAlign: 'left', fontSize: 15, color: 'var(--ios-label)' }}>Modo Claro</span>
                                             {theme === "light" && (
                                                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                                    <path d="M4 10.5L8 14.5L16 6.5" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                    <path d="M4 10.5L8 14.5L16 6.5" stroke="var(--primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                                 </svg>
                                             )}
                                         </button>
@@ -409,13 +417,13 @@ export default function SettingsPage() {
                                             onClick={() => setTheme("dark")}
                                             className="w-full flex items-center gap-3 px-4 py-3 active:opacity-60 transition-opacity"
                                         >
-                                            <div className="shrink-0 w-[26px] flex items-center justify-center" style={{ color: '#007AFF' }}>
+                                            <div className="shrink-0 w-[26px] flex items-center justify-center" style={{ color: 'var(--primary)' }}>
                                                 <Moon size={16} />
                                             </div>
                                             <span style={{ flex: 1, textAlign: 'left', fontSize: 15, color: 'var(--ios-label)' }}>Modo Escuro</span>
                                             {theme === "dark" && (
                                                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                                    <path d="M4 10.5L8 14.5L16 6.5" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                    <path d="M4 10.5L8 14.5L16 6.5" stroke="var(--primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                                 </svg>
                                             )}
                                         </button>
@@ -435,7 +443,7 @@ export default function SettingsPage() {
                                                     onClick={() => setCurrency(opt.value)}
                                                     className="w-full flex items-center gap-3 px-4 py-3 active:opacity-60 transition-opacity"
                                                 >
-                                                    <div className="shrink-0 w-[26px] flex items-center justify-center" style={{ color: '#007AFF' }}>
+                                                    <div className="shrink-0 w-[26px] flex items-center justify-center" style={{ color: 'var(--primary)' }}>
                                                         <Globe size={16} />
                                                     </div>
                                                     <span style={{ flex: 1, textAlign: 'left', fontSize: 15, color: 'var(--ios-label)' }}>
@@ -443,7 +451,7 @@ export default function SettingsPage() {
                                                     </span>
                                                     {currency === opt.value && (
                                                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                                            <path d="M4 10.5L8 14.5L16 6.5" stroke="#007AFF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                            <path d="M4 10.5L8 14.5L16 6.5" stroke="var(--primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                                         </svg>
                                                     )}
                                                 </button>
@@ -470,11 +478,11 @@ export default function SettingsPage() {
                             <button
                                 onClick={updateProfile}
                                 disabled={loading}
-                                className="w-full flex items-center justify-center active:opacity-80 transition-opacity shadow-[0_12px_32px_-8px_rgba(0,122,255,0.3)]"
+                                className="w-full flex items-center justify-center active:opacity-80 transition-opacity shadow-[0_12px_32px_-8px_rgba(115,103,240,0.4)]"
                                 style={{
                                     height: 54,
                                     borderRadius: 18,
-                                    background: '#007AFF',
+                                    background: 'var(--primary)',
                                     color: 'white',
                                     fontSize: 17,
                                     fontWeight: 600,

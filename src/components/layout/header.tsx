@@ -22,7 +22,7 @@ export function Header() {
     };
 
     return (
-        <header className="h-16 flex items-center justify-between px-4 md:px-8 bg-background/80 dark:bg-background/95 sticky top-0 z-40 backdrop-blur-md border-b border-border/40 dark:border-border/30 transition-colors duration-300">
+        <header className="h-[62px] mt-4 mx-6 rounded-lg flex items-center justify-between px-4 md:px-6 bg-white dark:bg-[#2C2C2E] shadow-sm border border-[#E0E2E7] dark:border-white/5 sticky top-4 z-40 transition-colors duration-300">
             <div className="flex items-center gap-4 md:gap-6 flex-1">
                 {isDashboard ? (
                     <div className="flex flex-col animate-in fade-in slide-in-from-left-4 duration-500">
@@ -32,10 +32,10 @@ export function Header() {
                 ) : (
                     <div className="relative w-full max-w-[320px] group flex items-center">
                         <div className="relative flex-1 hidden md:block">
-                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
+                            <Search className="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400 group-focus-within:text-[#7367F0] transition-colors" />
                             <Input
-                                placeholder="Buscar transação..."
-                                className="pl-12 pr-10 bg-secondary/50 border-border/50 rounded-xl h-10 focus-visible:ring-4 focus-visible:ring-primary/5 focus-visible:border-primary/20 transition-all text-[13px] shadow-none"
+                                placeholder="Search (Ctrl+K)"
+                                className="pl-8 pr-0 bg-transparent border-none rounded-none h-10 focus-visible:ring-0 focus-visible:border-none transition-all text-[14px] text-slate-500 shadow-none"
                             />
                         </div>
                         <div className="md:hidden">
