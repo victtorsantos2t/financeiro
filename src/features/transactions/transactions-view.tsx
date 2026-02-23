@@ -1,7 +1,8 @@
 "use client";
 
 import { TransactionsTable } from "./transactions-table";
-import { ChevronLeft, Download, Filter, Eye } from "lucide-react";
+import { Download, Filter, Eye } from "lucide-react";
+import { IOSPageHeader } from "@/components/layout/ios-page-header";
 import { motion, AnimatePresence } from "framer-motion";
 import { ExportStatementScreen } from "./export-statement-screen";
 import { TransactionFiltersDrawer } from "./transaction-filters-drawer";
@@ -58,67 +59,59 @@ export function TransactionsView() {
     return (
         <div className="flex flex-col min-h-screen bg-background">
             <div className="max-w-5xl mx-auto w-full flex flex-col min-h-screen">
-                {/* Header */}
-                <header className="sticky top-0 z-40 bg-background pt-4">
-                    <div className="flex items-center justify-between px-6 py-4">
-                        <button
-                            onClick={() => router.push('/dashboard')}
-                            className="p-2 -ml-2 text-foreground hover:bg-secondary rounded-xl transition-all active:scale-95"
-                        >
-                            <ChevronLeft className="h-6 w-6" />
-                        </button>
-
-                        <button
-                            onClick={() => setShowValues(!showValues)}
-                            className="p-2 text-foreground hover:bg-secondary rounded-xl transition-all active:scale-95"
-                        >
-                            {showValues ? <Eye className="h-6 w-6" /> : <Eye className="h-6 w-6 text-muted-foreground/30" />}
-                        </button>
-                    </div>
-
-                    <div className="px-6 pb-2">
-                        <div className="flex items-center justify-between mb-8">
-                            <h1 className="text-2xl font-bold text-foreground tracking-tight">Lançamentos</h1>
-                            <div className="flex items-center gap-3">
-                                <button
-                                    onClick={() => updateQuery('v', 'export')}
-                                    className="p-3 bg-card border border-border rounded-xl text-foreground active:scale-95 transition-all hover:bg-secondary shadow-sm"
-                                >
-                                    <Download className="h-5 w-5" />
-                                </button>
-                                <button
-                                    onClick={() => setIsFilterOpen(true)}
-                                    className="p-3 bg-card border border-border rounded-xl text-foreground active:scale-95 transition-all hover:bg-secondary shadow-sm"
-                                >
-                                    <Filter className="h-5 w-5" />
-                                </button>
-                            </div>
+                <IOSPageHeader
+                    title="Lançamentos"
+                    subtitle="Gestão de transações"
+                    showBack
+                    onBack={() => router.push('/dashboard')}
+                    action={
+                        <div className="flex items-center gap-2">
+                            <button
+                                onClick={() => setShowValues(!showValues)}
+                                className="p-2 text-foreground hover:bg-secondary rounded-xl transition-all active:scale-95"
+                            >
+                                {showValues ? <Eye className="h-5 w-5" /> : <Eye className="h-5 w-5 text-muted-foreground/30" />}
+                            </button>
+                            <button
+                                onClick={() => updateQuery('v', 'export')}
+                                className="p-2 text-foreground hover:bg-secondary rounded-xl active:scale-95 transition-all"
+                            >
+                                <Download className="h-5 w-5" />
+                            </button>
+                            <button
+                                onClick={() => setIsFilterOpen(true)}
+                                className="p-2 text-foreground hover:bg-secondary rounded-xl active:scale-95 transition-all"
+                            >
+                                <Filter className="h-5 w-5" />
+                            </button>
                         </div>
+                    }
+                />
 
-                        {/* Tabs */}
-                        <div className="flex border-b border-border">
-                            {['recentes', 'futuros'].map((tab) => (
-                                <button
-                                    key={tab}
-                                    onClick={() => updateQuery('tab', tab)}
-                                    className="relative px-6 py-4 text-sm font-bold capitalize transition-all"
-                                    style={{ color: activeTab === tab ? 'var(--foreground)' : 'var(--muted-foreground)' }}
-                                >
-                                    {tab}
-                                    {activeTab === tab && (
-                                        <motion.div
-                                            layoutId="activeTab"
-                                            className="absolute bottom-0 left-0 right-0 h-[3px] bg-primary rounded-t-full"
-                                        />
-                                    )}
-                                </button>
-                            ))}
-                        </div>
+                {/* Tabs — Agora com margem padronizada */}
+                <div className="px-4 mt-2">
+                    <div className="flex border-b border-border">
+                        {['recentes', 'futuros'].map((tab) => (
+                            <button
+                                key={tab}
+                                onClick={() => updateQuery('tab', tab)}
+                                className="relative px-6 py-3 text-sm font-bold capitalize transition-all"
+                                style={{ color: activeTab === tab ? 'var(--foreground)' : 'var(--muted-foreground)' }}
+                            >
+                                {tab}
+                                {activeTab === tab && (
+                                    <motion.div
+                                        layoutId="activeTab"
+                                        className="absolute bottom-0 left-0 right-0 h-[3px] bg-primary rounded-t-full"
+                                    />
+                                )}
+                            </button>
+                        ))}
                     </div>
-                </header>
+                </div>
 
                 {/* List */}
-                <main className="flex-1">
+                <main className="flex-1 px-4 mt-6">
                     <TransactionsTable
                         externalFilters={filters}
                         activeTab={activeTab as any}

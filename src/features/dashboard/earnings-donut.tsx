@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase/client";
 import { useEffect, useState } from "react";
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 
-const COLORS = ["#3b82f6", "#f8fafc"]; // Vibrant Primary and soft backdrop
+const COLORS = ["#7367F0", "#F1F1F1"]; // Purple and soft zinc
 
 interface EarningsDonutProps {
     currentDate?: Date;
@@ -70,8 +70,8 @@ export function EarningsDonut({ currentDate = new Date() }: EarningsDonutProps) 
     const totalIncome = data.find(d => d.name === "Receitas")?.value || 0;
 
     return (
-        <div className="w-full bg-card rounded-card p-6 shadow-sm border border-border flex flex-col items-center justify-between transition-all duration-300 hover:shadow-md">
-            <h3 className="text-lg font-bold text-foreground w-full text-left mb-6 tracking-tight">Balanço do Mês</h3>
+        <div className="w-full bg-white dark:bg-[#2C2C2E] rounded-lg p-6 shadow-sm hover:shadow-md border border-[#E0E2E7] dark:border-white/5 flex flex-col items-center justify-between transition-all duration-300">
+            <h3 className="text-[15px] font-bold text-slate-800 dark:text-white w-full text-left mb-6">Balanço do Mês</h3>
 
             <div className="h-[240px] w-full relative flex items-center justify-center">
                 <ResponsiveContainer width="100%" height="100%">

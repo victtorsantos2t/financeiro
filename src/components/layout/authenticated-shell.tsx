@@ -60,18 +60,18 @@ export function AuthenticatedShell({ children }: { children: React.ReactNode }) 
             </div>
 
             {/* ═══ DESKTOP — SaaS Card Layout ═══════════════════════════════════════ */}
-            <div className="hidden md:flex h-dvh w-full overflow-hidden bg-[#ECEEF2] dark:bg-[#0F0F10] p-4 gap-3 transition-colors duration-300">
+            <div className="hidden md:flex h-dvh w-full overflow-hidden transition-colors duration-300">
                 {/* Sidebar (desktop) */}
                 <div className="flex shrink-0 relative">
                     <Sidebar
                         isCollapsed={isCollapsed}
                         onToggleCollapse={() => setIsCollapsed(!isCollapsed)}
-                        className="rounded-[24px] shadow-sm border border-white/80 dark:border-white/5 h-full overflow-hidden"
+                        className="shadow-sm border-r border-[#E0E2E7] dark:border-white/5 h-full overflow-hidden"
                     />
                     {/* Floating toggle button */}
                     <button
                         onClick={() => setIsCollapsed(!isCollapsed)}
-                        className="absolute -right-4 top-10 z-[70] flex items-center justify-center w-8 h-8 rounded-full bg-white dark:bg-[#2C2C2E] border border-slate-200 dark:border-[rgba(84,84,88,0.5)] text-slate-400 dark:text-slate-500 shadow-md hover:shadow-lg hover:text-blue-600 dark:hover:text-blue-400 hover:border-blue-200 transition-all active:scale-90"
+                        className="absolute -right-3.5 top-16 z-[70] flex items-center justify-center w-7 h-7 rounded-full bg-white dark:bg-[#2C2C2E] border border-slate-200 dark:border-[rgba(84,84,88,0.5)] text-slate-400 dark:text-slate-500 shadow-sm hover:text-[#7367F0] transition-all active:scale-90"
                         title={isCollapsed ? "Expandir" : "Recolher"}
                     >
                         {isCollapsed
@@ -82,7 +82,7 @@ export function AuthenticatedShell({ children }: { children: React.ReactNode }) 
                 </div>
 
                 {/* Main Content Card */}
-                <div className="flex-1 flex flex-col h-full min-h-0 relative overflow-hidden bg-white dark:bg-[#1C1C1E]/90 rounded-[24px] shadow-sm border border-white/80 dark:border-[rgba(84,84,88,0.25)] backdrop-blur-xl transition-colors duration-300">
+                <div className="flex-1 flex flex-col h-full min-h-0 relative overflow-hidden bg-[#F8F8F9] dark:bg-[#151518] transition-colors duration-300">
                     <Header />
                     <CommandPalette />
                     <main className="flex-1 overflow-y-auto overflow-x-hidden pt-6 px-6 pb-6 scrollbar-hide">

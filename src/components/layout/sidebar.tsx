@@ -116,7 +116,7 @@ export function Sidebar({
                     {navSections.map((section) => (
                         <div key={section.title} className="space-y-1">
                             {!isCollapsed && (
-                                <h3 className="px-3 py-1 text-[10px] font-bold text-muted-foreground uppercase tracking-[0.15em] opacity-80">{section.title}</h3>
+                                <h3 className="px-3 py-2 mt-2 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">{section.title}</h3>
                             )}
                             <div className="space-y-0.5">
                                 {section.items.map((item) => {
@@ -127,24 +127,19 @@ export function Sidebar({
                                             href={item.href}
                                             onClick={onNavItemClick}
                                             className={cn(
-                                                "flex items-center rounded-xl transition-all duration-200 group text-[13px] relative min-h-[44px]",
-                                                isCollapsed ? "justify-center w-11 h-11 mx-auto" : "gap-3 px-3 py-2.5",
+                                                "flex items-center rounded-lg transition-all duration-200 group text-[14px] relative min-h-[42px] font-medium",
+                                                isCollapsed ? "justify-center w-[42px] h-[42px] mx-auto" : "gap-3 px-4 py-2.5 mx-3",
                                                 isActive
-                                                    ? "bg-blue-50 dark:bg-blue-900/15 text-blue-600 dark:text-blue-400 font-semibold shadow-sm"
-                                                    : "text-muted-foreground hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5"
+                                                    ? "bg-gradient-to-r from-[#7367F0] to-[#8f85f2] text-white shadow-[0_2px_6px_rgba(115,103,240,0.3)]"
+                                                    : "text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5"
                                             )}
                                             title={isCollapsed ? item.label : undefined}
                                         >
                                             <item.icon className={cn(
-                                                "h-[18px] w-[18px] shrink-0 transition-colors",
-                                                isActive ? "text-blue-600 dark:text-blue-400" : "text-muted-foreground group-hover:text-slate-700 dark:group-hover:text-slate-200"
-                                            )} strokeWidth={isActive ? 2.5 : 2} />
-                                            {!isCollapsed && <span className="tracking-tight">{item.label}</span>}
-
-                                            {/* Active indicator bar */}
-                                            {isActive && !isCollapsed && (
-                                                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 bg-blue-600 dark:bg-blue-400 rounded-r-full" />
-                                            )}
+                                                "h-5 w-5 shrink-0 transition-colors",
+                                                isActive ? "text-white" : "text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-200"
+                                            )} strokeWidth={isActive ? 2 : 1.5} />
+                                            {!isCollapsed && <span className={isActive ? "font-semibold tracking-wide" : "tracking-wide"}>{item.label}</span>}
                                         </Link>
                                     );
                                 })}
@@ -172,7 +167,7 @@ export function Sidebar({
                 <button
                     onClick={handleLogout}
                     className={cn(
-                        "flex items-center rounded-xl text-[13px] font-medium text-muted-foreground hover:text-destructive hover:bg-destructive/5 transition-all group min-h-[44px]",
+                        "flex items-center rounded-lg text-[13px] font-medium text-muted-foreground hover:text-destructive hover:bg-destructive/5 transition-all group min-h-[44px]",
                         isCollapsed ? "justify-center p-2" : "gap-2.5 px-3 py-2 w-full"
                     )}
                     title={isCollapsed ? "Sair do Sistema" : undefined}

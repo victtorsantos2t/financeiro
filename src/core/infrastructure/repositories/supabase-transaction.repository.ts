@@ -27,7 +27,9 @@ export class SupabaseTransactionRepository implements ITransactionRepository {
         }
 
         const ascending = filters?.sortOrder === 'asc';
-        const { data, error } = await query.order("date", { ascending });
+        const { data, error } = await query
+            .order("date", { ascending })
+            .order("created_at", { ascending });
         if (error) throw error;
         return data as Transaction[];
     }

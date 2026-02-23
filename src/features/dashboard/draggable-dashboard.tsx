@@ -68,9 +68,9 @@ export default function DraggableDashboard() {
                 className="w-full pb-[40px]"
                 style={{ fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif" }}
             >
-                {/* ── iOS Large Title Navigation Bar ───────────────────────────── */}
+                {/* ── iOS Small Title Navigation Bar ───────────────────────────── */}
                 <div
-                    className="sticky top-0 z-40 px-4 pt-[56px] pb-4 transition-colors duration-300"
+                    className="sticky top-0 z-40 px-4 pt-[22px] pb-3 transition-colors duration-300"
                     style={{
                         background: 'var(--ios-header-blur, rgba(242,242,247,0.92))',
                         backdropFilter: 'blur(20px) saturate(180%)',
@@ -78,46 +78,51 @@ export default function DraggableDashboard() {
                         borderBottom: '0.5px solid var(--ios-separator, rgba(0,0,0,0.12))',
                     }}
                 >
-                    {/* Large Title */}
-                    <h1 style={{
-                        fontSize: '34px',
-                        fontWeight: 700,
-                        lineHeight: 1.1,
-                        letterSpacing: '-0.5px',
-                        color: 'var(--ios-label, #000000)',
-                        fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui",
-                    }}>
-                        Visão Geral
-                    </h1>
+                    {/* Header Row for Title and potentially other items */}
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <h1 style={{
+                                fontSize: '24px',
+                                fontWeight: 700,
+                                lineHeight: 1.1,
+                                letterSpacing: '-0.5px',
+                                color: 'var(--ios-label, #000000)',
+                                fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui",
+                            }}>
+                                Visão Geral
+                            </h1>
 
-                    {/* Subtitle */}
-                    <p style={{
-                        fontSize: '13px',
-                        fontWeight: 400,
-                        color: 'var(--ios-label3, #8E8E93)',
-                        marginTop: '4px',
-                        letterSpacing: '-0.1px',
-                    }}>
-                        Desempenho financeiro consolidado
-                    </p>
+                            {/* Subtitle */}
+                            <p style={{
+                                fontSize: '12px',
+                                fontWeight: 400,
+                                color: 'var(--ios-label3, #8E8E93)',
+                                marginTop: '1px',
+                                letterSpacing: '-0.1px',
+                            }}>
+                                Desempenho consolidado
+                            </p>
+                        </div>
 
-                    {/* MonthSelector abaixo do subtítulo */}
-                    <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'center' }}>
+                        {/* Compact MonthSelector alinhado à direita se preferível, mas mantendo abaixo por enquanto como na ref */}
+                    </div>
+
+                    <div style={{ marginTop: '12px', display: 'flex', justifyContent: 'center' }}>
                         <MonthSelector currentDate={currentDate} onMonthChange={setCurrentDate} />
                     </div>
                 </div>
 
                 {/* ── Seções de conteúdo estilo grouped iOS ────────────────────── */}
-                <div className="px-4 pt-6 space-y-8">
+                <div className="px-4 pt-4 space-y-5">
                     {/* Saldo & Resumo */}
                     <section>
                         <h2 style={{
                             fontSize: '13px',
-                            fontWeight: 500,
-                            color: 'var(--ios-label3, #8E8E93)',
+                            fontWeight: 700,
+                            color: 'var(--muted-foreground)',
                             textTransform: 'uppercase',
-                            letterSpacing: '0.06em',
-                            marginBottom: '10px',
+                            letterSpacing: '0.1em',
+                            marginBottom: '6px',
                             paddingLeft: '4px',
                         }}>
                             Resumo do Mês
@@ -129,27 +134,26 @@ export default function DraggableDashboard() {
                     <section>
                         <h2 style={{
                             fontSize: '13px',
-                            fontWeight: 500,
-                            color: 'var(--ios-label3, #8E8E93)',
+                            fontWeight: 700,
+                            color: 'var(--muted-foreground)',
                             textTransform: 'uppercase',
-                            letterSpacing: '0.06em',
-                            marginBottom: '10px',
+                            letterSpacing: '0.1em',
+                            marginBottom: '6px',
                             paddingLeft: '4px',
                         }}>
                             Contas a Pagar
                         </h2>
                         <PayableAccounts />
                     </section>
-
                     {/* Fluxo Mensal */}
                     <section>
                         <h2 style={{
-                            fontSize: '13px',
-                            fontWeight: 500,
+                            fontSize: '11px',
+                            fontWeight: 600,
                             color: 'var(--ios-label3, #8E8E93)',
                             textTransform: 'uppercase',
-                            letterSpacing: '0.06em',
-                            marginBottom: '10px',
+                            letterSpacing: '0.05em',
+                            marginBottom: '6px',
                             paddingLeft: '4px',
                         }}>
                             Fluxo de Caixa
@@ -160,12 +164,12 @@ export default function DraggableDashboard() {
                     {/* Transações */}
                     <section>
                         <h2 style={{
-                            fontSize: '13px',
-                            fontWeight: 500,
+                            fontSize: '11px',
+                            fontWeight: 600,
                             color: 'var(--ios-label3, #8E8E93)',
                             textTransform: 'uppercase',
-                            letterSpacing: '0.06em',
-                            marginBottom: '10px',
+                            letterSpacing: '0.05em',
+                            marginBottom: '6px',
                             paddingLeft: '4px',
                         }}>
                             Últimas Transações
@@ -176,12 +180,12 @@ export default function DraggableDashboard() {
                     {/* Insights */}
                     <section>
                         <h2 style={{
-                            fontSize: '13px',
-                            fontWeight: 500,
+                            fontSize: '11px',
+                            fontWeight: 600,
                             color: 'var(--ios-label3, #8E8E93)',
                             textTransform: 'uppercase',
-                            letterSpacing: '0.06em',
-                            marginBottom: '10px',
+                            letterSpacing: '0.05em',
+                            marginBottom: '6px',
                             paddingLeft: '4px',
                         }}>
                             Inteligência Financeira
@@ -192,12 +196,12 @@ export default function DraggableDashboard() {
                     {/* Distribuição */}
                     <section>
                         <h2 style={{
-                            fontSize: '13px',
-                            fontWeight: 500,
+                            fontSize: '11px',
+                            fontWeight: 600,
                             color: 'var(--ios-label3, #8E8E93)',
                             textTransform: 'uppercase',
-                            letterSpacing: '0.06em',
-                            marginBottom: '10px',
+                            letterSpacing: '0.05em',
+                            marginBottom: '6px',
                             paddingLeft: '4px',
                         }}>
                             Distribuição

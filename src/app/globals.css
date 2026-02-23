@@ -51,10 +51,11 @@
   --popover: #FFFFFF;
   --popover-foreground: #0F172A;
 
-  /* Accents - Primary Blue */
-  --primary: #2563EB;
-  --primary-hover: #1D4ED8;
-  --primary-active: #1E40AF;
+  /* Accents - Enterprise Palette (Based on Image) */
+  --primary: #7367F0;
+  /* Purple Dashboard */
+  --primary-hover: #5E50EE;
+  --primary-active: #4839E3;
   --primary-foreground: #FFFFFF;
 
   /* Secondary Surfaces */
@@ -70,11 +71,10 @@
   --input: #E2E8F0;
   --ring: #2563EB;
 
-  /* Radius */
+  /* Radius - Enterprise Standard */
   --radius: 12px;
-  /* Base radius for inputs/sidebar */
   --radius-card: 20px;
-  /* SaaS Standard for Cards */
+  /* Reduced from 32px for cleaner UI */
 
   /* Status */
   --success: #22C55E;

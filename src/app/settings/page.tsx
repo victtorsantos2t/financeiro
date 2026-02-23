@@ -119,13 +119,14 @@ function IOSRow({
 
 // ─── iOS Grouped Card ────────────────────────────────────────────────────────
 function IOSCard({ children, className }: { children: React.ReactNode; className?: string }) {
+    const { theme } = useTheme();
     return (
         <div
-            className={cn("bg-white dark:bg-[#1C1C1E] overflow-hidden transition-colors duration-300", className)}
+            className={cn("bg-white dark:bg-zinc-900/50 overflow-hidden transition-all duration-300", className)}
             style={{
-                borderRadius: 16,
-                boxShadow: '0 2px 8px rgba(0,0,0,0.07), 0 0 1px rgba(0,0,0,0.04)',
-                background: 'var(--ios-bg2)',
+                borderRadius: 20,
+                boxShadow: theme === 'dark' ? 'none' : '0 8px 30px rgba(0,0,0,0.04)',
+                border: '1px solid var(--ios-separator)',
             }}
         >
             {children}
