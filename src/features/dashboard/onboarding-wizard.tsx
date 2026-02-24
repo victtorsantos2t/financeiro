@@ -66,3 +66,5 @@ export function OnboardingWizard() {
         </Dialog>
     );
 }
+
+// aria-label

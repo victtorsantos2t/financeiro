@@ -28,6 +28,7 @@ const navSections = [
         items: [
             { icon: Wallet, label: "Minha Carteira", href: "/wallet" },
             { icon: ArrowRightLeft, label: "Transações", href: "/transactions" },
+            { icon: LineChart, label: "Metas e Orçamento", href: "/budgets" },
         ]
     },
     {
@@ -85,7 +86,7 @@ export function Sidebar({
 
     return (
         <aside className={cn(
-            "flex flex-col h-full bg-white dark:bg-[#1C1C1E] transition-all duration-300 relative z-50",
+            "flex flex-col h-full bg-card border-r border-border transition-all duration-300 relative z-50",
             isCollapsed ? "w-[72px]" : "w-60",
             className
         )}>
@@ -97,14 +98,14 @@ export function Sidebar({
             )} style={{ paddingTop: 'calc(24px + env(safe-area-inset-top))' }}>
                 {!isCollapsed ? (
                     <div className="flex flex-col items-center text-center animate-in fade-in slide-in-from-left-4 duration-300 px-1 w-full">
-                        <h1 className="text-4xl font-black text-slate-900 dark:text-white tracking-tighter leading-none mb-1">
-                            VICNE<span className="text-[#007AFF]">X</span>
+                        <h1 className="text-4xl font-black text-foreground tracking-tighter leading-none mb-1">
+                            VICNEX
                         </h1>
-                        <p className="text-[10px] font-bold text-slate-600 dark:text-white uppercase tracking-[0.2em] leading-tight">Conectando Tecnologia</p>
-                        <div className="flex items-center gap-2 mt-0.5 w-full">
-                            <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent via-primary/30 to-primary/50" />
-                            <p className="text-[10px] font-bold text-primary dark:text-white uppercase tracking-[0.15em] whitespace-nowrap">Ao Crescimento</p>
-                            <div className="h-[1px] flex-1 bg-gradient-to-l from-transparent via-primary/30 to-primary/50" />
+                        <p className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] leading-tight text-center w-full border-b border-border pb-2">Conectando Tecnologia</p>
+                        <div className="flex items-center gap-2 mt-2 w-full">
+                            <div className="h-[1px] flex-1 bg-border" />
+                            <p className="text-[9px] font-black text-primary uppercase tracking-[0.2em]">Ao Crescimento</p>
+                            <div className="h-[1px] flex-1 bg-border" />
                         </div>
                     </div>
                 ) : null}
@@ -116,7 +117,7 @@ export function Sidebar({
                     {navSections.map((section) => (
                         <div key={section.title} className="space-y-1">
                             {!isCollapsed && (
-                                <h3 className="px-3 py-2 mt-2 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">{section.title}</h3>
+                                <h3 className="px-3 py-2 mt-2 text-[9px] font-black text-muted-foreground/50 uppercase tracking-[0.3em]">{section.title}</h3>
                             )}
                             <div className="space-y-0.5">
                                 {section.items.map((item) => {
@@ -127,19 +128,19 @@ export function Sidebar({
                                             href={item.href}
                                             onClick={onNavItemClick}
                                             className={cn(
-                                                "flex items-center rounded-lg transition-all duration-200 group text-[14px] relative min-h-[42px] font-medium",
+                                                "flex items-center rounded-none transition-all duration-200 group relative min-h-[42px] font-black uppercase tracking-widest text-[10px]",
                                                 isCollapsed ? "justify-center w-[42px] h-[42px] mx-auto" : "gap-3 px-4 py-2.5 mx-3",
                                                 isActive
-                                                    ? "bg-gradient-to-r from-[#7367F0] to-[#8f85f2] text-white shadow-[0_2px_6px_rgba(115,103,240,0.3)]"
-                                                    : "text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5"
+                                                    ? "bg-primary text-primary-foreground shadow-none"
+                                                    : "text-muted-foreground hover:text-foreground hover:bg-secondary/40"
                                             )}
                                             title={isCollapsed ? item.label : undefined}
                                         >
                                             <item.icon className={cn(
-                                                "h-5 w-5 shrink-0 transition-colors",
-                                                isActive ? "text-white" : "text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-200"
+                                                "h-4 w-4 shrink-0 transition-colors",
+                                                isActive ? "text-primary-foreground" : "text-muted-foreground group-hover:text-foreground"
                                             )} strokeWidth={isActive ? 2 : 1.5} />
-                                            {!isCollapsed && <span className={isActive ? "font-semibold tracking-wide" : "tracking-wide"}>{item.label}</span>}
+                                            {!isCollapsed && <span>{item.label}</span>}
                                         </Link>
                                     );
                                 })}
@@ -179,3 +180,5 @@ export function Sidebar({
         </aside>
     );
 }
+
+// aria-label

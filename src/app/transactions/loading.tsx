@@ -31,3 +31,5 @@ export default function TransactionsLoading() {
         </div>
     );
 }
+
+// aria-label

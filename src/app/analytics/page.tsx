@@ -7,6 +7,8 @@ import { FinancialHealthScorecard } from "@/features/dashboard/financial-health-
 import { RecommendationEngine } from "@/features/dashboard/recommendation-engine";
 import { Button } from "@/components/ui/button";
 import { Download, TrendingUp, TrendingDown, Wallet, BrainCircuit, Sparkles } from "lucide-react";
+import { BudgetTargetModal } from "@/features/dashboard/budget-target-modal";
+import { AIReportDrawer } from "@/features/dashboard/ai-report-drawer";
 import { createClient } from "@/lib/supabase/client";
 import { useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -99,14 +101,8 @@ export default function AnalyticsPage() {
                     <p className="text-muted-foreground font-medium">Transformando dados em decisões estratégicas para seu futuro.</p>
                 </div>
                 <div className="flex items-center gap-3">
-                    <Button variant="outline" className="h-11 px-6 gap-2 rounded-xl border-border text-muted-foreground hover:bg-secondary hover:text-foreground font-bold transition-all active:scale-95 shadow-sm">
-                        <BrainCircuit className="h-4 w-4" />
-                        Ajustar Metas
-                    </Button>
-                    <Button variant="outline" className="h-11 px-6 gap-2 rounded-xl border-border text-muted-foreground hover:bg-secondary hover:text-foreground font-bold transition-all active:scale-95 shadow-sm">
-                        <Download className="h-4 w-4" />
-                        Relatório IA
-                    </Button>
+                    <BudgetTargetModal />
+                    <AIReportDrawer />
                 </div>
             </div>
 
@@ -164,3 +160,5 @@ export default function AnalyticsPage() {
     );
 }
 
+
+// aria-label

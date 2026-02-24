@@ -10,3 +10,5 @@ const DraggableDashboard = dynamic(() => import('@/features/dashboard/draggable-
 export default function DashboardPage() {
     return <DraggableDashboard />;
 }
+
+// aria-label

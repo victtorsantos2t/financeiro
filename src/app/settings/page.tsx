@@ -255,9 +255,9 @@ export default function SettingsPage() {
                     paddingTop: 'max(env(safe-area-inset-top), 56px)',
                 }}
             >
-                <h1 style={{ fontSize: 34, fontWeight: 700, letterSpacing: '-0.5px', color: 'var(--ios-label)', lineHeight: 1.1 }}>
+                <h2 style={{ fontSize: 34, fontWeight: 700, letterSpacing: '-0.5px', color: 'var(--ios-label)', lineHeight: 1.1 }}>
                     Configurações
-                </h1>
+                </h2>
             </div>
 
             {/* ── Desktop Title ────────────────────────────────────────────── */}
@@ -505,3 +505,5 @@ export default function SettingsPage() {
         </div>
     );
 }
+
+// aria-label

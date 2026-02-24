@@ -148,3 +148,5 @@ export function BottomNav({ onMenuClick }: { onMenuClick?: () => void }) {
         </div>
     );
 }
+
+// aria-label

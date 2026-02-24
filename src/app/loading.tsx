@@ -8,3 +8,5 @@ export default function RootLoading() {
         </div>
     );
 }
+
+// aria-label

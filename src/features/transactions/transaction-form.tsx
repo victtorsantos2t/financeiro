@@ -49,6 +49,7 @@ export interface Transaction {
     payment_method: string;
     is_recurring?: boolean;
     recurrence_interval?: string;
+    recurrence_end_date?: string;
     destination_wallet_id?: string;
 }
 
@@ -61,128 +62,75 @@ interface TransactionFormProps {
 
 const iOSFont = "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', system-ui, sans-serif";
 
-// ─── iOS Grouped Card ────────────────────────────────────────────────────────
+// ─── Brutalist Card ────────────────────────────────────────────────────────
 function IOSCard({ children }: { children: React.ReactNode }) {
     return (
-        <div
-            className="bg-card dark:bg-white/5 overflow-hidden border border-border/10"
-            style={{
-                borderRadius: 14,
-            }}
-        >
+        <div className="bg-background border-2 border-border rounded-none shadow-none overflow-hidden">
             {children}
         </div>
     );
 }
 
-// ─── iOS Separator ───────────────────────────────────────────────────────────
+// ─── Brutalist Separator ───────────────────────────────────────────────────────────
 function Sep() {
-    return <div className="h-[0.5px] bg-border/20 ml-4" />;
+    return <div className="h-px bg-border" />;
 }
 
 // ─── Section Label ────────────────────────────────────────────────────────────
 function SectionLabel({ label }: { label: string }) {
     return (
-        <p style={{ fontSize: 13, color: '#8E8E93', textTransform: 'uppercase', letterSpacing: '0.04em', paddingLeft: 4, paddingBottom: 6, fontFamily: iOSFont }}>
+        <p className="text-[10px] font-black text-foreground uppercase tracking-widest pl-1 pb-2">
             {label}
         </p>
     );
 }
 
-// ─── iOS Native Select ────────────────────────────────────────────────────────
+// ─── Brutalist Native Select ────────────────────────────────────────────────────────
 function NativeSelect({
     id, value, onChange, placeholder, options
 }: {
-    id: string;
-    value: string;
-    onChange: (v: string) => void;
-    placeholder: string;
-    options: { value: string; label: string }[];
+    id: string; value: string; onChange: (v: string) => void; placeholder: string; options: { value: string; label: string }[];
 }) {
     return (
         <select
-            id={id}
-            value={value}
-            onChange={e => onChange(e.target.value)}
-            style={{
-                width: '100%',
-                height: '44px',
-                background: 'transparent',
-                border: 'none',
-                outline: 'none',
-                fontSize: '15px',
-                color: value ? '#000' : '#8E8E93',
-                fontFamily: iOSFont,
-                appearance: 'none',
-                WebkitAppearance: 'none',
-                paddingRight: 28,
-                cursor: 'pointer',
-            }}
+            id={id} value={value} onChange={e => onChange(e.target.value)}
+            className="w-full h-[42px] bg-transparent border-none outline-none text-[10px] font-black uppercase tracking-widest text-foreground appearance-none cursor-pointer text-right focus:ring-0"
         >
             <option value="" disabled>{placeholder}</option>
-            {options.map(opt => (
-                <option key={opt.value} value={opt.value}>{opt.label}</option>
-            ))}
+            {options.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
         </select>
     );
 }
 
 // ─── Field Row ────────────────────────────────────────────────────────────────
-function FieldRow({
-    label, children, chevron = false
-}: {
-    label: string;
-    children: React.ReactNode;
-    chevron?: boolean;
-}) {
+function FieldRow({ label, children, chevron = false }: { label: string; children: React.ReactNode; chevron?: boolean; }) {
     return (
-        <div style={{ display: 'flex', alignItems: 'center', minHeight: 44, paddingLeft: 16, paddingRight: 12 }}>
-            <span style={{ fontSize: 15, color: 'var(--foreground)', fontFamily: iOSFont, fontWeight: 400, flexShrink: 0, minWidth: 90 }}>
-                {label}
-            </span>
-            <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 4 }}>
+        <div className="flex items-center min-h-[42px] px-4">
+            <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest flex-shrink-0 min-w-[90px]">{label}</span>
+            <div className="flex-1 flex items-center justify-end gap-1">
                 {children}
-                {chevron && (
-                    <svg width="7" height="12" viewBox="0 0 7 12" fill="none" style={{ flexShrink: 0, marginLeft: 2 }}>
-                        <path d="M1 1L6 6L1 11" stroke="#C7C7CC" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                )}
             </div>
         </div>
     );
 }
 
-// ─── iOS Segmented Control ────────────────────────────────────────────────────
+// ─── Brutalist Segmented Control ────────────────────────────────────────────────────
 function IOSSegmented<T extends string>({
     options, value, onChange, colorMap
 }: {
-    options: { value: T; label: string }[];
-    value: T;
-    onChange: (v: T) => void;
-    colorMap?: Record<string, string>;
+    options: { value: T; label: string }[]; value: T; onChange: (v: T) => void; colorMap?: Record<string, string>;
 }) {
-    const activeColor = colorMap?.[value] ?? '#3B82F6';
     return (
-        <div
-            className="flex bg-secondary/30 dark:bg-white/10 p-1 rounded-xl gap-1 shadow-inner"
-        >
+        <div className="flex bg-background border-2 border-border rounded-none p-1 gap-1">
             {options.map(opt => {
                 const isActive = opt.value === value;
                 return (
                     <button
-                        key={opt.value}
-                        type="button"
-                        onClick={() => onChange(opt.value)}
+                        key={opt.value} type="button" onClick={() => onChange(opt.value)}
                         className={cn(
-                            "flex-1 h-9 rounded-lg text-[13px] transition-all duration-200 border-none cursor-pointer",
-                            isActive
-                                ? "bg-white dark:bg-secondary text-[#007AFF] shadow-[0_2px_8px_rgba(0,0,0,0.12)] font-semibold"
-                                : "bg-transparent text-muted-foreground font-normal hover:text-foreground"
+                            "flex-1 h-[42px] rounded-none text-[10px] uppercase tracking-widest font-black transition-all border border-transparent cursor-pointer",
+                            isActive ? "bg-primary text-primary-foreground border-primary" : "bg-transparent text-muted-foreground hover:text-foreground border-transparent"
                         )}
-                        style={{
-                            fontFamily: iOSFont,
-                            color: isActive ? activeColor : undefined,
-                        }}
                     >
                         {opt.label}
                     </button>
@@ -209,6 +157,7 @@ export function TransactionForm({ className, transaction, onSuccess, onCancel }:
     const [status, setStatus] = useState<"completed" | "pending">(transaction?.status || "completed");
     const [isRecurring, setIsRecurring] = useState(transaction?.is_recurring || false);
     const [recurrenceInterval, setRecurrenceInterval] = useState(transaction?.recurrence_interval || "monthly");
+    const [recurrenceEndDate, setRecurrenceEndDate] = useState(transaction?.recurrence_end_date || "");
     const [categories, setCategories] = useState<Category[]>([]);
     const [wallets, setWallets] = useState<Wallet[]>([]);
     const [loading, setLoading] = useState(false);
@@ -238,6 +187,7 @@ export function TransactionForm({ className, transaction, onSuccess, onCancel }:
             setStatus(transaction.status);
             setIsRecurring(transaction.is_recurring || false);
             setRecurrenceInterval(transaction.recurrence_interval || "monthly");
+            setRecurrenceEndDate(transaction.recurrence_end_date || "");
         }
     }, [transaction]);
 
@@ -285,6 +235,7 @@ export function TransactionForm({ className, transaction, onSuccess, onCancel }:
             status: (type === 'income' || type === 'transfer') ? 'completed' : status,
             is_recurring: isRecurring,
             recurrence_interval: isRecurring ? recurrenceInterval : null as any,
+            recurrence_end_date: isRecurring && recurrenceEndDate ? recurrenceEndDate : null as any,
         };
         try {
             if (transaction) {
@@ -319,47 +270,41 @@ export function TransactionForm({ className, transaction, onSuccess, onCancel }:
     };
 
     // ── Color based on type ──────────────────────────────────────────────────
-    const typeColor = type === 'income' ? '#3B82F6' : type === 'transfer' ? '#8B5CF6' : '#1C1C1E';
-    const saveBg = type === 'income' ? '#3B82F6' : type === 'transfer' ? '#8B5CF6' : '#1C1C1E';
+    const typeColor = type === 'income' ? '#3B82F6' : type === 'transfer' ? '#14B8A6' : '#1C1C1E';
+    const saveBg = type === 'income' ? '#3B82F6' : type === 'transfer' ? '#14B8A6' : '#1C1C1E';
 
     // ── Mobile layout ─────────────────────────────────────────────────────────
     if (isMobile) {
         return (
             <form
                 onSubmit={handleSave}
-                style={{ fontFamily: iOSFont, display: 'flex', flexDirection: 'column', gap: 24 }}
+                className="flex flex-col gap-6"
             >
                 {/* VALOR HERO */}
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: 4, paddingBottom: 4 }}>
-                    <p style={{ fontSize: 12, color: '#8E8E93', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 8, fontWeight: 500 }}>
+                <div className="flex flex-col items-center">
+                    <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-4">
                         Valor da Transação
                     </p>
-                    <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, justifyContent: 'center' }}>
-                        <span style={{ fontSize: 28, fontWeight: 300, color: amount ? typeColor : '#C7C7CC', letterSpacing: '-0.5px' }}>R$</span>
+                    <div className="relative flex items-center justify-center w-full max-w-[280px] mx-auto">
+                        <span className={cn(
+                            "absolute left-4 top-1/2 -translate-y-1/2 text-2xl font-black transition-colors duration-300 select-none",
+                            amount ? (type === 'income' ? 'text-blue-500' : type === 'transfer' ? 'text-teal-500' : 'text-foreground') : 'text-muted-foreground/30'
+                        )}>R$</span>
                         <input
                             type="text"
                             inputMode="numeric"
                             value={amount}
                             onChange={e => {
-                                let v = e.target.value.replace(/\D/g, "");
+                                const v = e.target.value.replace(/\D/g, "");
                                 if (v === "") { setAmount(""); return; }
                                 const num = parseFloat(v) / 100;
                                 setAmount(num.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
                             }}
                             placeholder="0,00"
-                            style={{
-                                fontSize: 52,
-                                fontWeight: 300,
-                                color: amount ? typeColor : '#C7C7CC',
-                                background: 'transparent',
-                                border: 'none',
-                                outline: 'none',
-                                letterSpacing: '-1px',
-                                width: '180px',
-                                textAlign: 'center',
-                                fontFamily: iOSFont,
-                                caretColor: typeColor,
-                            }}
+                            className={cn(
+                                "w-full text-center bg-transparent border-none outline-none text-5xl font-black tracking-tighter transition-colors duration-300 focus:ring-0 placeholder:text-muted-foreground/20 py-2 pl-12 pr-4",
+                                amount ? (type === 'income' ? 'text-blue-600' : type === 'transfer' ? 'text-teal-600' : 'text-foreground') : 'text-muted-foreground/30'
+                            )}
                         />
                     </div>
                 </div>
@@ -373,7 +318,7 @@ export function TransactionForm({ className, transaction, onSuccess, onCancel }:
                     ]}
                     value={type}
                     onChange={v => setType(v as any)}
-                    colorMap={{ expense: '#1C1C1E', transfer: '#8B5CF6', income: '#3B82F6' }}
+                    colorMap={{ expense: '#1C1C1E', transfer: '#14B8A6', income: '#3B82F6' }}
                 />
 
                 {/* STATUS (só para despesa) */}
@@ -402,23 +347,13 @@ export function TransactionForm({ className, transaction, onSuccess, onCancel }:
                 <div>
                     <SectionLabel label="Descrição" />
                     <IOSCard>
-                        <div style={{ padding: '0 16px' }}>
+                        <div className="px-4">
                             <input
                                 type="text"
                                 value={description}
                                 onChange={e => setDescription(e.target.value)}
                                 placeholder="Ex: Supermercado, Aluguel..."
-                                style={{
-                                    width: '100%',
-                                    height: 44,
-                                    background: 'transparent',
-                                    border: 'none',
-                                    outline: 'none',
-                                    fontSize: 15,
-                                    color: 'var(--foreground)',
-                                    fontFamily: iOSFont,
-                                    caretColor: '#3B82F6',
-                                }}
+                                className="w-full h-[42px] bg-transparent border-none outline-none text-[10px] font-black uppercase tracking-widest text-foreground focus:ring-0"
                             />
                         </div>
                     </IOSCard>
@@ -486,17 +421,7 @@ export function TransactionForm({ className, transaction, onSuccess, onCancel }:
                                 type="date"
                                 value={date}
                                 onChange={e => setDate(e.target.value)}
-                                style={{
-                                    background: 'transparent',
-                                    border: 'none',
-                                    outline: 'none',
-                                    fontSize: 15,
-                                    color: 'var(--muted-foreground)',
-                                    fontFamily: iOSFont,
-                                    textAlign: 'right',
-                                    cursor: 'pointer',
-                                    maxWidth: 140,
-                                }}
+                                className="bg-transparent border-none outline-none text-[10px] font-black uppercase tracking-widest text-foreground text-right w-[140px] appearance-none cursor-pointer focus:ring-0"
                             />
                         </FieldRow>
                     </IOSCard>
@@ -506,18 +431,18 @@ export function TransactionForm({ className, transaction, onSuccess, onCancel }:
                 <div>
                     <SectionLabel label="Recorrência" />
                     <IOSCard>
-                        <div style={{ display: 'flex', alignItems: 'center', paddingLeft: 16, paddingRight: 12, minHeight: 50 }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: 10, flex: 1 }}>
-                                <Repeat size={17} style={{ color: '#3B82F6', flexShrink: 0 }} />
-                                <div>
-                                    <p style={{ fontSize: 15, color: 'var(--foreground)', fontFamily: iOSFont, fontWeight: 400 }}>Pagamento Recorrente</p>
-                                    <p style={{ fontSize: 12, color: 'var(--muted-foreground)', fontFamily: iOSFont }}>Auto-repeat transação</p>
+                        <div className="flex items-center min-h-[42px] px-4 py-2">
+                            <div className="flex items-center gap-2 flex-1">
+                                <Repeat className="w-4 h-4 text-foreground flex-shrink-0" />
+                                <div className="flex flex-col">
+                                    <p className="text-[10px] font-black uppercase tracking-widest text-foreground leading-none">Pagamento Recorrente</p>
+                                    <p className="text-[8px] font-bold uppercase tracking-widest text-muted-foreground mt-1">Auto-repeat transação</p>
                                 </div>
                             </div>
                             <Switch
                                 checked={isRecurring}
                                 onCheckedChange={setIsRecurring}
-                                className="data-[state=checked]:bg-blue-600 scale-90"
+                                className="scale-90"
                             />
                         </div>
 
@@ -544,6 +469,16 @@ export function TransactionForm({ className, transaction, onSuccess, onCancel }:
                                             ]}
                                         />
                                     </FieldRow>
+                                    <Sep />
+                                    <FieldRow label="Repetir até">
+                                        <input
+                                            type="date"
+                                            value={recurrenceEndDate}
+                                            onChange={e => setRecurrenceEndDate(e.target.value)}
+                                            placeholder="Indefinido"
+                                            className="bg-transparent border-none outline-none text-[10px] font-black uppercase tracking-widest text-foreground text-right w-[140px] appearance-none cursor-pointer focus:ring-0"
+                                        />
+                                    </FieldRow>
                                 </motion.div>
                             )}
                         </AnimatePresence>
@@ -551,26 +486,20 @@ export function TransactionForm({ className, transaction, onSuccess, onCancel }:
                 </div>
 
                 {/* BOTÃO SALVAR */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 12, paddingBottom: 8 }}>
+                <div className="flex flex-col gap-3 pb-2 pt-4">
                     <motion.button
                         type="submit"
                         disabled={loading}
                         whileTap={{ scale: 0.95 }}
-                        style={{
-                            width: '100%',
-                            height: 50,
-                            borderRadius: 14,
-                            background: saveBg,
-                            color: 'white',
-                            fontSize: 17,
-                            fontWeight: 600,
-                            letterSpacing: '-0.2px',
-                            border: 'none',
-                            transition: 'opacity 0.2s'
-                        }}
+                        className={cn(
+                            "w-full h-[42px] rounded-none flex items-center justify-center font-black uppercase tracking-widest text-[10px] text-background transition-all shadow-none border",
+                            type === 'income' ? 'bg-[#3B82F6] border-[#3B82F6] hover:bg-[#3B82F6]/90' :
+                                type === 'transfer' ? 'bg-[#14B8A6] border-[#14B8A6] hover:bg-[#14B8A6]/90' :
+                                    'bg-foreground border-foreground hover:bg-foreground/90'
+                        )}
                     >
                         {loading
-                            ? <Loader2 size={20} className="animate-spin" />
+                            ? <Loader2 className="w-4 h-4 animate-spin" />
                             : transaction ? "Salvar Alterações"
                                 : type === 'transfer' ? "Confirmar Transferência"
                                     : "Salvar Transação"
@@ -582,30 +511,21 @@ export function TransactionForm({ className, transaction, onSuccess, onCancel }:
                             <AlertDialogTrigger asChild>
                                 <button
                                     type="button"
-                                    style={{
-                                        background: 'transparent',
-                                        border: 'none',
-                                        color: '#FF3B30',
-                                        fontSize: 15,
-                                        fontFamily: iOSFont,
-                                        cursor: 'pointer',
-                                        paddingTop: 4,
-                                        paddingBottom: 4,
-                                    }}
+                                    className="bg-transparent border-none text-destructive text-[10px] font-black uppercase tracking-widest cursor-pointer py-2 hover:opacity-80 transition-opacity"
                                 >
                                     Excluir Transação
                                 </button>
                             </AlertDialogTrigger>
-                            <AlertDialogContent className="rounded-[24px] border-none p-8 shadow-2xl">
+                            <AlertDialogContent className="rounded-none border-2 border-border p-8 shadow-none bg-card">
                                 <AlertDialogHeader>
-                                    <AlertDialogTitle className="text-xl font-semibold tracking-tight">Excluir Transação?</AlertDialogTitle>
-                                    <AlertDialogDescription className="text-slate-500 text-[14px] leading-relaxed">
+                                    <AlertDialogTitle className="text-sm font-black uppercase tracking-widest text-foreground">Excluir Transação?</AlertDialogTitle>
+                                    <AlertDialogDescription className="text-muted-foreground text-[10px] font-bold uppercase tracking-wider leading-relaxed mt-2">
                                         Esta ação é permanente e não poderá ser desfeita nos seus registros financeiros.
                                     </AlertDialogDescription>
                                 </AlertDialogHeader>
                                 <AlertDialogFooter className="mt-6 gap-3">
-                                    <AlertDialogCancel className="h-12 rounded-2xl bg-slate-50 border-none text-slate-500 font-semibold">Cancelar</AlertDialogCancel>
-                                    <AlertDialogAction onClick={handleDelete} className="h-12 rounded-2xl bg-red-500 text-white hover:bg-red-600 border-none font-semibold">
+                                    <AlertDialogCancel className="h-[42px] rounded-none border border-border bg-transparent text-foreground hover:bg-secondary font-black uppercase tracking-widest text-[10px]">Cancelar</AlertDialogCancel>
+                                    <AlertDialogAction onClick={handleDelete} className="h-[42px] rounded-none bg-destructive text-destructive-foreground hover:bg-destructive/90 border border-destructive font-black uppercase tracking-widest text-[10px]">
                                         Sim, Excluir
                                     </AlertDialogAction>
                                 </AlertDialogFooter>
@@ -619,69 +539,58 @@ export function TransactionForm({ className, transaction, onSuccess, onCancel }:
 
     // ── Desktop layout (mantém o original) ────────────────────────────────────
     return (
-        <form onSubmit={handleSave} className={cn("flex flex-col gap-10", className)}>
-            <div className="flex flex-col gap-10">
+        <form onSubmit={handleSave} className={cn("flex flex-col gap-8 h-full", className)}>
+            <div className="flex flex-col gap-8 flex-1">
                 {/* 1. HERO VALUE */}
-                <div className="flex flex-col items-center justify-center py-6">
-                    <label htmlFor="amount" className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-4">
+                <div className="flex flex-col items-center justify-center py-4">
+                    <label htmlFor="amount" className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em] mb-4">
                         Valor da Transação
                     </label>
-                    <div className="relative group flex items-center justify-center w-full max-w-[300px]">
+                    <div className="relative flex items-center justify-center w-full max-w-[340px] mx-auto">
                         <span className={cn(
-                            "absolute left-4 text-3xl font-medium transition-colors duration-500",
-                            type === 'income' ? 'text-blue-500' : type === 'transfer' ? 'text-violet-500' : 'text-foreground',
-                            !amount && "opacity-50"
+                            "absolute left-6 top-1/2 -translate-y-1/2 text-3xl font-black transition-colors duration-500 select-none",
+                            type === 'income' ? 'text-blue-500' : type === 'transfer' ? 'text-teal-500' : 'text-foreground',
+                            !amount && "opacity-30"
                         )}>R$</span>
                         <input
                             id="amount" type="text" inputMode="numeric"
                             value={amount}
                             onChange={e => {
-                                let v = e.target.value.replace(/\D/g, "");
+                                const v = e.target.value.replace(/\D/g, "");
                                 if (v === "") { setAmount(""); return; }
                                 const num = parseFloat(v) / 100;
                                 setAmount(num.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
                             }}
                             placeholder="0,00"
                             className={cn(
-                                "w-full bg-transparent border-none text-center text-6xl font-semibold tracking-tighter focus:ring-0 placeholder:text-muted/20 transition-colors duration-500 pl-12",
-                                type === 'income' ? 'text-blue-600' : type === 'transfer' ? 'text-violet-600' : 'text-foreground'
+                                "w-full bg-transparent border-none outline-none text-center text-6xl font-black tracking-tighter focus:ring-0 placeholder:text-muted-foreground/20 transition-colors duration-500 py-2 pl-16 pr-6",
+                                type === 'income' ? 'text-blue-600' : type === 'transfer' ? 'text-teal-600' : 'text-foreground',
+                                !amount && "text-muted-foreground/30"
                             )}
                         />
                     </div>
                 </div>
 
                 {/* 2. SEGMENT CONTROLS */}
-                <div className="space-y-6">
-                    <div className="relative flex p-1.5 bg-slate-100/50 dark:bg-white/5 rounded-[22px] gap-1 overflow-hidden">
-                        <motion.div
-                            className={cn(
-                                "absolute top-1.5 bottom-1.5 left-1.5 w-[calc(33.33%-4px)] rounded-[18px] shadow-sm z-0",
-                                type === 'income' ? 'bg-blue-600' : type === 'expense' ? 'bg-slate-900 dark:bg-secondary' : 'bg-violet-600'
-                            )}
-                            initial={false}
-                            animate={{ x: type === 'income' ? '200%' : type === 'transfer' ? '100%' : '0%' }}
-                            transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                        />
-                        {(['expense', 'transfer', 'income'] as const).map((t, i) => (
+                <div className="space-y-4">
+                    <div className="flex bg-background border-2 border-border rounded-none p-1 gap-1 w-full">
+                        {(['expense', 'transfer', 'income'] as const).map((t) => (
                             <button key={t} type="button" onClick={() => setType(t)}
-                                className={cn("flex-1 py-3 px-4 rounded-[18px] text-[13px] font-semibold tracking-tight transition-colors duration-300 relative z-10",
-                                    type === t ? 'text-white' : 'text-slate-500 dark:text-muted-foreground')}>
+                                className={cn("flex-1 py-3 px-4 rounded-none text-[10px] font-black uppercase tracking-widest transition-all border border-transparent cursor-pointer",
+                                    type === t ? 'bg-primary text-primary-foreground border-primary' : 'bg-transparent text-muted-foreground hover:text-foreground border-transparent hover:bg-secondary/50')}>
                                 {t === 'expense' ? 'Despesa' : t === 'transfer' ? 'Transferência' : 'Receita'}
                             </button>
                         ))}
                     </div>
                     <AnimatePresence mode="wait">
                         {type === 'expense' && (
-                            <motion.div initial={{ opacity: 0, scale: 0.98, y: -10 }} animate={{ opacity: 1, scale: 1, y: 0 }}
-                                exit={{ opacity: 0, scale: 0.98, y: -10 }} transition={{ type: "spring", stiffness: 400, damping: 40 }}
-                                className="relative flex p-1 bg-slate-50 dark:bg-white/5 rounded-[18px] gap-1 overflow-hidden w-full max-w-[280px] mx-auto border border-slate-100/50 dark:border-white/5">
-                                <motion.div className="absolute top-1 bottom-1 left-1 w-[calc(50%-4px)] rounded-[14px] bg-white dark:bg-secondary shadow-sm z-0 border border-slate-100 dark:border-white/5"
-                                    initial={false} animate={{ x: status === 'pending' ? '100.5%' : '0.5%' }}
-                                    transition={{ type: "spring", stiffness: 300, damping: 30 }} />
+                            <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }}
+                                exit={{ opacity: 0, height: 0 }}
+                                className="flex bg-background border-2 border-border rounded-none p-1 gap-1 w-full max-w-[280px] mx-auto overflow-hidden">
                                 {(['completed', 'pending'] as const).map(s => (
                                     <button key={s} type="button" onClick={() => setStatus(s)}
-                                        className={cn("flex-1 py-2 px-3 rounded-[14px] text-[11px] font-semibold tracking-wide transition-colors duration-300 relative z-10",
-                                            status === s ? 'text-slate-900 dark:text-foreground' : 'text-slate-400 dark:text-muted-foreground')}>
+                                        className={cn("flex-1 py-2 px-3 rounded-none text-[10px] font-black uppercase tracking-widest transition-all border border-transparent cursor-pointer",
+                                            status === s ? 'bg-primary text-primary-foreground border-primary' : 'bg-transparent text-muted-foreground hover:text-foreground border-transparent hover:bg-secondary/50')}>
                                         {s === 'completed' ? 'Já Pago' : 'Agendar'}
                                     </button>
                                 ))}
@@ -693,39 +602,39 @@ export function TransactionForm({ className, transaction, onSuccess, onCancel }:
                 {/* 3. FIELDS */}
                 <div className="space-y-8">
                     <div className="space-y-3">
-                        <label htmlFor="description" className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1">Descrição</label>
+                        <label htmlFor="description" className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Descrição</label>
                         <input id="description" type="text" value={description} onChange={e => setDescription(e.target.value)}
                             placeholder="Ex: Supermercado, Aluguel..."
-                            className="h-14 w-full rounded-2xl bg-secondary/50 border border-border/10 focus:bg-background focus:border-primary/50 text-foreground text-[15px] px-6 transition-all outline-none" />
+                            className="h-[42px] w-full rounded-none bg-transparent border-2 border-border focus:border-primary text-foreground text-[10px] font-black uppercase tracking-widest px-4 transition-all outline-none" />
                     </div>
 
                     <div className="grid grid-cols-2 gap-6">
                         <div className="space-y-3">
-                            <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1">{type === 'transfer' ? 'De onde sai?' : 'Carteira'}</label>
+                            <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">{type === 'transfer' ? 'De onde sai?' : 'Carteira'}</label>
                             <Select value={walletId} onValueChange={setWalletId}>
-                                <SelectTrigger className="h-14 rounded-2xl bg-white dark:bg-white/5 border border-slate-100 dark:border-white/5 shadow-sm transition-all text-[14px] px-6 text-foreground"><SelectValue placeholder="Selecione..." /></SelectTrigger>
-                                <SelectContent className="rounded-[28px] border-slate-100 dark:border-white/10 shadow-2xl p-2 dark:bg-popover">
-                                    {wallets.map(w => <SelectItem key={w.id} value={w.id} className="rounded-xl py-3">{w.name}</SelectItem>)}
+                                <SelectTrigger className="h-[42px] rounded-none bg-transparent border-2 border-border shadow-none transition-all text-[10px] font-black uppercase tracking-widest px-4 text-foreground focus:ring-0"><SelectValue placeholder="Selecione..." /></SelectTrigger>
+                                <SelectContent className="rounded-none border-2 border-border shadow-none p-0 bg-card">
+                                    {wallets.map(w => <SelectItem key={w.id} value={w.id} className="rounded-none py-3 text-[10px] font-black uppercase tracking-widest">{w.name}</SelectItem>)}
                                 </SelectContent>
                             </Select>
                         </div>
                         {type === 'transfer' ? (
                             <div className="space-y-3">
-                                <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1">Para onde vai?</label>
+                                <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Para onde vai?</label>
                                 <Select value={destinationWalletId} onValueChange={setDestinationWalletId}>
-                                    <SelectTrigger className="h-14 rounded-2xl bg-white dark:bg-white/5 border border-slate-100 dark:border-white/5 shadow-sm transition-all text-[14px] px-6 text-foreground"><SelectValue placeholder="Selecione..." /></SelectTrigger>
-                                    <SelectContent className="rounded-[28px] border-slate-100 dark:border-white/10 shadow-2xl p-2 dark:bg-popover">
-                                        {wallets.filter(w => w.id !== walletId).map(w => <SelectItem key={w.id} value={w.id} className="rounded-xl py-3">{w.name}</SelectItem>)}
+                                    <SelectTrigger className="h-[42px] rounded-none bg-transparent border-2 border-border shadow-none transition-all text-[10px] font-black uppercase tracking-widest px-4 text-foreground focus:ring-0"><SelectValue placeholder="Selecione..." /></SelectTrigger>
+                                    <SelectContent className="rounded-none border-2 border-border shadow-none p-0 bg-card">
+                                        {wallets.filter(w => w.id !== walletId).map(w => <SelectItem key={w.id} value={w.id} className="rounded-none py-3 text-[10px] font-black uppercase tracking-widest">{w.name}</SelectItem>)}
                                     </SelectContent>
                                 </Select>
                             </div>
                         ) : (
                             <div className="space-y-3">
-                                <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1">Categoria</label>
+                                <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Categoria</label>
                                 <Select value={categoryId} onValueChange={setCategoryId}>
-                                    <SelectTrigger className="h-14 rounded-2xl bg-white dark:bg-white/5 border border-slate-100 dark:border-white/5 shadow-sm transition-all text-[14px] px-6 text-foreground"><SelectValue placeholder="O quê?" /></SelectTrigger>
-                                    <SelectContent className="rounded-[28px] border-slate-100 dark:border-white/10 shadow-2xl p-2 dark:bg-popover">
-                                        {categories.map(c => <SelectItem key={c.id} value={c.id} className="rounded-xl py-3">{c.name}</SelectItem>)}
+                                    <SelectTrigger className="h-[42px] rounded-none bg-transparent border-2 border-border shadow-none transition-all text-[10px] font-black uppercase tracking-widest px-4 text-foreground focus:ring-0"><SelectValue placeholder="O quê?" /></SelectTrigger>
+                                    <SelectContent className="rounded-none border-2 border-border shadow-none p-0 bg-card">
+                                        {categories.map(c => <SelectItem key={c.id} value={c.id} className="rounded-none py-3 text-[10px] font-black uppercase tracking-widest">{c.name}</SelectItem>)}
                                     </SelectContent>
                                 </Select>
                             </div>
@@ -734,52 +643,60 @@ export function TransactionForm({ className, transaction, onSuccess, onCancel }:
 
                     <div className="grid grid-cols-2 gap-6">
                         <div className="space-y-3">
-                            <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1">Método</label>
+                            <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Método</label>
                             <Select value={paymentMethod} onValueChange={setPaymentMethod}>
-                                <SelectTrigger className="h-14 rounded-2xl bg-white dark:bg-white/5 border border-slate-100 dark:border-white/5 shadow-sm transition-all text-[14px] px-6 text-foreground"><SelectValue placeholder="Como?" /></SelectTrigger>
-                                <SelectContent className="rounded-[28px] border-slate-100 dark:border-white/10 shadow-2xl p-2 dark:bg-popover">
-                                    <SelectItem value="pix" className="rounded-xl py-3">PIX</SelectItem>
-                                    <SelectItem value="boleto" className="rounded-xl py-3">Boleto</SelectItem>
-                                    <SelectItem value="card" className="rounded-xl py-3">Cartão</SelectItem>
-                                    <SelectItem value="cash" className="rounded-xl py-3">Dinheiro</SelectItem>
+                                <SelectTrigger className="h-[42px] rounded-none bg-transparent border-2 border-border shadow-none transition-all text-[10px] font-black uppercase tracking-widest px-4 text-foreground focus:ring-0"><SelectValue placeholder="Como?" /></SelectTrigger>
+                                <SelectContent className="rounded-none border-2 border-border shadow-none p-0 bg-card">
+                                    <SelectItem value="pix" className="rounded-none py-3 text-[10px] font-black uppercase tracking-widest">PIX</SelectItem>
+                                    <SelectItem value="boleto" className="rounded-none py-3 text-[10px] font-black uppercase tracking-widest">Boleto</SelectItem>
+                                    <SelectItem value="card" className="rounded-none py-3 text-[10px] font-black uppercase tracking-widest">Cartão</SelectItem>
+                                    <SelectItem value="cash" className="rounded-none py-3 text-[10px] font-black uppercase tracking-widest">Dinheiro</SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
                         <div className="space-y-3">
-                            <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest ml-1">Data</label>
+                            <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Data</label>
                             <input type="date" value={date} onChange={e => setDate(e.target.value)}
-                                className="h-14 w-full rounded-2xl bg-white dark:bg-white/5 border border-slate-100 dark:border-white/5 shadow-sm text-[14px] px-6 transition-all outline-none text-foreground dark:[color-scheme:dark]" />
+                                className="h-[42px] w-full rounded-none bg-transparent border-2 border-border shadow-none text-[10px] font-black uppercase tracking-widest px-4 transition-all outline-none text-foreground dark:[color-scheme:dark] focus:border-primary cursor-pointer" />
                         </div>
                     </div>
                 </div>
 
                 {/* 4. RECURRENCE */}
                 <div className="pt-2">
-                    <div className="flex items-center justify-between p-5 rounded-[22px] bg-slate-50 dark:bg-white/5 border border-slate-100/60 dark:border-white/5">
+                    <div className="flex items-center justify-between p-4 rounded-none bg-background border-2 border-border">
                         <div className="flex items-center gap-4">
-                            <div className="p-2.5 bg-white dark:bg-secondary rounded-xl shadow-sm border border-slate-100/50 dark:border-white/5">
-                                <Repeat className="h-4 w-4 text-slate-400 dark:text-muted-foreground stroke-[2]" />
-                            </div>
-                            <div>
-                                <p className="text-[13px] font-semibold text-slate-800 dark:text-foreground tracking-tight">Pagamento Recorrente</p>
-                                <p className="text-[10px] text-slate-400 dark:text-muted-foreground font-medium">Auto-repeat transação</p>
+                            <Repeat className="h-4 w-4 text-foreground stroke-[2] flex-shrink-0" />
+                            <div className="flex flex-col">
+                                <p className="text-[10px] font-black text-foreground uppercase tracking-widest leading-none">Pagamento Recorrente</p>
+                                <p className="text-[8px] text-muted-foreground font-bold uppercase tracking-widest mt-1">Auto-repeat transação</p>
                             </div>
                         </div>
-                        <Switch checked={isRecurring} onCheckedChange={setIsRecurring} className="data-[state=checked]:bg-blue-600" />
+                        <Switch checked={isRecurring} onCheckedChange={setIsRecurring} className="scale-90" />
                     </div>
                     <AnimatePresence>
                         {isRecurring && (
                             <motion.div initial={{ opacity: 0, height: 0, marginTop: 0 }} animate={{ opacity: 1, height: 'auto', marginTop: 12 }}
                                 exit={{ opacity: 0, height: 0, marginTop: 0 }} className="overflow-hidden">
                                 <Select value={recurrenceInterval} onValueChange={setRecurrenceInterval}>
-                                    <SelectTrigger className="h-12 rounded-2xl bg-white dark:bg-white/5 border border-slate-100 dark:border-white/5 shadow-sm px-6 text-[13px] text-foreground"><SelectValue placeholder="Frequência" /></SelectTrigger>
-                                    <SelectContent className="rounded-2xl shadow-xl border-slate-50 dark:border-white/10 dark:bg-popover">
-                                        <SelectItem value="daily" className="rounded-lg py-2">Diária</SelectItem>
-                                        <SelectItem value="weekly" className="rounded-lg py-2">Semanal</SelectItem>
-                                        <SelectItem value="monthly" className="rounded-lg py-2">Mensal</SelectItem>
-                                        <SelectItem value="yearly" className="rounded-lg py-2">Anual</SelectItem>
+                                    <SelectTrigger className="h-[42px] rounded-none bg-transparent border-2 border-border shadow-none px-4 text-[10px] font-black uppercase tracking-widest text-foreground focus:ring-0"><SelectValue placeholder="Frequência" /></SelectTrigger>
+                                    <SelectContent className="rounded-none shadow-none border-2 border-border bg-card p-0">
+                                        <SelectItem value="daily" className="rounded-none py-3 text-[10px] font-black uppercase tracking-widest">Diária</SelectItem>
+                                        <SelectItem value="weekly" className="rounded-none py-3 text-[10px] font-black uppercase tracking-widest">Semanal</SelectItem>
+                                        <SelectItem value="monthly" className="rounded-none py-3 text-[10px] font-black uppercase tracking-widest">Mensal</SelectItem>
+                                        <SelectItem value="yearly" className="rounded-none py-3 text-[10px] font-black uppercase tracking-widest">Anual</SelectItem>
                                     </SelectContent>
                                 </Select>
+                                <div className="mt-3 space-y-1">
+                                    <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Repetir até (opcional)</label>
+                                    <input
+                                        type="date"
+                                        value={recurrenceEndDate}
+                                        onChange={e => setRecurrenceEndDate(e.target.value)}
+                                        className="h-[42px] w-full rounded-none bg-transparent border-2 border-border shadow-none text-[10px] font-black uppercase tracking-widest px-4 transition-all outline-none text-foreground dark:[color-scheme:dark] focus:border-primary cursor-pointer"
+                                    />
+                                    <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest ml-1">Deixe em branco para repetir indefinidamente</p>
+                                </div>
                             </motion.div>
                         )}
                     </AnimatePresence>
@@ -789,28 +706,28 @@ export function TransactionForm({ className, transaction, onSuccess, onCancel }:
             {/* 5. ACTIONS */}
             <div className="pt-8 pb-4 mt-auto flex flex-col gap-4">
                 <motion.button type="submit" disabled={loading} whileTap={{ scale: 0.95 }}
-                    className={cn("w-full h-14 rounded-[18px] text-white font-semibold shadow-2xl transition-all flex items-center justify-center gap-2",
-                        type === 'income' ? 'bg-blue-600 shadow-blue-500/20' : type === 'transfer' ? 'bg-violet-600 shadow-violet-500/20' : 'bg-slate-900 shadow-slate-900/10',
+                    className={cn("w-full h-[42px] rounded-none text-background font-black uppercase tracking-widest text-[10px] transition-all flex items-center justify-center gap-2 border shadow-none",
+                        type === 'income' ? 'bg-[#3B82F6] border-[#3B82F6] hover:bg-[#3B82F6]/90' : type === 'transfer' ? 'bg-[#14B8A6] border-[#14B8A6] hover:bg-[#14B8A6]/90' : 'bg-foreground border-foreground hover:bg-foreground/90',
                         loading && "opacity-80")}>
-                    {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : (transaction ? "Salvar Alterações" : type === 'transfer' ? "Confirmar Transferência" : "Salvar Transação")}
+                    {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : (transaction ? "Salvar Alterações" : type === 'transfer' ? "Confirmar Transferência" : "Salvar Transação")}
                 </motion.button>
                 {transaction && (
                     <AlertDialog>
                         <AlertDialogTrigger asChild>
-                            <button type="button" className="text-[11px] font-bold text-red-400 hover:text-red-500 uppercase tracking-widest text-center py-2 transition-colors">
+                            <button type="button" className="text-[10px] font-black text-destructive hover:opacity-80 uppercase tracking-widest text-center py-2 transition-opacity bg-transparent border-none">
                                 Excluir Transação
                             </button>
                         </AlertDialogTrigger>
-                        <AlertDialogContent className="rounded-[32px] border-none p-10 shadow-2xl">
+                        <AlertDialogContent className="rounded-none border-2 border-border p-10 shadow-none bg-card">
                             <AlertDialogHeader>
-                                <AlertDialogTitle className="text-xl font-semibold tracking-tight">Excluir Transação?</AlertDialogTitle>
-                                <AlertDialogDescription className="text-slate-500 text-[14px] leading-relaxed">
+                                <AlertDialogTitle className="text-sm font-black uppercase tracking-widest text-foreground">Excluir Transação?</AlertDialogTitle>
+                                <AlertDialogDescription className="text-muted-foreground text-[10px] font-bold uppercase tracking-wider leading-relaxed mt-2">
                                     Esta ação é permanente e não poderá ser desfeita nos seus registros financeiros.
                                 </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter className="mt-8 gap-3">
-                                <AlertDialogCancel className="h-12 rounded-2xl bg-slate-50 border-none text-slate-500 font-semibold hover:bg-slate-100">Cancelar</AlertDialogCancel>
-                                <AlertDialogAction onClick={handleDelete} className="h-12 rounded-2xl bg-red-500 text-white hover:bg-red-600 border-none font-semibold">
+                                <AlertDialogCancel className="h-[42px] rounded-none border border-border bg-transparent text-foreground hover:bg-secondary font-black uppercase tracking-widest text-[10px]">Cancelar</AlertDialogCancel>
+                                <AlertDialogAction onClick={handleDelete} className="h-[42px] rounded-none bg-destructive text-destructive-foreground hover:bg-destructive/90 border border-destructive font-black uppercase tracking-widest text-[10px]">
                                     Sim, Excluir
                                 </AlertDialogAction>
                             </AlertDialogFooter>
@@ -821,3 +738,5 @@ export function TransactionForm({ className, transaction, onSuccess, onCancel }:
         </form>
     );
 }
+
+// aria-label

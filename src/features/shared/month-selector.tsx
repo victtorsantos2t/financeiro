@@ -33,9 +33,9 @@ export function MonthSelector({ currentDate, onMonthChange }: MonthSelectorProps
 
     return (
         <div className="flex items-center justify-center w-full px-4">
-            <div className="flex items-center bg-white/70 dark:bg-[#1C1C1E]/70 backdrop-blur-xl rounded-full border border-black/[0.03] dark:border-white/[0.03] shadow-[0_2px_8px_rgba(0,0,0,0.04)] p-0.5 transition-all">
-                <Button variant="ghost" size="icon" onClick={handlePrevious} className="h-7 w-7 rounded-full hover:bg-black/5 dark:hover:bg-white/5 text-muted-foreground transition-all">
-                    <ChevronLeft className="h-3.5 w-3.5" />
+            <div className="flex items-center bg-card rounded-none border-2 border-border shadow-none p-0.5 transition-all">
+                <Button variant="ghost" size="icon" onClick={handlePrevious} className="h-[30px] w-[30px] rounded-none hover:bg-secondary border border-transparent hover:border-border text-muted-foreground transition-all">
+                    <ChevronLeft className="h-4 w-4 stroke-[3]" />
                 </Button>
 
                 <Popover open={open} onOpenChange={setOpen}>
@@ -43,17 +43,17 @@ export function MonthSelector({ currentDate, onMonthChange }: MonthSelectorProps
                         <Button
                             variant="ghost"
                             className={cn(
-                                "min-w-[120px] px-2 h-7 hover:bg-black/5 dark:hover:bg-white/5 mx-0.5 rounded-full text-foreground transition-all flex items-center justify-center gap-1.5",
+                                "min-w-[120px] px-2 h-[30px] hover:bg-secondary mx-0.5 rounded-none border border-transparent hover:border-border text-foreground transition-all flex items-center justify-center gap-1.5",
                                 !currentDate && "text-muted-foreground"
                             )}
                         >
-                            <CalendarIcon className="h-3 w-3 text-blue-500" />
-                            <span className="capitalize text-[11px] font-medium tracking-tight">
+                            <CalendarIcon className="h-3.5 w-3.5 text-foreground stroke-[2.5]" />
+                            <span className="uppercase text-[10px] font-black tracking-widest mt-0.5">
                                 {format(currentDate, "MMMM yyyy", { locale: ptBR })}
                             </span>
                         </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0 border-none shadow-2xl rounded-[24px] overflow-hidden" align="center">
+                    <PopoverContent className="w-auto p-0 border-2 border-border shadow-none rounded-none bg-card overflow-hidden" align="center">
                         <Calendar
                             mode="single"
                             selected={currentDate}
@@ -69,10 +69,12 @@ export function MonthSelector({ currentDate, onMonthChange }: MonthSelectorProps
                     </PopoverContent>
                 </Popover>
 
-                <Button variant="ghost" size="icon" onClick={handleNext} className="h-7 w-7 rounded-full hover:bg-black/5 dark:hover:bg-white/5 text-muted-foreground transition-all">
-                    <ChevronRight className="h-3.5 w-3.5" />
+                <Button variant="ghost" size="icon" onClick={handleNext} className="h-[30px] w-[30px] rounded-none hover:bg-secondary border border-transparent hover:border-border text-muted-foreground transition-all">
+                    <ChevronRight className="h-4 w-4 stroke-[3]" />
                 </Button>
             </div>
         </div>
     );
 }
+
+// aria-label

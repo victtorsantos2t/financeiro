@@ -7,9 +7,10 @@
 @theme {
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-  --radius-xl: 1.25rem;
-  --radius-2xl: 1.5rem;
-  --radius-3xl: 2rem;
+  /* Brutalist Geometry - Sharp */
+  --radius-xl: 0.125rem;
+  --radius-2xl: 0.125rem;
+  --radius-3xl: 0.25rem;
 }
 
 /* ─── iOS Native Font Override (mobile only) ────────────────────────────────
@@ -39,132 +40,129 @@
 }
 
 :root {
-  /* SaaS Financeiro Moderno - Paleta Obrigatória */
-
-  /* Backgrounds */
-  --background: #F8FAFC;
-  --foreground: #0F172A;
+  /* Tech Luxury / Neo-Brutalism - Light */
+  --background: #FFFFFF;
+  --foreground: #09090B;
 
   /* Surfaces */
   --card: #FFFFFF;
-  --card-foreground: #0F172A;
+  --card-foreground: #09090B;
   --popover: #FFFFFF;
-  --popover-foreground: #0F172A;
-  --surface: #FFFFFF;
-  /* New standard */
-  --primary-surface: #E8E5FF;
-  /* New standard */
+  /* Popover */
+  --popover-foreground: #09090B;
+  --surface: #FAFAFA;
+  --primary-surface: #F4F4F5;
 
-  /* Accents - Enterprise Palette (Based on Image) */
-  --primary: #7367F0;
-  /* Purple Dashboard */
-  --primary-hover: #5E50EE;
-  --primary-active: #4839E3;
-  --primary-foreground: #FFFFFF;
-  --accent: #00CFE8;
-  /* New standard */
+  /* Accents - High Contrast Obsidian & Acid Green */
+  --primary: #09090B;
+  --primary-hover: #18181B;
+  --primary-active: #27272A;
+  --primary-foreground: #FAFAFA;
+  --accent: #00E676;
+  /* aria-label */
+  /* Acid Green / Money Accent */
 
-  /* Secondary Surfaces */
-  --secondary: #F1F5F9;
-  --secondary-foreground: #475569;
+  /* Secondary */
+  --secondary: #F4F4F5;
+  --secondary-foreground: #09090B;
 
-  /* Text - New Standards */
-  --text-primary: #0F172A;
-  --text-secondary: #64748B;
+  /* Text */
+  --text-primary: #09090B;
+  --text-secondary: #71717A;
 
-  /* Muted Text */
-  --muted: #F1F5F9;
-  --muted-foreground: #64748B;
+  /* Muted */
+  --muted: #F4F4F5;
+  --muted-foreground: #71717A;
 
-  /* Borders & Inputs */
-  --border: #E2E8F0;
-  --input: #E2E8F0;
-  --ring: #2563EB;
+  /* Borders & Sharp Elements */
+  --border: #E4E4E7;
+  --input: #E4E4E7;
+  --ring: #09090B;
 
-  /* Radius - Enterprise Standard */
-  --radius: 12px;
-  --radius-card: 20px;
-  /* Reduced from 32px for cleaner UI */
+  /* Radius - Brutalist Sharp 0-2px */
+  --radius: 2px;
+  --radius-card: 2px;
 
   /* Status */
-  --success: #22C55E;
-  --success-bg: #DCFCE7;
-  --success-foreground: #111827;
+  --success: #00E676;
+  --success-bg: #EAFCF0;
+  --success-foreground: #09090B;
 
-  --destructive: #EF4444;
-  --destructive-bg: #FEE2E2;
+  --destructive: #FF3333;
+  --destructive-bg: #FFE5E5;
   --destructive-foreground: #FFFFFF;
 
   /* Sidebar */
   --sidebar: #FFFFFF;
-  --sidebar-foreground: #6B7280;
-  --sidebar-primary: #3B82F6;
+  --sidebar-foreground: #71717A;
+  --sidebar-primary: #09090B;
   --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: #F3F4F6;
-  --sidebar-accent-foreground: #111827;
-  --sidebar-border: #E5E7EB;
-  --sidebar-ring: #3B82F6;
+  --sidebar-accent: #F4F4F5;
+  --sidebar-accent-foreground: #09090B;
+  --sidebar-border: #E4E4E7;
+  --sidebar-ring: #09090B;
 }
 
 .dark {
   /* Backgrounds */
-  --background: #0F0F10;
-  --foreground: #FFFFFF;
+  --background: #000000;
+  --foreground: #FAFAFA;
 
-  /* Surfaces com transparência/glassmorphism */
-  --card: rgba(28, 28, 30, 0.80);
-  --card-foreground: #FFFFFF;
-  --popover: #1C1C1E;
-  --popover-foreground: #FFFFFF;
-  --surface: #1C1C1E;
-  --primary-surface: rgba(115, 103, 240, 0.15);
+  /* Surfaces - Pure Black & Hard Grays */
+  --card: #0A0A0B;
+  --card-foreground: #FAFAFA;
+  --popover: #0A0A0B;
+  --popover-foreground: #FAFAFA;
+  --surface: #0A0A0B;
+  --primary-surface: #18181B;
 
-  /* Primary — iOS Dynamic Blue Dark */
-  --primary: #7367F0;
-  --primary-hover: #5E50EE;
-  --primary-active: #4839E3;
-  --primary-foreground: #FFFFFF;
-  --accent: #00CFE8;
+  /* Primary High-Contrast White / Core Action */
+  --primary: #FAFAFA;
+  --primary-hover: #E4E4E7;
+  --primary-active: #D4D4D8;
+  --primary-foreground: #000000;
+  --accent: #00E676;
+  /* Vital Acid Green */
 
-  /* Secondary Surfaces */
-  --secondary: rgba(44, 44, 46, 0.95);
-  --secondary-foreground: #FFFFFF;
+  /* Secondary */
+  --secondary: #18181B;
+  --secondary-foreground: #FAFAFA;
 
-  /* Text - New Standards */
-  --text-primary: #FFFFFF;
-  --text-secondary: rgba(255, 255, 255, 0.85);
+  /* Text */
+  --text-primary: #FAFAFA;
+  --text-secondary: #A1A1AA;
 
   /* Muted */
-  --muted: rgba(44, 44, 46, 0.7);
-  --muted-foreground: rgba(255, 255, 255, 0.7);
+  --muted: #18181B;
+  --muted-foreground: #A1A1AA;
 
-  /* Borders */
-  --border: rgba(84, 84, 88, 0.4);
-  --input: rgba(58, 58, 60, 0.9);
-  --ring: #0A84FF;
+  /* Hard Borders */
+  --border: #27272A;
+  --input: #27272A;
+  --ring: #FAFAFA;
 
   /* Status */
-  --success: #32D74B;
-  --success-bg: rgba(50, 215, 75, 0.15);
-  --success-foreground: #FFFFFF;
-  --destructive: #FF453A;
-  --destructive-bg: rgba(255, 69, 58, 0.15);
-  --destructive-foreground: #FFFFFF;
+  --success: #00E676;
+  --success-bg: rgba(0, 230, 118, 0.1);
+  --success-foreground: #00E676;
+  --destructive: #FF3333;
+  --destructive-bg: rgba(255, 51, 51, 0.1);
+  --destructive-foreground: #FF3333;
 
-  --sidebar-border: rgba(84, 84, 88, 0.35);
-  --sidebar-ring: #0A84FF;
+  --sidebar-border: #27272A;
+  --sidebar-ring: #FAFAFA;
 
-  /* iOS Dynamic Colors Dark */
+  /* iOS Dynamic Colors Dark (Keeping references but sharpening) */
   --ios-bg: #000000;
-  --ios-bg2: #1C1C1E;
+  --ios-bg2: #0A0A0B;
   --ios-label: #FFFFFF;
-  --ios-label2: rgba(255, 255, 255, 0.85);
-  --ios-label3: rgba(255, 255, 255, 0.7);
-  --ios-separator: rgba(84, 84, 88, 0.65);
-  --ios-header-blur: rgba(28, 28, 30, 0.85);
-  --ios-tab-blur: rgba(18, 18, 20, 0.95);
-  --ios-segment-bg: rgba(118, 118, 128, 0.24);
-  --ios-segment-active: #636366;
+  --ios-label2: #A1A1AA;
+  --ios-label3: #71717A;
+  --ios-separator: rgba(255, 255, 255, 0.1);
+  --ios-header-blur: rgba(0, 0, 0, 0.9);
+  --ios-tab-blur: #000000;
+  --ios-segment-bg: #18181B;
+  --ios-segment-active: #27272A;
 }
 
 /* ─── iOS Dark System Colors ─────────────────────────────────────────────── */
@@ -286,29 +284,29 @@
   min-height: 100dvh;
 }
 
-/* ─── iOS Native Card Styles (mobile only) ──────────────────────────────────
-   Todos os bg-card / rounded-card recebem estilo iOS: bordas 16px, sombra leve.
-   ─────────────────────────────────────────────────────────────────────────── */
+/* iOS Native Card Styles (mobile only) - Restritamente Sharp */
 @media (max-width: 767px) {
 
-  /* Sombra iOS suave (Apple HIG card shadow) */
+  /* Brutalist Shadows: Sem soft blur. Sharp & Crisp. */
   .shadow-sm,
   [class*="shadow-sm"] {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 0 1px rgba(0, 0, 0, 0.04) !important;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05) !important;
   }
 
-  /* Remover radius excessivo nos cards mobile → iOS usa 16px */
+  .dark .shadow-sm,
+  .dark [class*="shadow-sm"] {
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+  }
+
+  /* Force Sharp Radii - Remove excesso nativo */
   [class*="rounded-[20px]"],
   [class*="rounded-[24px]"],
   [class*="rounded-[28px]"],
   [class*="rounded-[32px]"],
+  [class*="rounded-[16px]"],
   [class*="rounded-3xl"] {
-    border-radius: 16px !important;
-  }
-
-  /* Transações table list → remover bordas pesadas */
-  [class*="rounded-[16px]"] {
-    border-radius: 16px;
+    border-radius: 4px !important;
+    border: 1px solid var(--border) !important;
   }
 }
 

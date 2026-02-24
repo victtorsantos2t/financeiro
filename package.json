@@ -29,6 +29,7 @@
     "next-pwa": "^5.6.0",
     "next-themes": "^0.4.6",
     "ofx-js": "^0.2.0",
+    "pdf-parse": "^2.4.5",
     "radix-ui": "^1.4.3",
     "react": "19.2.3",
     "react-day-picker": "^9.13.2",
@@ -38,6 +39,7 @@
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.4.1",
     "tailwindcss-animate": "^1.0.7",
+    "unpdf": "^1.4.0",
     "vaul": "^1.1.2",
     "xlsx": "^0.18.5",
     "zod": "^4.3.6",
@@ -46,6 +48,7 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20.19.33",
+    "@types/pdf-parse": "^1.1.5",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",

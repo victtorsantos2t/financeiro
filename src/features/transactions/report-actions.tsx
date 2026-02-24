@@ -92,3 +92,5 @@ export function ReportActions({ currentDate = new Date() }: ReportActionsProps) 
 
     return null;
 }
+
+// aria-label

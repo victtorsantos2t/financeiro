@@ -157,3 +157,5 @@ export {
     CommandShortcut,
     CommandSeparator,
 }
+
+// aria-label

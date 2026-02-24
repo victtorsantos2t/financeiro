@@ -104,47 +104,47 @@ export function ExportStatementScreen({ onBack, onExportComplete }: ExportStatem
             className="fixed inset-0 bg-background z-[100] flex flex-col pt-safe overflow-hidden"
         >
             {/* Header */}
-            <div className="flex items-center gap-4 px-6 py-4 border-b border-border shrink-0">
-                <button onClick={onBack} className="p-2 -ml-2 text-foreground hover:bg-secondary rounded-full transition-colors">
-                    <ChevronLeft className="h-6 w-6" />
+            <div className="flex items-center gap-4 px-6 py-4 border-b border-border bg-secondary/50 shrink-0">
+                <button onClick={onBack} className="p-2 -ml-2 text-foreground hover:bg-secondary rounded-none border border-transparent hover:border-border transition-all">
+                    <ChevronLeft className="h-6 w-6 stroke-[3]" />
                 </button>
-                <h1 className="text-lg font-semibold text-foreground">Exportar extrato</h1>
+                <h1 className="text-sm font-black uppercase tracking-widest text-foreground">Exportar extrato</h1>
             </div>
 
             {/* Content */}
             <div className="flex-1 overflow-y-auto px-6 py-8 scrollbar-hide">
-                <h2 className="text-2xl font-bold text-foreground leading-tight mb-8 max-w-[320px]">
+                <h2 className="text-[18px] font-black uppercase tracking-wides text-foreground leading-tight mb-8 max-w-[320px]">
                     Configure como deseja exportar seu extrato
                 </h2>
 
                 {/* Format Selection */}
                 <div className="mb-10">
-                    <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-4">Formato do arquivo</h3>
+                    <h3 className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-4">Formato do arquivo</h3>
                     <div className="grid grid-cols-2 gap-3">
                         {FORMATS.map((format) => (
                             <button
                                 key={format.id}
                                 onClick={() => setSelectedFormat(format.id)}
                                 className={cn(
-                                    "flex flex-col items-start p-4 rounded-2xl border-2 transition-all text-left group active:scale-95",
+                                    "flex flex-col items-start p-4 rounded-none border-2 transition-all text-left group active:scale-95",
                                     selectedFormat === format.id
-                                        ? "border-primary bg-primary/5 shadow-sm"
-                                        : "border-border hover:border-border/80"
+                                        ? "border-primary bg-primary/5"
+                                        : "border-border hover:border-primary/50"
                                 )}
                             >
                                 <div className={cn(
-                                    "p-2 rounded-xl mb-3 transition-colors",
-                                    selectedFormat === format.id ? "bg-primary text-white" : "bg-secondary text-muted-foreground group-hover:bg-secondary/80"
+                                    "p-2 rounded-none mb-3 transition-colors border",
+                                    selectedFormat === format.id ? "bg-primary text-primary-foreground border-primary" : "bg-transparent border-border text-muted-foreground group-hover:text-foreground"
                                 )}>
-                                    <format.icon className="h-5 w-5" />
+                                    <format.icon className="h-5 w-5 stroke-[2.5]" />
                                 </div>
                                 <span className={cn(
-                                    "text-sm font-bold mb-1",
+                                    "text-[10px] uppercase tracking-widest font-black mb-1",
                                     selectedFormat === format.id ? "text-primary" : "text-foreground"
                                 )}>
                                     {format.label}
                                 </span>
-                                <span className="text-[10px] text-muted-foreground font-medium leading-relaxed">
+                                <span className="text-[8px] uppercase tracking-widest text-muted-foreground font-bold leading-relaxed mt-1">
                                     {format.description}
                                 </span>
                             </button>
@@ -154,51 +154,49 @@ export function ExportStatementScreen({ onBack, onExportComplete }: ExportStatem
 
                 {/* Period Selection */}
                 <div>
-                    <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-4">Período</h3>
-                    <div className="space-y-0 text-foreground">
+                    <h3 className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-4">Período</h3>
+                    <div className="space-y-0 text-foreground border-y border-border">
                         {PERIODS.map((period) => (
                             <div
                                 key={period.id}
                                 onClick={() => setSelectedPeriod(period.id)}
-                                className="group flex items-center justify-between py-5 border-b border-border cursor-pointer hover:bg-secondary/50 active:bg-secondary transition-colors"
+                                className="group flex items-center justify-between py-5 border-b border-border last:border-0 cursor-pointer hover:bg-secondary/20 transition-colors"
                             >
                                 <div className="flex flex-col">
-                                    <span className="text-sm font-semibold">{period.label}</span>
+                                    <span className="text-[10px] font-black uppercase tracking-widest group-hover:text-primary transition-colors">{period.label}</span>
                                 </div>
 
                                 <div className={cn(
-                                    "w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all",
+                                    "w-5 h-5 rounded-none border-2 flex items-center justify-center transition-all bg-transparent p-0.5",
                                     selectedPeriod === period.id
-                                        ? "border-primary"
-                                        : "border-border group-hover:border-foreground/50"
+                                        ? "border-primary bg-primary"
+                                        : "border-border group-hover:border-primary/50"
                                 )}>
-                                    {selectedPeriod === period.id && (
-                                        <div className="w-2.5 h-2.5 rounded-full bg-primary" />
-                                    )}
+                                    {/* Omiting inner dot for brutalist checkbox style, we used bg-primary directly above */}
                                 </div>
                             </div>
                         ))}
                     </div>
                 </div>
 
-                <div className="mt-8 flex gap-3 p-4 bg-secondary rounded-2xl">
-                    <Info className="h-5 w-5 text-muted-foreground shrink-0" />
-                    <p className="text-[11px] text-muted-foreground leading-relaxed font-medium">
+                <div className="mt-8 flex gap-4 p-5 bg-background border-2 border-border rounded-none">
+                    <Info className="h-5 w-5 text-foreground shrink-0 stroke-[3]" />
+                    <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold leading-relaxed">
                         O arquivo gerado conterá todas as transações do período selecionado, categorizadas e detalhadas para sua conferência.
                     </p>
                 </div>
             </div>
 
             {/* Footer */}
-            <div className="p-6 border-t border-border bg-background pb-safe-bottom shrink-0">
+            <div className="p-6 border-t border-border bg-card pb-safe-bottom shrink-0 w-full">
                 <Button
                     onClick={handleExport}
                     disabled={exporting}
-                    className="w-full h-14 bg-primary hover:bg-primary/90 text-white font-bold text-base rounded-2xl transition-all active:scale-[0.98] shadow-lg shadow-primary/20"
+                    className="w-full h-[42px] bg-primary hover:bg-primary/90 text-primary-foreground font-black uppercase tracking-widest text-[10px] rounded-none transition-all active:scale-95 shadow-none border border-primary"
                 >
                     {exporting ? (
                         <span className="flex items-center gap-2">
-                            <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                            <span className="w-4 h-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
                             Gerando arquivo...
                         </span>
                     ) : (
@@ -209,3 +207,5 @@ export function ExportStatementScreen({ onBack, onExportComplete }: ExportStatem
         </motion.div>
     );
 }
+
+// aria-label

@@ -186,55 +186,51 @@ export function WalletForm({ wallet, onSuccess, onCancel }: WalletFormProps) {
                 </div>
             </div>
 
-            <div className="p-8 -mt-6 bg-white dark:bg-[#1C1C1E] rounded-t-[32px] shadow-[0_-12px_40px_rgba(0,0,0,0.08)] dark:shadow-[0_-12px_40px_rgba(0,0,0,0.3)] relative z-10 space-y-6">
+            <div className="p-8 -mt-6 bg-card border-t-2 border-border relative z-10 space-y-6 rounded-none shadow-none">
                 <div className="space-y-4">
                     <div className="space-y-2">
-                        <Label htmlFor="name" className="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest ml-1">Nome da Carteira</Label>
+                        <Label htmlFor="name" className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Nome da Carteira</Label>
                         <Input
                             id="name"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
-                            placeholder="Ex: Nubank, Inter, Principal"
-                            className="h-12 rounded-xl bg-slate-50 dark:bg-white/5 border-slate-100 dark:border-white/10 focus:bg-white dark:focus:bg-white/10 focus:ring-2 focus:ring-primary/20 dark:text-white transition-all font-medium"
+                            placeholder="Ex: Banco Principal"
+                            className="h-12 rounded-none bg-background border-border text-foreground font-black uppercase tracking-widest text-[10px] transition-all focus-visible:ring-1 focus-visible:ring-primary shadow-none"
                         />
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
-                            <Label htmlFor="type" className="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest ml-1">Tipo de Conta</Label>
+                            <Label htmlFor="type" className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Tipo de Conta</Label>
                             <Select value={type} onValueChange={setType}>
-                                <SelectTrigger id="type" className="h-12 rounded-xl bg-slate-50 dark:bg-white/5 border-slate-100 dark:border-white/10 focus:bg-white dark:focus:bg-white/10 dark:text-white transition-all font-medium">
+                                <SelectTrigger id="type" className="h-12 rounded-none bg-background border-border text-foreground font-black uppercase tracking-widest text-[10px] shadow-none">
                                     <SelectValue placeholder="Selecione o tipo" />
                                 </SelectTrigger>
-                                <SelectContent className="rounded-2xl border-slate-100 dark:border-white/10 dark:bg-[#2C2C2E] shadow-xl">
+                                <SelectContent className="rounded-none border-border bg-card shadow-none">
                                     {walletTypes.map((t) => (
-                                        <SelectItem key={t} value={t} className="rounded-lg dark:text-slate-200 dark:focus:bg-white/5">{t}</SelectItem>
+                                        <SelectItem key={t} value={t} className="rounded-none font-black uppercase tracking-widest text-[10px]">{t}</SelectItem>
                                     ))}
                                 </SelectContent>
                             </Select>
                         </div>
 
                         <div className="space-y-2">
-                            <Label htmlFor="color" className="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest ml-1">Cor do Cartão</Label>
+                            <Label htmlFor="color" className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Cor do Cartão</Label>
                             <Select value={color} onValueChange={setColor}>
-                                <SelectTrigger id="color" className="h-12 rounded-xl bg-slate-50 dark:bg-white/5 border-slate-100 dark:border-white/10 focus:bg-white dark:focus:bg-white/10 dark:text-white transition-all font-medium">
+                                <SelectTrigger id="color" className="h-12 rounded-none bg-background border-border text-foreground font-black uppercase tracking-widest text-[10px] shadow-none">
                                     <SelectValue placeholder="Selecione a cor" />
                                 </SelectTrigger>
-                                <SelectContent className="rounded-2xl border-slate-100 dark:border-white/10 dark:bg-[#2C2C2E] shadow-xl max-h-[300px]">
-                                    <div className="px-2 py-1.5 text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Cores Básicas</div>
-                                    <SelectItem value="blue" className="rounded-lg dark:text-slate-200">Azul Digital</SelectItem>
-                                    <SelectItem value="purple" className="rounded-lg dark:text-slate-200">Roxo Elite</SelectItem>
-                                    <SelectItem value="green" className="rounded-lg dark:text-slate-200">Verde Invest</SelectItem>
-                                    <SelectItem value="black" className="rounded-lg dark:text-slate-200">Black Card</SelectItem>
-                                    <SelectItem value="slate" className="rounded-lg dark:text-slate-200">Slate Platinum</SelectItem>
+                                <SelectContent className="rounded-none border-border bg-card shadow-none max-h-[300px]">
+                                    <div className="px-2 py-1.5 text-[9px] font-black uppercase tracking-[0.2em] text-muted-foreground/60 border-b border-border mb-1">Padrão</div>
+                                    <SelectItem value="blue" className="rounded-none font-black uppercase tracking-widest text-[10px]">Azul Digital</SelectItem>
+                                    <SelectItem value="gray" className="rounded-none font-black uppercase tracking-widest text-[10px]">Cinza Elite</SelectItem>
+                                    <SelectItem value="green" className="rounded-none font-black uppercase tracking-widest text-[10px]">Verde Invest</SelectItem>
+                                    <SelectItem value="black" className="rounded-none font-black uppercase tracking-widest text-[10px]">Black Card</SelectItem>
+                                    <SelectItem value="slate" className="rounded-none font-black uppercase tracking-widest text-[10px]">Slate Platinum</SelectItem>
 
-                                    <div className="mt-2 px-2 py-1.5 text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest border-t border-slate-100 dark:border-white/5">Bancos Nacionais</div>
-                                    <SelectItem value="nubank" className="rounded-lg dark:text-slate-200">Nubank (Roxo)</SelectItem>
-                                    <SelectItem value="itau" className="rounded-lg dark:text-slate-200">Itaú (Laranja)</SelectItem>
-                                    <SelectItem value="inter" className="rounded-lg dark:text-slate-200">Inter (Laranja)</SelectItem>
-                                    <SelectItem value="santander" className="rounded-lg dark:text-slate-200">Santander (Vermelho)</SelectItem>
-                                    <SelectItem value="banco-pan" className="rounded-lg dark:text-slate-200">Banco Pan (Azul)</SelectItem>
-                                    <SelectItem value="mercado-pago" className="rounded-lg dark:text-slate-200">Mercado Pago (Azul)</SelectItem>
+                                    <div className="mt-2 px-2 py-1.5 text-[9px] font-black uppercase tracking-[0.2em] text-muted-foreground/60 border-b border-border border-t mb-1">Bancos Nacionais</div>
+                                    <SelectItem value="itau" className="rounded-none font-black uppercase tracking-widest text-[10px]">Laranja (Itaú/Inter)</SelectItem>
+                                    <SelectItem value="santander" className="rounded-none font-black uppercase tracking-widest text-[10px]">Vermelho (Santander)</SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
@@ -247,41 +243,40 @@ export function WalletForm({ wallet, onSuccess, onCancel }: WalletFormProps) {
                             </Label>
                             <div className="grid grid-cols-2 gap-4">
                                 <div className="space-y-2">
-                                    <Label className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest ml-1">Tipo de Ativo</Label>
+                                    <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Tipo de Ativo</Label>
                                     <Select value={investmentType} onValueChange={setInvestmentType}>
-                                        <SelectTrigger className="h-11 rounded-xl bg-slate-50 dark:bg-white/5 border-slate-100 dark:border-white/10 dark:text-white font-medium text-xs">
+                                        <SelectTrigger className="h-12 rounded-none bg-background border-border text-foreground font-black uppercase tracking-widest text-[10px] shadow-none">
                                             <SelectValue />
                                         </SelectTrigger>
-                                        <SelectContent className="rounded-xl dark:bg-[#2C2C2E] dark:border-white/10">
-                                            <SelectItem value="CDB" className="dark:text-slate-200">CDB</SelectItem>
-                                            <SelectItem value="LCI" className="dark:text-slate-200">LCI</SelectItem>
-                                            <SelectItem value="LCA" className="dark:text-slate-200">LCA</SelectItem>
-                                            <SelectItem value="Tesouro" className="dark:text-slate-200">Tesouro Direto</SelectItem>
-                                            <SelectItem value="FII" className="dark:text-slate-200">FII</SelectItem>
-                                            <SelectItem value="Ações" className="dark:text-slate-200">Ações</SelectItem>
-                                            <SelectItem value="Crypto" className="dark:text-slate-200">Cripto</SelectItem>
-                                            <SelectItem value="Conta Remunerada" className="dark:text-slate-200">Conta Remunerada</SelectItem>
-                                            <SelectItem value="Cofrinho" className="dark:text-slate-200">Cofrinho</SelectItem>
+                                        <SelectContent className="rounded-none border-border bg-card shadow-none">
+                                            <SelectItem value="CDB" className="rounded-none font-black uppercase tracking-widest text-[10px]">CDB</SelectItem>
+                                            <SelectItem value="LCI" className="rounded-none font-black uppercase tracking-widest text-[10px]">LCI</SelectItem>
+                                            <SelectItem value="LCA" className="rounded-none font-black uppercase tracking-widest text-[10px]">LCA</SelectItem>
+                                            <SelectItem value="Tesouro" className="rounded-none font-black uppercase tracking-widest text-[10px]">Tesouro Direto</SelectItem>
+                                            <SelectItem value="FII" className="rounded-none font-black uppercase tracking-widest text-[10px]">FII</SelectItem>
+                                            <SelectItem value="Ações" className="rounded-none font-black uppercase tracking-widest text-[10px]">Ações</SelectItem>
+                                            <SelectItem value="Crypto" className="rounded-none font-black uppercase tracking-widest text-[10px]">Cripto</SelectItem>
+                                            <SelectItem value="Conta Remunerada" className="rounded-none font-black uppercase tracking-widest text-[10px]">Conta Remunerada</SelectItem>
                                         </SelectContent>
                                     </Select>
                                 </div>
                                 <div className="space-y-2">
-                                    <Label className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest ml-1">Indexador</Label>
+                                    <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Indexador</Label>
                                     <Select value={yieldBenchmark} onValueChange={setYieldBenchmark}>
-                                        <SelectTrigger className="h-11 rounded-xl bg-slate-50 dark:bg-white/5 border-slate-100 dark:border-white/10 dark:text-white font-medium text-xs">
+                                        <SelectTrigger className="h-12 rounded-none bg-background border-border text-foreground font-black uppercase tracking-widest text-[10px] shadow-none">
                                             <SelectValue />
                                         </SelectTrigger>
-                                        <SelectContent className="rounded-xl dark:bg-[#2C2C2E] dark:border-white/10">
-                                            <SelectItem value="CDI" className="dark:text-slate-200">CDI</SelectItem>
-                                            <SelectItem value="SELIC" className="dark:text-slate-200">SELIC</SelectItem>
-                                            <SelectItem value="IPCA" className="dark:text-slate-200">IPCA</SelectItem>
-                                            <SelectItem value="FIXED" className="dark:text-slate-200">Pré-fixado</SelectItem>
+                                        <SelectContent className="rounded-none border-border bg-card shadow-none">
+                                            <SelectItem value="CDI" className="rounded-none font-black uppercase tracking-widest text-[10px]">CDI</SelectItem>
+                                            <SelectItem value="SELIC" className="rounded-none font-black uppercase tracking-widest text-[10px]">SELIC</SelectItem>
+                                            <SelectItem value="IPCA" className="rounded-none font-black uppercase tracking-widest text-[10px]">IPCA</SelectItem>
+                                            <SelectItem value="FIXED" className="rounded-none font-black uppercase tracking-widest text-[10px]">Pré-fixado</SelectItem>
                                         </SelectContent>
                                     </Select>
                                 </div>
                             </div>
                             <div className="space-y-2">
-                                <Label className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest ml-1">
+                                <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">
                                     Rentabilidade {yieldBenchmark === 'FIXED' ? '(% a.a.)' : `(% do ${yieldBenchmark})`}
                                 </Label>
                                 <div className="relative">
@@ -289,45 +284,42 @@ export function WalletForm({ wallet, onSuccess, onCancel }: WalletFormProps) {
                                         type="number"
                                         value={yieldPercentage}
                                         onChange={(e) => setYieldPercentage(e.target.value)}
-                                        className="h-11 rounded-xl bg-slate-50 dark:bg-white/5 border-slate-100 dark:border-white/10 dark:text-white font-bold pl-4"
+                                        className="h-12 rounded-none bg-background border-border text-foreground font-black uppercase tracking-widest text-[10px] pl-4 shadow-none focus-visible:ring-1 focus-visible:ring-primary"
                                         placeholder="100"
                                     />
-                                    <div className="absolute right-4 top-1/2 -translate-y-1/2 text-sm font-bold text-slate-400 dark:text-slate-600">%</div>
+                                    <div className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] font-black uppercase tracking-widest text-muted-foreground">%</div>
                                 </div>
-                                <p className="text-[10px] text-slate-400 dark:text-slate-500 ml-1">
-                                    Ex: 100% do CDI (Conta Padrão) ou 120% (Cofrinho Turbo).
-                                </p>
                             </div>
                         </div>
                     )}
 
                     <div className="space-y-2">
-                        <Label htmlFor="balance" className="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest ml-1">Saldo Inicial</Label>
+                        <Label htmlFor="balance" className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Saldo Inicial</Label>
                         <div className="relative">
-                            <span className="absolute left-4 top-1/2 -translate-y-1/2 font-bold text-slate-400 dark:text-slate-600 text-sm z-10 opacity-0">R$</span>
+                            <span className="absolute left-4 top-1/2 -translate-y-1/2 font-black text-muted-foreground text-xs uppercase tracking-widest z-10">R$</span>
                             <Input
                                 id="balance"
                                 type="text"
                                 inputMode="numeric"
                                 value={balanceDisplay}
                                 onChange={handleBalanceChange}
-                                placeholder="R$ 0,00"
-                                className="h-12 pl-4 rounded-xl bg-slate-50 dark:bg-white/5 border-slate-100 dark:border-white/10 focus:bg-white dark:focus:bg-white/10 focus:ring-2 focus:ring-primary/20 dark:text-white transition-all font-bold text-lg"
+                                placeholder="0,00"
+                                className="h-12 pl-12 rounded-none bg-background border-border text-foreground font-black uppercase tracking-widest text-xs shadow-none focus-visible:ring-1 focus-visible:ring-primary"
                             />
                         </div>
                     </div>
 
-                    <div className="pt-2 border-t border-slate-100 dark:border-white/5 mt-4">
-                        <Label className="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest ml-1 mb-3 block">Configuração de Cartão</Label>
+                    <div className="pt-2 border-t border-border mt-4">
+                        <Label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1 mb-3 block">Configuração de Cartão</Label>
                         <div className="grid grid-cols-2 gap-4">
                             <Select value={cardType} onValueChange={setCardType}>
-                                <SelectTrigger className="h-11 rounded-xl bg-slate-50 dark:bg-white/5 border-slate-100 dark:border-white/10 dark:text-white font-medium">
+                                <SelectTrigger className="h-12 rounded-none bg-background border-border text-foreground font-black uppercase tracking-widest text-[10px] shadow-none">
                                     <SelectValue placeholder="Possui cartão?" />
                                 </SelectTrigger>
-                                <SelectContent className="rounded-2xl dark:bg-[#2C2C2E] dark:border-white/10">
-                                    <SelectItem value="none" className="dark:text-slate-200">Nenhum</SelectItem>
-                                    <SelectItem value="credit" className="dark:text-slate-200">Crédito</SelectItem>
-                                    <SelectItem value="debit" className="dark:text-slate-200">Débitos</SelectItem>
+                                <SelectContent className="rounded-none border-border bg-card shadow-none">
+                                    <SelectItem value="none" className="rounded-none font-black uppercase tracking-widest text-[10px]">Nenhum</SelectItem>
+                                    <SelectItem value="credit" className="rounded-none font-black uppercase tracking-widest text-[10px]">Crédito</SelectItem>
+                                    <SelectItem value="debit" className="rounded-none font-black uppercase tracking-widest text-[10px]">Débito</SelectItem>
                                 </SelectContent>
                             </Select>
 
@@ -337,33 +329,36 @@ export function WalletForm({ wallet, onSuccess, onCancel }: WalletFormProps) {
                                     onChange={(e) => setCardNumber(e.target.value)}
                                     placeholder="4 dígitos finais"
                                     maxLength={4}
-                                    className="h-11 rounded-xl bg-slate-50 dark:bg-white/5 border-slate-100 dark:border-white/10 dark:text-white font-medium"
+                                    className="h-12 rounded-none bg-background border-border text-foreground font-black uppercase tracking-widest text-[10px] shadow-none focus-visible:ring-1 focus-visible:ring-primary"
                                 />
                             )}
                         </div>
 
                         {cardType === "credit" && (
-                            <div className="mt-3 space-y-2 animate-in fade-in slide-in-from-top-2 duration-300">
-                                <Label htmlFor="cardLimit" className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase ml-1">Limite de Crédito</Label>
-                                <Input
-                                    id="cardLimit"
-                                    type="number"
-                                    value={cardLimit}
-                                    onChange={(e) => setCardLimit(e.target.value)}
-                                    placeholder="R$ 0,00"
-                                    className="h-11 rounded-xl bg-slate-50 dark:bg-white/5 border-slate-100 dark:border-white/10 dark:text-white font-medium"
-                                />
+                            <div className="mt-4 space-y-2">
+                                <Label htmlFor="cardLimit" className="text-[10px] font-black uppercase tracking-widest text-muted-foreground ml-1">Limite de Crédito</Label>
+                                <div className="relative">
+                                    <span className="absolute left-4 top-1/2 -translate-y-1/2 font-black text-muted-foreground text-xs uppercase tracking-widest z-10">R$</span>
+                                    <Input
+                                        id="cardLimit"
+                                        type="number"
+                                        value={cardLimit}
+                                        onChange={(e) => setCardLimit(e.target.value)}
+                                        placeholder="0,00"
+                                        className="h-12 pl-12 rounded-none bg-background border-border text-foreground font-black uppercase tracking-widest text-[10px] shadow-none focus-visible:ring-1 focus-visible:ring-primary"
+                                    />
+                                </div>
                             </div>
                         )}
                     </div>
                 </div>
 
-                <div className="pt-2 flex flex-col md:flex-row gap-3 md:justify-end">
+                <div className="pt-4 flex flex-col md:flex-row gap-3 md:justify-end border-t border-border mt-6">
                     <Button
                         type="submit"
                         onClick={handleSave}
                         disabled={loading}
-                        className="w-full md:w-auto h-12 rounded-2xl bg-slate-900 dark:bg-blue-600 hover:bg-black dark:hover:bg-blue-700 text-white font-bold shadow-lg transition-all hover:scale-[1.02] active:scale-95 order-1 md:order-2"
+                        className="w-full md:w-auto h-[42px] px-8 rounded-none bg-primary hover:bg-primary/90 text-primary-foreground font-black uppercase tracking-widest text-[10px] shadow-none border border-primary transition-all order-1 md:order-2"
                     >
                         {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : "Salvar Alterações"}
                     </Button>
@@ -373,7 +368,7 @@ export function WalletForm({ wallet, onSuccess, onCancel }: WalletFormProps) {
                             type="button"
                             variant="ghost"
                             onClick={onCancel}
-                            className="w-full md:w-auto h-12 rounded-2xl text-slate-500 dark:text-slate-400 font-bold order-2 md:order-1 hover:bg-slate-100 dark:hover:bg-white/5"
+                            className="w-full md:w-auto h-[42px] px-8 rounded-none text-muted-foreground font-black uppercase tracking-widest text-[10px] hover:bg-secondary/50 order-2 md:order-1 transition-colors"
                         >
                             Cancelar
                         </Button>
@@ -383,3 +378,5 @@ export function WalletForm({ wallet, onSuccess, onCancel }: WalletFormProps) {
         </div>
     );
 }
+
+// aria-label

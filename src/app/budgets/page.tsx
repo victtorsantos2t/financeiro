@@ -7,7 +7,10 @@ import { Progress } from "@/components/ui/progress";
 import { createClient } from "@/lib/supabase/client";
 import { Save } from "lucide-react";
 import { useEffect, useState } from "react";
+import { startOfMonth, endOfMonth } from "date-fns";
 import { IOSPageHeader } from "@/components/layout/ios-page-header";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { SavingsGoals } from "@/features/budgets/savings-goals";
 
 type CategoryBudget = {
     categoryId: string;
@@ -27,7 +30,7 @@ export default function BudgetsPage() {
         fetchData();
     }, []);
 
-    const fetchData = async () => {
+    async function fetchData() {
         setLoading(true);
         const { data: { user } } = await supabase.auth.getUser();
 
@@ -52,17 +55,18 @@ export default function BudgetsPage() {
                 .eq("month_year", currentMonthYear);
 
             // 3. Get Transactions for Current Month
-            const startOfMonth = `${currentMonthYear}-01`;
-            // Fix: Use date-fns to get the actual last day of the month
-            const endOfMonth = new Date(new Date(startOfMonth).getFullYear(), new Date(startOfMonth).getMonth() + 1, 0).toISOString();
+            const today = new Date();
+            const startOfCurrMonth = startOfMonth(today).toISOString();
+            const endOfCurrMonth = endOfMonth(today).toISOString();
 
             const { data: transactions } = await supabase
                 .from("transactions")
                 .select("category_id, amount")
                 .eq("user_id", user.id)
                 .eq("type", "expense")
-                .gte("date", startOfMonth)
-                .lte("date", endOfMonth);
+                .eq("type", "expense")
+                .gte("date", startOfCurrMonth)
+                .lte("date", endOfCurrMonth);
 
             // 4. Combine Data
             const combinedData: CategoryBudget[] = categories.map(cat => {
@@ -127,56 +131,71 @@ export default function BudgetsPage() {
                 <p className="text-sm text-muted-foreground font-medium">Defina limites de gastos para o mês atual ({currentMonthYear}).</p>
             </div>
 
-            <div className="grid gap-6">
-                {loading ? (
-                    <div className="flex items-center justify-center py-12 bg-card rounded-card border border-border">
-                        <p className="text-muted-foreground font-bold">Carregando...</p>
-                    </div>
-                ) : budgets.length === 0 ? (
-                    <div className="flex items-center justify-center py-12 bg-card rounded-card border border-border font-bold">
-                        <p className="text-muted-foreground">Nenhuma categoria de despesa encontrada.</p>
-                    </div>
-                ) : (
-                    budgets.map((item) => {
-                        const percentage = item.budget > 0 ? (item.spent / item.budget) * 100 : 0;
-                        let progressColor = "bg-success";
-                        if (percentage > 80) progressColor = "bg-yellow-500";
-                        if (percentage > 100) progressColor = "bg-destructive";
+            <Tabs defaultValue="orcamentos" className="w-full mt-6">
+                <TabsList className="w-full grid grid-cols-2 mb-6">
+                    <TabsTrigger value="orcamentos">CONTROLE DE TETOS</TabsTrigger>
+                    <TabsTrigger value="metas">POUPANÇA & EVENTOS</TabsTrigger>
+                </TabsList>
 
-                        return (
-                            <div key={item.categoryId} className="bg-card p-6 rounded-card border border-border shadow-sm hover:shadow-md transition-all">
-                                <div className="flex justify-between items-center mb-6">
-                                    <div>
-                                        <h3 className="font-bold text-lg text-foreground tracking-tight">{item.categoryName}</h3>
-                                        <div className="text-sm text-muted-foreground font-medium">
-                                            Gasto: <span className="font-bold text-foreground">R$ {item.spent.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+                <TabsContent value="orcamentos" className="mt-0">
+                    <div className="grid gap-6">
+                        {loading ? (
+                            <div className="flex items-center justify-center py-12 bg-card rounded-card border border-border">
+                                <p className="text-muted-foreground font-bold">Carregando...</p>
+                            </div>
+                        ) : budgets.length === 0 ? (
+                            <div className="flex items-center justify-center py-12 bg-card rounded-card border border-border font-bold">
+                                <p className="text-muted-foreground">Nenhuma categoria de despesa encontrada.</p>
+                            </div>
+                        ) : (
+                            budgets.map((item) => {
+                                const percentage = item.budget > 0 ? (item.spent / item.budget) * 100 : 0;
+                                let progressColor = "bg-success";
+                                if (percentage > 80) progressColor = "bg-yellow-500";
+                                if (percentage > 100) progressColor = "bg-destructive";
+
+                                return (
+                                    <div key={item.categoryId} className="bg-card p-6 rounded-card border border-border shadow-sm hover:shadow-md transition-all">
+                                        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4 border-b border-border pb-6 relative">
+                                            <div>
+                                                <h3 className="font-black text-[14px] uppercase tracking-widest text-foreground">{item.categoryName}</h3>
+                                                <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mt-1">
+                                                    Já Gasto: <span className="text-foreground">R$ {item.spent.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+                                                </div>
+                                            </div>
+                                            <div className="flex items-center gap-3 w-full md:w-auto">
+                                                <Label htmlFor={`budget-${item.categoryId}`} className="whitespace-nowrap text-[10px] font-black text-muted-foreground uppercase tracking-widest hidden md:block">TETO:</Label>
+                                                <Input
+                                                    id={`budget-${item.categoryId}`}
+                                                    type="number"
+                                                    className="w-full md:w-32 bg-secondary/50 rounded-none border-2 border-border h-10 font-bold"
+                                                    defaultValue={item.budget || ''}
+                                                    onBlur={(e) => handleUpdateBudget(item.categoryId, parseFloat(e.target.value))}
+                                                    placeholder="0.00"
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <div className="space-y-3">
+                                            <div className="flex justify-between text-[10px] font-black text-muted-foreground uppercase tracking-widest">
+                                                <span>{percentage.toFixed(0)}% UTILIZADO DO TETO</span>
+                                                <span>LIMITE: R$ {item.budget.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+                                            </div>
+                                            <Progress value={percentage} className={`h-3 bg-secondary rounded-none border border-border`} indicatorClassName={progressColor} />
                                         </div>
                                     </div>
-                                    <div className="flex items-center gap-3">
-                                        <Label htmlFor={`budget-${item.categoryId}`} className="whitespace-nowrap text-xs font-bold text-muted-foreground uppercase tracking-widest">Meta:</Label>
-                                        <Input
-                                            id={`budget-${item.categoryId}`}
-                                            type="number"
-                                            className="w-32 bg-secondary/50 rounded-xl border-border h-10 font-bold"
-                                            defaultValue={item.budget || ''}
-                                            onBlur={(e) => handleUpdateBudget(item.categoryId, parseFloat(e.target.value))}
-                                            placeholder="0.00"
-                                        />
-                                    </div>
-                                </div>
+                                );
+                            })
+                        )}
+                    </div>
+                </TabsContent>
 
-                                <div className="space-y-3">
-                                    <div className="flex justify-between text-[11px] font-bold text-muted-foreground uppercase tracking-widest">
-                                        <span>{percentage.toFixed(0)}% Utilizado</span>
-                                        <span>Meta: R$ {item.budget.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
-                                    </div>
-                                    <Progress value={percentage} className={`h-2 bg-secondary`} indicatorClassName={progressColor} />
-                                </div>
-                            </div>
-                        );
-                    })
-                )}
-            </div>
+                <TabsContent value="metas" className="mt-0">
+                    <SavingsGoals />
+                </TabsContent>
+            </Tabs>
         </div>
     );
 }
+
+// aria-label

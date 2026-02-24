@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase/client";
 import { useEffect, useState } from "react";
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts";
 
-const COLORS = ["#7367F0", "#F1F1F1"]; // Purple and soft zinc
+const COLORS = ["#00e676", "var(--border)"];
 
 interface EarningsDonutProps {
     currentDate?: Date;
@@ -13,7 +13,7 @@ interface EarningsDonutProps {
 export function EarningsDonut({ currentDate = new Date() }: EarningsDonutProps) {
     const [data, setData] = useState([
         { name: "Receitas", value: 0 },
-        { name: "Despesas", value: 0 },
+        { name: "Despesas", value: 1 }, // Initialize with 1 to avoid empty chart visually if needed, data fetching handles it
     ]);
     const supabase = createClient();
 
@@ -70,8 +70,8 @@ export function EarningsDonut({ currentDate = new Date() }: EarningsDonutProps) 
     const totalIncome = data.find(d => d.name === "Receitas")?.value || 0;
 
     return (
-        <div className="w-full bg-surface dark:bg-[#2C2C2E] rounded-lg p-6 shadow-[0_8px_24px_rgba(0,0,0,0.08)] border-none flex flex-col items-center justify-between transition-all duration-300">
-            <h3 className="text-[15px] font-bold text-slate-800 dark:text-white w-full text-left mb-6">Balanço do Mês</h3>
+        <div className="w-full bg-card rounded-none p-6 shadow-none border border-border flex flex-col items-center justify-between transition-all duration-300">
+            <h3 className="text-xs font-black uppercase tracking-widest text-foreground w-full text-left border-b border-border pb-2 mb-6">Composição</h3>
 
             <div className="h-[240px] w-full relative flex items-center justify-center">
                 <ResponsiveContainer width="100%" height="100%">
@@ -80,26 +80,29 @@ export function EarningsDonut({ currentDate = new Date() }: EarningsDonutProps) 
                             data={data}
                             innerRadius={75}
                             outerRadius={95}
-                            paddingAngle={4}
+                            paddingAngle={2}
                             dataKey="value"
-                            stroke="none"
+                            stroke="var(--card)"
+                            strokeWidth={2}
                             startAngle={90}
                             endAngle={-270}
-                            cornerRadius={8}
+                            cornerRadius={0}
                         >
                             {data.map((entry, index) => (
-                                <Cell key={`cell-${index}`} fill={index === 0 ? 'var(--primary)' : 'var(--accent)'} />
+                                <Cell key={`cell-${index}`} fill={index === 0 ? '#00e676' : 'var(--muted)'} />
                             ))}
                         </Pie>
                         <Tooltip
                             contentStyle={{
-                                borderRadius: '12px',
+                                borderRadius: '0px',
                                 border: "1px solid var(--border)",
-                                boxShadow: "0 10px 15px -3px rgba(0,0,0,0.1)",
+                                boxShadow: "none",
                                 backgroundColor: "var(--card)",
                                 padding: '8px 12px',
-                                fontSize: '12px',
-                                fontWeight: 600
+                                fontSize: '10px',
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.1em',
+                                fontWeight: 900
                             }}
                             itemStyle={{ color: 'var(--foreground)' }}
                             cursor={false}
@@ -117,14 +120,16 @@ export function EarningsDonut({ currentDate = new Date() }: EarningsDonutProps) 
 
             <div className="grid grid-cols-2 gap-6 w-full mt-6 pt-6 border-t border-border">
                 <div className="flex items-center gap-2 justify-center">
-                    <div className="w-2.5 h-2.5 bg-primary rounded-full"></div>
-                    <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest">Receitas</span>
+                    <div className="w-2.5 h-2.5 bg-[#00e676]"></div>
+                    <span className="text-[9px] font-black text-muted-foreground uppercase tracking-[0.2em]">Receitas</span>
                 </div>
                 <div className="flex items-center gap-2 justify-center">
-                    <div className="w-2.5 h-2.5 bg-accent rounded-full"></div>
-                    <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest">Despesas</span>
+                    <div className="w-2.5 h-2.5 bg-muted"></div>
+                    <span className="text-[9px] font-black text-muted-foreground uppercase tracking-[0.2em]">Despesas</span>
                 </div>
             </div>
         </div>
     );
 }
+
+// aria-label

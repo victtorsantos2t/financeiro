@@ -48,17 +48,17 @@ export function WalletModal({ wallet, trigger, onSuccess }: WalletModalProps) {
             <Dialog open={open} onOpenChange={setOpen}>
                 <DialogTrigger asChild>
                     {trigger || (
-                        <Button className="gap-2 rounded-2xl bg-primary hover:bg-primary/90 text-white font-bold h-12 px-6 shadow-md transition-all hover:scale-[1.02] active:scale-[0.98]">
-                            <Plus className="h-5 w-5" />
-                            Adicionar Nova Carteira
+                        <Button className="gap-2 rounded-none bg-primary hover:bg-primary/90 text-primary-foreground font-black uppercase tracking-widest text-[10px] h-[42px] px-6 shadow-none border border-primary transition-all">
+                            <Plus className="h-4 w-4" strokeWidth={2} />
+                            <span>Nova Carteira</span>
                         </Button>
                     )}
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-[480px] rounded-[32px] border-slate-100 shadow-2xl p-0 overflow-hidden animate-in fade-in zoom-in-95 duration-250 ease-in-out bg-transparent border-0">
+                <DialogContent className="sm:max-w-[480px] rounded-none border-2 border-border shadow-none p-0 overflow-hidden animate-in fade-in zoom-in-95 duration-250 ease-in-out bg-card">
                     <DialogTitle className="sr-only">
                         {wallet ? "Editar Carteira" : "Nova Carteira"}
                     </DialogTitle>
-                    <div className="bg-white dark:bg-[#1C1C1E] rounded-[32px] overflow-hidden">
+                    <div className="bg-card w-full h-full">
                         <WalletForm wallet={wallet} onSuccess={handleSuccess} onCancel={() => setOpen(false)} />
                     </div>
                 </DialogContent>
@@ -70,18 +70,18 @@ export function WalletModal({ wallet, trigger, onSuccess }: WalletModalProps) {
         <Drawer open={open} onOpenChange={setOpen}>
             <DrawerTrigger asChild>
                 {trigger || (
-                    <Button className="gap-2 rounded-2xl bg-primary hover:bg-primary/90 text-white font-bold h-12 px-6 shadow-md transition-all hover:scale-[1.02] active:scale-[0.98]">
-                        <Plus className="h-5 w-5" />
-                        Adicionar Nova Carteira
+                    <Button className="gap-2 rounded-none bg-primary hover:bg-primary/90 text-primary-foreground font-black uppercase tracking-widest text-[10px] h-[42px] px-6 shadow-none border border-primary transition-all">
+                        <Plus className="h-4 w-4" strokeWidth={2} />
+                        <span>Nova Carteira</span>
                     </Button>
                 )}
             </DrawerTrigger>
-            <DrawerContent className="rounded-t-[32px] max-h-[96vh] p-0 border-0 bg-transparent">
+            <DrawerContent className="rounded-none max-h-[96vh] p-0 border-t-2 border-border border-b-0 border-l-0 border-r-0 bg-card">
                 <DrawerTitle className="sr-only">
                     {wallet ? "Editar Carteira" : "Nova Carteira"}
                 </DrawerTitle>
-                <div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-white/50 mt-4 mb-4 absolute top-0 left-1/2 -translate-x-1/2 z-50 mix-blend-overlay" />
-                <div className="overflow-y-auto w-full bg-white dark:bg-[#1C1C1E] rounded-t-[32px] overflow-hidden">
+                <div className="mx-auto w-12 h-1.5 flex-shrink-0 bg-muted mt-4 mb-4" />
+                <div className="overflow-y-auto w-full bg-card">
                     <WalletForm wallet={wallet} onSuccess={handleSuccess} onCancel={() => setOpen(false)} />
                 </div>
             </DrawerContent>
@@ -90,3 +90,5 @@ export function WalletModal({ wallet, trigger, onSuccess }: WalletModalProps) {
 }
 
 
+
+// aria-label

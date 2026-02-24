@@ -24,3 +24,5 @@ export function DashboardSidebar() {
         </div>
     );
 }
+
+// aria-label

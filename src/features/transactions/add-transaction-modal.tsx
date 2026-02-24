@@ -52,19 +52,18 @@ export function AddTransactionModal({ children, transaction, open, onOpenChange 
                 <DialogTrigger asChild>
                     {children || (
                         <motion.button whileTap={{ scale: 0.98 }}
-                            className="flex items-center gap-2 rounded-2xl bg-zinc-900 dark:bg-zinc-50 border border-zinc-900 dark:border-zinc-50 hover:bg-zinc-800 dark:hover:bg-zinc-200 text-zinc-50 dark:text-zinc-900 font-bold h-11 px-6 shadow-md transition-all">
-                            <Plus className="h-4 w-4" strokeWidth={2.5} />
-                            <span className="text-[13px] tracking-tight">Nova Transação</span>
+                            className="flex items-center gap-2 rounded-none bg-primary border border-primary hover:bg-primary/90 text-primary-foreground font-black uppercase tracking-widest text-[10px] h-[42px] px-6 transition-all shadow-none">
+                            <Plus className="h-4 w-4" strokeWidth={2} />
+                            <span>Nova Transação</span>
                         </motion.button>
                     )}
                 </DialogTrigger>
-                <DialogContent className="sm:max-w-[540px] p-0 overflow-hidden gap-0 bg-background border border-border shadow-[0_32px_80px_-20px_rgba(0,0,0,0.15)] rounded-[32px] animate-in fade-in zoom-in-95 duration-300">
+                <DialogContent className="sm:max-w-[540px] p-0 overflow-hidden gap-0 bg-card border-2 border-border shadow-none rounded-none animate-in fade-in zoom-in-95 duration-300">
                     <DialogTitle className="sr-only">{title}</DialogTitle>
-                    <div className="p-10 max-h-[90vh] overflow-y-auto custom-scrollbar">
-                        <div className="flex items-center justify-between mb-8">
+                    <div className="p-8 max-h-[90vh] overflow-y-auto custom-scrollbar">
+                        <div className="flex items-center justify-between mb-8 border-b border-border pb-4">
                             <div>
-                                <h2 className="text-xl font-semibold text-foreground tracking-tight">{title}</h2>
-                                <p className="text-[12px] text-muted-foreground font-medium">Registro financeiro de precisão</p>
+                                <h2 className="text-sm font-black uppercase tracking-widest text-foreground">{title}</h2>
                             </div>
                         </div>
                         <TransactionForm
@@ -84,47 +83,39 @@ export function AddTransactionModal({ children, transaction, open, onOpenChange 
             <DrawerTrigger asChild>
                 {children || (
                     <motion.button whileTap={{ scale: 0.96 }}
-                        className="flex items-center gap-2 rounded-2xl bg-foreground text-background font-semibold h-11 px-6 shadow-lg transition-all">
-                        <Plus className="h-4 w-4" strokeWidth={2.5} />
-                        <span className="text-[13px] tracking-tight">Nova Transação</span>
+                        className="flex items-center gap-2 rounded-none bg-primary text-primary-foreground font-black uppercase tracking-widest text-[10px] h-[42px] px-6 border border-primary shadow-none transition-all">
+                        <Plus className="h-4 w-4" strokeWidth={2} />
+                        <span>Nova Transação</span>
                     </motion.button>
                 )}
             </DrawerTrigger>
 
             <DrawerContent
-                className="border-none overflow-hidden flex flex-col bg-[#F2F2F7] dark:bg-[#1C1C1E]"
+                className="border-t-2 border-border border-l-0 border-r-0 border-b-0 overflow-hidden flex flex-col bg-card rounded-none"
                 style={{
                     height: '96vh',
-                    borderTopLeftRadius: 20,
-                    borderTopRightRadius: 20,
                 }}
             >
                 <DrawerTitle className="sr-only">{title}</DrawerTitle>
 
                 {/* ── Handle Pill ───────────────────────────────────────────── */}
                 <div style={{ display: 'flex', justifyContent: 'center', paddingTop: 12, paddingBottom: 4 }}>
-                    <div className="w-9 h-1.5 rounded-full bg-muted/20" />
+                    <div className="w-12 h-1.5 rounded-none bg-muted" />
                 </div>
 
-                {/* ── iOS Navigation Bar ────────────────────────────────────── */}
-                <div className="flex items-center justify-between px-4 py-3 border-b border-border/10 bg-[#F2F2F7] dark:bg-[#1C1C1E]" style={{ paddingTop: 'calc(12px + env(safe-area-inset-top))' }}>
+                {/* ── Navbar Brutalista ────────────────────────────────────── */}
+                <div className="flex items-center justify-between px-6 py-4 border-b border-border bg-card" style={{ paddingTop: 'calc(12px + env(safe-area-inset-top))' }}>
                     {/* Cancelar à esquerda */}
                     <button
                         type="button"
                         onClick={() => handleOpenChange(false)}
-                        style={{
-                            background: 'transparent', border: 'none', cursor: 'pointer',
-                            fontSize: 17, color: 'var(--primary)', fontFamily: iOSFont, fontWeight: 400,
-                            padding: '4px 0',
-                        }}
+                        className="text-[10px] font-black uppercase tracking-widest text-muted-foreground hover:text-foreground"
                     >
                         Cancelar
                     </button>
 
                     {/* Título central */}
-                    <span style={{
-                        fontSize: 17, fontWeight: 600, color: 'var(--foreground)', fontFamily: iOSFont, letterSpacing: '-0.3px',
-                    }}>
+                    <span className="text-xs font-black uppercase tracking-widest text-foreground">
                         {title}
                     </span>
 
@@ -134,7 +125,7 @@ export function AddTransactionModal({ children, transaction, open, onOpenChange 
 
                 {/* ── Conteúdo rolável ──────────────────────────────────────── */}
                 <div
-                    className="flex-1 overflow-y-auto custom-scrollbar px-4 py-5 pb-10 bg-[#F2F2F7] dark:bg-[#1C1C1E]"
+                    className="flex-1 overflow-y-auto custom-scrollbar px-6 py-6 pb-10 bg-card"
                 >
                     <TransactionForm
                         transaction={transaction}
@@ -146,3 +137,5 @@ export function AddTransactionModal({ children, transaction, open, onOpenChange 
         </Drawer>
     );
 }
+
+// aria-label

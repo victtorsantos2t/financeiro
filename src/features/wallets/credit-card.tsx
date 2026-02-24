@@ -87,37 +87,35 @@ export function CreditCard({ wallet, onUpdate }: CreditCardProps) {
 
     return (
         <div
-            className="relative group w-full h-64 rounded-[20px] p-6 flex flex-col justify-between overflow-hidden shadow-[0_4px_24px_rgba(0,0,0,0.06)] transition-all duration-500 hover:shadow-[0_12px_40px_rgba(0,0,0,0.08)] border border-white/20 select-none"
+            className="relative group w-full h-64 rounded-none border-2 p-6 flex flex-col justify-between overflow-hidden shadow-none transition-all duration-300 border-border select-none"
             style={{ background: currentGradient }}
         >
             {/* Investment Badge */}
             {wallet.investment_type && wallet.yield_percentage && (
-                <div className="absolute top-0 right-14 bg-white/20 backdrop-blur-md px-3 py-1 rounded-bl-xl rounded-tr-xl border-l border-b border-white/10 shadow-lg z-20">
-                    <p className="text-[10px] font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
+                <div className="absolute top-0 right-14 bg-white/20 backdrop-blur-md px-3 py-1 rounded-none border-l-2 border-b-2 border-white/10 shadow-none z-20">
+                    <p className="text-[10px] font-black text-white uppercase tracking-widest flex items-center gap-1.5">
                         {wallet.yield_percentage}% do {wallet.yield_benchmark}
-                        <span className="flex h-1.5 w-1.5 relative">
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+                        <span className="flex h-1.5 w-1.5 relative bg-emerald-500 rounded-none border border-emerald-400">
                         </span>
                     </p>
                 </div>
             )}
 
             {/* Mesh gradient effect shadows */}
-            <div className="absolute -right-10 -top-10 w-48 h-48 bg-white/20 rounded-full blur-3xl transition-transform duration-1000 group-hover:scale-150"></div>
-            <div className="absolute left-10 bottom-0 w-32 h-32 bg-white/10 rounded-full blur-2xl"></div>
+            <div className="absolute -right-10 -top-10 w-48 h-48 bg-white/20 rounded-none blur-3xl transition-transform duration-1000 group-hover:scale-150"></div>
+            <div className="absolute left-10 bottom-0 w-32 h-32 bg-white/10 rounded-none blur-2xl"></div>
 
             <div className="flex flex-col h-full relative z-10">
                 {/* Top Section: Number & Logo */}
                 <div className="flex justify-between items-start mb-auto">
-                    <div className="font-mono text-lg tracking-[0.25em] drop-shadow-sm opacity-90" style={{ color: textColor }}>
+                    <div className="font-mono text-sm tracking-widest drop-shadow-sm opacity-90 font-black uppercase" style={{ color: textColor }}>
                         {displayNum}
                     </div>
 
                     <div className="flex flex-col items-end">
-                        <div className="flex -space-x-3 mb-3 opacity-80">
-                            <div className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border border-white/10"></div>
-                            <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md border border-white/20 -translate-x-1"></div>
+                        <div className="flex -space-x-1 mb-3 opacity-80">
+                            <div className="w-10 h-10 rounded-none bg-white/10 backdrop-blur-md border-2 border-white/10"></div>
+                            <div className="w-10 h-10 rounded-none bg-white/20 backdrop-blur-md border-2 border-white/20 -translate-x-3"></div>
                         </div>
                         <CardIcon className={`h-6 w-6 transition-all duration-300 ${iconColor}`} strokeWidth={1.5} />
                     </div>
@@ -125,8 +123,8 @@ export function CreditCard({ wallet, onUpdate }: CreditCardProps) {
 
                 {/* Middle Section: Name & Type */}
                 <div className="mb-4">
-                    <p className="font-semibold text-xl mb-0.5 tracking-tight leading-tight" style={{ color: textColor }}>{wallet.name}</p>
-                    <p className={`text-[10px] font-bold uppercase tracking-[0.15em] opacity-80 ${textColor === 'white' ? 'text-white' : 'text-muted-foreground'}`}>
+                    <p className="font-black text-[16px] uppercase tracking-widest mb-0.5 leading-tight" style={{ color: textColor }}>{wallet.name}</p>
+                    <p className={`text-[10px] font-black uppercase tracking-widest opacity-80 ${textColor === 'white' ? 'text-white' : 'text-muted-foreground'}`}>
                         {wallet.card_type === 'credit' ? 'Crédito' : wallet.card_type === 'debit' ? 'Débito' : wallet.type}
                     </p>
                 </div>
@@ -135,10 +133,10 @@ export function CreditCard({ wallet, onUpdate }: CreditCardProps) {
                 <div className="w-full">
                     <div className="flex items-end justify-between w-full">
                         <div className="flex-1">
-                            <p className={`text-[10px] font-bold uppercase tracking-[0.15em] opacity-80 mb-0.5 ${textColor === 'white' ? 'text-white' : 'text-muted-foreground'}`}>
+                            <p className={`text-[10px] font-black uppercase tracking-widest opacity-80 mb-0.5 ${textColor === 'white' ? 'text-white' : 'text-muted-foreground'}`}>
                                 {wallet.card_type === 'credit' ? 'Fatura Atual' : 'Saldo Atual'}
                             </p>
-                            <p className="font-mono text-lg font-medium tracking-tight" style={{ color: textColor }}>
+                            <p className="font-mono text-xl font-black tracking-widest uppercase" style={{ color: textColor }}>
                                 {wallet.balance.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                             </p>
                         </div>
@@ -153,9 +151,9 @@ export function CreditCard({ wallet, onUpdate }: CreditCardProps) {
                                         type="button"
                                         size="icon"
                                         variant="secondary"
-                                        className={`h-9 w-9 rounded-xl ${textColor === 'white' ? 'bg-white/20 hover:bg-white/40' : 'bg-black/5 hover:bg-black/10'} backdrop-blur-md border-none shadow-sm transition-transform active:scale-95`}
+                                        className={`h-9 w-9 rounded-none ${textColor === 'white' ? 'bg-white/20 hover:bg-white/40' : 'bg-black/5 hover:bg-black/10'} backdrop-blur-md border border-white/20 shadow-none transition-transform active:scale-95`}
                                     >
-                                        <Pencil className={`h-4 w-4 ${textColor === 'white' ? 'text-white' : 'text-foreground'}`} />
+                                        <Pencil className={`h-4 w-4 stroke-[2.5] ${textColor === 'white' ? 'text-white' : 'text-foreground'}`} />
                                     </Button>
                                 }
                             />
@@ -166,21 +164,21 @@ export function CreditCard({ wallet, onUpdate }: CreditCardProps) {
                                         type="button"
                                         size="icon"
                                         variant="secondary"
-                                        className={`h-9 w-9 rounded-xl ${textColor === 'white' ? 'bg-red-500/20 hover:bg-red-500/40 text-red-100' : 'bg-red-500/10 hover:bg-red-500/20 text-red-600'} backdrop-blur-md border-none shadow-sm transition-transform active:scale-95`}
+                                        className={`h-9 w-9 rounded-none ${textColor === 'white' ? 'bg-red-500/20 hover:bg-red-500/40 text-red-100' : 'bg-red-500/10 hover:bg-red-500/20 text-red-600'} backdrop-blur-md border border-red-500/30 shadow-none transition-transform active:scale-95`}
                                     >
-                                        <Trash2 className="h-4 w-4" />
+                                        <Trash2 className="h-4 w-4 stroke-[3]" />
                                     </Button>
                                 </AlertDialogTrigger>
-                                <AlertDialogContent className="rounded-[20px] border-none shadow-2xl">
+                                <AlertDialogContent className="rounded-none border-2 border-border shadow-none bg-card">
                                     <AlertDialogHeader>
-                                        <AlertDialogTitle className="text-xl font-bold tracking-tight">Excluir Carteira</AlertDialogTitle>
-                                        <AlertDialogDescription className="text-muted-foreground">
+                                        <AlertDialogTitle className="text-[12px] font-black uppercase tracking-widest text-foreground">Excluir Carteira</AlertDialogTitle>
+                                        <AlertDialogDescription className="text-muted-foreground text-[10px] font-bold uppercase tracking-widest mt-2">
                                             Tem certeza que deseja excluir "{wallet.name}"? Esta ação é irreversível.
                                         </AlertDialogDescription>
                                     </AlertDialogHeader>
-                                    <AlertDialogFooter className="gap-2 sm:gap-0">
-                                        <AlertDialogCancel className="rounded-2xl border-border hover:bg-secondary">Cancelar</AlertDialogCancel>
-                                        <AlertDialogAction onClick={handleDelete} className="bg-destructive text-white hover:bg-destructive-hover rounded-2xl border-none font-bold">
+                                    <AlertDialogFooter className="gap-2 sm:gap-0 mt-6">
+                                        <AlertDialogCancel className="rounded-none border-2 border-border font-black text-foreground hover:bg-secondary h-[42px] uppercase tracking-widest text-[10px]">Cancelar</AlertDialogCancel>
+                                        <AlertDialogAction onClick={handleDelete} className="rounded-none bg-destructive hover:bg-destructive/90 font-black text-destructive-foreground h-[42px] px-6 uppercase tracking-widest text-[10px] border border-destructive shadow-none">
                                             Excluir
                                         </AlertDialogAction>
                                     </AlertDialogFooter>
@@ -191,19 +189,19 @@ export function CreditCard({ wallet, onUpdate }: CreditCardProps) {
 
                     {monthlyYield && (
                         <div className="flex flex-col mt-3 space-y-1">
-                            <p className="text-[9px] font-bold uppercase tracking-wider opacity-60" style={{ color: textColor }}>Rendimento Estimado</p>
+                            <p className="text-[10px] font-black uppercase tracking-widest opacity-60" style={{ color: textColor }}>Rendimento Estimado</p>
                             <div className="flex items-center gap-4">
                                 <div className="flex flex-col">
-                                    <p className="text-[11px] font-bold flex items-center gap-1" style={{ color: textColor === 'white' ? '#4ade80' : '#16a34a' }}>
+                                    <p className="text-[10px] font-black flex items-center gap-1 uppercase tracking-widest" style={{ color: textColor === 'white' ? '#4ade80' : '#16a34a' }}>
                                         + {(monthlyYield / 30).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
-                                        <span className={`text-[9px] font-medium ${textColor === 'white' ? 'opacity-70 text-white' : 'opacity-60 text-foreground'}`}>/ dia</span>
+                                        <span className={`text-[8px] font-bold tracking-widest ${textColor === 'white' ? 'opacity-70 text-white' : 'opacity-60 text-foreground'}`}>/ dia</span>
                                     </p>
                                 </div>
                                 <div className={`h-3 w-px ${textColor === 'white' ? 'bg-white/20' : 'bg-black/10'}`}></div>
                                 <div className="flex flex-col">
-                                    <p className="text-[11px] font-bold flex items-center gap-1" style={{ color: textColor === 'white' ? '#4ade80' : '#16a34a' }}>
+                                    <p className="text-[10px] font-black flex items-center gap-1 uppercase tracking-widest" style={{ color: textColor === 'white' ? '#4ade80' : '#16a34a' }}>
                                         + {monthlyYield.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
-                                        <span className={`text-[9px] font-medium ${textColor === 'white' ? 'opacity-70 text-white' : 'opacity-60 text-foreground'}`}>/ mês</span>
+                                        <span className={`text-[8px] font-bold tracking-widest ${textColor === 'white' ? 'opacity-70 text-white' : 'opacity-60 text-foreground'}`}>/ mês</span>
                                     </p>
                                 </div>
                             </div>
@@ -227,3 +225,5 @@ export function CreditCard({ wallet, onUpdate }: CreditCardProps) {
     );
 }
 
+
+// aria-label

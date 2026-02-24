@@ -30,3 +30,5 @@ function Progress({
 }
 
 export { Progress }
+
+// aria-label

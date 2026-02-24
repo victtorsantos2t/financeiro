@@ -100,32 +100,32 @@ export function AdvancedFilters({ onFilterChange }: AdvancedFiltersProps) {
             variant="outline"
             size="sm"
             className={cn(
-                "h-9 px-4 rounded-xl border-slate-100 text-slate-500 hover:text-slate-900 transition-all shadow-[0_2px_10px_-4px_rgba(0,0,0,0.04)] bg-white flex items-center gap-2",
-                activeCount > 0 && "border-primary/20 bg-primary/5 text-primary hover:bg-primary/10"
+                "h-[42px] px-4 rounded-none border-2 border-border text-foreground hover:bg-secondary bg-background transition-all shadow-none flex items-center gap-2",
+                activeCount > 0 && "border-primary bg-primary text-primary-foreground hover:bg-primary/90"
             )}
         >
-            <Filter className="h-3.5 w-3.5" />
-            <span className="text-[11px] font-semibold tracking-wide">Filtros</span>
+            <Filter className={cn("h-4 w-4 stroke-[3]", activeCount > 0 ? "text-primary-foreground" : "text-foreground")} />
+            <span className="text-[10px] font-black uppercase tracking-widest">Filtros</span>
             {activeCount > 0 && (
-                <span className="flex items-center justify-center bg-primary text-white text-[9px] font-bold h-4 w-4 rounded-full ml-0.5 animate-in zoom-in-50 duration-300">
+                <span className="flex items-center justify-center bg-background text-primary text-[10px] font-black h-5 w-5 rounded-none border-2 border-border ml-1 animate-in zoom-in-50 duration-300">
                     {activeCount}
                 </span>
             )}
-            <ChevronDown className={cn("h-3 w-3 opacity-40 transition-transform duration-300", open && "rotate-180")} />
+            <ChevronDown className={cn("h-4 w-4 transition-transform duration-300 stroke-[3]", open && "rotate-180")} />
         </Button>
     );
 
     const Content = (
-        <div className="flex flex-col h-full max-h-[80vh]">
-            <div className="p-6 border-b border-slate-50 flex items-center justify-between">
+        <div className="flex flex-col h-full max-h-[80vh] bg-card text-foreground">
+            <div className="p-6 border-b border-border flex items-center justify-between">
                 <div>
-                    <h4 className="font-semibold text-slate-900">Filtrar Transações</h4>
-                    <p className="text-[10px] text-slate-400 font-medium tracking-wide uppercase mt-0.5">Ajuste sua visualização</p>
+                    <h4 className="text-[10px] font-black uppercase tracking-widest text-foreground">Filtrar Transações</h4>
+                    <p className="text-[8px] text-muted-foreground font-bold tracking-widest uppercase mt-0.5">Ajuste sua visualização</p>
                 </div>
                 {activeCount > 0 && (
                     <button
                         onClick={clearFilters}
-                        className="text-[10px] font-bold text-primary hover:text-primary-dark transition-colors uppercase tracking-widest"
+                        className="text-[10px] font-black text-muted-foreground hover:text-foreground border border-transparent hover:border-border px-2 py-1 transition-all uppercase tracking-widest"
                     >
                         Limpar
                     </button>
@@ -135,7 +135,7 @@ export function AdvancedFilters({ onFilterChange }: AdvancedFiltersProps) {
             <div className="flex-1 overflow-y-auto px-2 py-4 space-y-8 custom-scrollbar">
                 {/* Wallets */}
                 <div className="px-4">
-                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+                    <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-4 flex items-center gap-2">
                         Carteiras
                     </p>
                     <div className="flex flex-wrap gap-2">
@@ -144,10 +144,10 @@ export function AdvancedFilters({ onFilterChange }: AdvancedFiltersProps) {
                                 key={w.id}
                                 onClick={() => toggleFilter('wallets', w.id)}
                                 className={cn(
-                                    "px-4 py-2 rounded-xl text-[11px] font-semibold border transition-all duration-300",
+                                    "px-4 py-2 rounded-none text-[10px] font-black uppercase tracking-widest border-2 transition-all duration-300",
                                     filters.wallets.includes(w.id)
-                                        ? "bg-slate-900 border-slate-900 text-white shadow-md shadow-slate-200"
-                                        : "bg-white border-slate-100 text-slate-500 hover:border-slate-300 hover:bg-slate-50"
+                                        ? "bg-primary border-primary text-primary-foreground shadow-none"
+                                        : "bg-transparent border-border text-foreground hover:border-primary/50"
                                 )}
                             >
                                 {w.name}
@@ -158,7 +158,7 @@ export function AdvancedFilters({ onFilterChange }: AdvancedFiltersProps) {
 
                 {/* Categories */}
                 <div className="px-4">
-                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+                    <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-4 flex items-center gap-2">
                         Categorias
                     </p>
                     <div className="flex flex-wrap gap-2">
@@ -167,10 +167,10 @@ export function AdvancedFilters({ onFilterChange }: AdvancedFiltersProps) {
                                 key={c.id}
                                 onClick={() => toggleFilter('categories', c.id)}
                                 className={cn(
-                                    "px-4 py-2 rounded-xl text-[11px] font-semibold border transition-all duration-300",
+                                    "px-4 py-2 rounded-none text-[10px] font-black uppercase tracking-widest border-2 transition-all duration-300",
                                     filters.categories.includes(c.id)
-                                        ? "bg-primary border-primary text-white shadow-md shadow-primary/20"
-                                        : "bg-white border-slate-100 text-slate-500 hover:border-slate-300 hover:bg-slate-50"
+                                        ? "bg-primary border-primary text-primary-foreground shadow-none"
+                                        : "bg-transparent border-border text-foreground hover:border-primary/50"
                                 )}
                             >
                                 {c.name}
@@ -181,7 +181,7 @@ export function AdvancedFilters({ onFilterChange }: AdvancedFiltersProps) {
 
                 {/* Status */}
                 <div className="px-4">
-                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+                    <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-4 flex items-center gap-2">
                         Status
                     </p>
                     <div className="flex flex-wrap gap-2">
@@ -193,13 +193,13 @@ export function AdvancedFilters({ onFilterChange }: AdvancedFiltersProps) {
                                 key={s.id}
                                 onClick={() => toggleFilter('status', s.id)}
                                 className={cn(
-                                    "px-4 py-2 rounded-xl text-[11px] font-semibold border transition-all duration-300 flex items-center gap-2",
+                                    "px-4 py-2 rounded-none text-[10px] font-black uppercase tracking-widest border-2 transition-all duration-300 flex items-center gap-2",
                                     filters.status.includes(s.id)
-                                        ? "bg-brand-primary border-primary text-white"
-                                        : "bg-white border-slate-100 text-slate-500 hover:border-slate-300 hover:bg-slate-50"
+                                        ? "bg-primary border-primary text-primary-foreground shadow-none"
+                                        : "bg-transparent border-border text-foreground hover:border-primary/50"
                                 )}
                             >
-                                <s.icon className="h-3 w-3" />
+                                <s.icon className="h-3 w-3 stroke-[3]" />
                                 {s.label}
                             </button>
                         ))}
@@ -207,10 +207,10 @@ export function AdvancedFilters({ onFilterChange }: AdvancedFiltersProps) {
                 </div>
             </div>
 
-            <div className="p-6 bg-slate-50/50 mt-auto border-t border-slate-100">
+            <div className="p-6 bg-card mt-auto border-t border-border">
                 <Button
                     onClick={() => setOpen(false)}
-                    className="w-full rounded-2xl bg-slate-900 hover:bg-slate-800 text-white font-semibold h-12 shadow-lg shadow-slate-200"
+                    className="w-full rounded-none bg-primary hover:bg-primary/90 text-primary-foreground font-black uppercase tracking-widest text-[10px] h-[42px] shadow-none border border-primary transition-all"
                 >
                     Aplicar Filtros
                 </Button>
@@ -224,7 +224,7 @@ export function AdvancedFilters({ onFilterChange }: AdvancedFiltersProps) {
                 <PopoverTrigger asChild>
                     {Trigger}
                 </PopoverTrigger>
-                <PopoverContent className="w-[360px] p-0 rounded-3xl border-slate-100 shadow-2xl" align="end">
+                <PopoverContent className="w-[360px] p-0 rounded-none border-2 border-border shadow-none bg-card" align="end">
                     {Content}
                 </PopoverContent>
             </Popover>
@@ -236,7 +236,7 @@ export function AdvancedFilters({ onFilterChange }: AdvancedFiltersProps) {
             <DrawerTrigger asChild>
                 {Trigger}
             </DrawerTrigger>
-            <DrawerContent className="rounded-t-3xl border-none">
+            <DrawerContent className="rounded-none border-t-2 border-border bg-card">
                 <DrawerHeader className="sr-only">
                     <DrawerTitle>Filtros Avançados</DrawerTitle>
                 </DrawerHeader>
@@ -245,3 +245,5 @@ export function AdvancedFilters({ onFilterChange }: AdvancedFiltersProps) {
         </Drawer>
     );
 }
+
+// aria-label

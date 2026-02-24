@@ -13,6 +13,12 @@ export function Wallet() {
     const [income, setIncome] = useState(0);
     const [expense, setExpense] = useState(0);
     const [dailyExpenses, setDailyExpenses] = useState(0);
+
+    // Trend states
+    const [totalTrend, setTotalTrend] = useState(0);
+    const [incomeTrend, setIncomeTrend] = useState(0);
+    const [expenseTrend, setExpenseTrend] = useState(0);
+
     const [loading, setLoading] = useState(true);
     const { refreshTrigger, currentDate } = useDashboard();
     const supabase = createClient();
@@ -60,25 +66,52 @@ export function Wallet() {
             let exp = 0;
             let dayExp = 0;
 
+            let lastMonthInc = 0;
+            let lastMonthExp = 0;
+
+            const prevMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+            const prevYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+
             transactions?.forEach(t => {
                 const tDateStr = t.date.split('T')[0];
                 const [tYear, tMonth] = tDateStr.split('-').map(Number);
+                const isCompleted = t.status === 'completed';
 
-                // Monthly stats
-                if ((tMonth - 1) === currentMonth && tYear === currentYear && t.status === 'completed') {
-                    if (t.type === 'income') inc += t.amount;
-                    if (t.type === 'expense') exp += t.amount;
-                }
+                if (isCompleted) {
+                    // Current Month stats
+                    if ((tMonth - 1) === currentMonth && tYear === currentYear) {
+                        if (t.type === 'income') inc += t.amount;
+                        if (t.type === 'expense') exp += t.amount;
+                    }
 
-                // Daily expenses
-                if (tDateStr === todayStr && t.type === 'expense' && t.status === 'completed') {
-                    dayExp += t.amount;
+                    // Last Month stats
+                    if ((tMonth - 1) === prevMonth && tYear === prevYear) {
+                        if (t.type === 'income') lastMonthInc += t.amount;
+                        if (t.type === 'expense') lastMonthExp += t.amount;
+                    }
+
+                    // Daily expenses
+                    if (tDateStr === todayStr && t.type === 'expense') {
+                        dayExp += t.amount;
+                    }
                 }
             });
 
             setIncome(inc);
             setExpense(exp);
             setDailyExpenses(dayExp);
+
+            // Calculate Real Trends
+            const incTrendVal = lastMonthInc > 0 ? ((inc - lastMonthInc) / lastMonthInc) * 100 : (inc > 0 ? 100 : 0);
+            const expTrendVal = lastMonthExp > 0 ? ((exp - lastMonthExp) / lastMonthExp) * 100 : (exp > 0 ? 100 : 0);
+
+            const lastMonthNetWorth = total - (inc - exp);
+            const netTrendVal = lastMonthNetWorth !== 0 && lastMonthNetWorth > 0 ? ((inc - exp) / lastMonthNetWorth) * 100 : 0;
+
+            setIncomeTrend(incTrendVal);
+            setExpenseTrend(expTrendVal);
+            setTotalTrend(netTrendVal);
+
         } catch (error) {
             console.error("Erro ao carregar dados da carteira:", error);
         } finally {
@@ -86,71 +119,81 @@ export function Wallet() {
         }
     };
 
-    // Simulated Trend Data for Premium UX (In a real scenario, this would compare current month vs last month)
-    const totalTrend = 0.5;
-    const incomeTrend = 12.5;
-    const expenseTrend = -4.2;
+    // Removed simulated trends
 
     return (
-        <div className="w-full bg-primary rounded-[20px] p-6 lg:p-8 shadow-[0_8px_24px_rgba(0,0,0,0.08)] relative flex flex-col gap-6 overflow-hidden border-none text-primary-foreground">
-            {/* Decorative background gradients for depth */}
-            <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-white/10 to-transparent pointer-events-none rounded-r-[20px]" />
-            <div className="absolute -top-12 -right-12 w-48 h-48 bg-white/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="w-full bg-primary border bg-card text-card-foreground rounded-none p-6 lg:p-8 shadow-none relative flex flex-col gap-6 overflow-hidden transition-all group">
 
             {/* Linha 1: Resumo Financeiro */}
             <div className="flex flex-col z-10 w-full mb-1">
-                <h2 className="text-primary-foreground/90 font-bold text-[15px] mb-2">Resumo Financeiro</h2>
+                <h2 className="text-primary-foreground/70 dark:text-muted-foreground font-bold text-xs tracking-widest uppercase mb-3">Patrimônio Líquido</h2>
                 <div className="flex items-center gap-3">
-                    <span className="text-4xl sm:text-5xl font-extrabold tracking-tight">
+                    <span className="text-4xl sm:text-6xl font-black tracking-tighter text-primary-foreground">
                         {loading ? <Skeleton className="h-10 w-40 bg-white/20" /> : `R$ ${totalBalance.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`}
                     </span>
                 </div>
-                <div className="flex items-center gap-2 mt-3">
-                    <div className="flex items-center gap-1 py-1 px-2.5 bg-white/20 rounded-full shrink-0">
-                        <TrendingUp size={12} className="text-white" />
-                        <span className="text-[10px] font-bold text-white">+{totalTrend}%</span>
+                <div className="flex items-center gap-2 mt-4">
+                    <div className={cn(
+                        "flex items-center justify-center px-2 py-0.5 font-bold text-[11px] rounded-none shrink-0 uppercase tracking-widest",
+                        totalTrend >= 0 ? "bg-accent text-accent-foreground" : "bg-destructive text-destructive-foreground"
+                    )}>
+                        {totalTrend > 0 ? '+' : ''}{totalTrend.toFixed(1)}% {totalTrend >= 0 ? <TrendingUp size={11} className="ml-1" /> : <TrendingDown size={11} className="ml-1" />}
                     </div>
-                    <span className="text-primary-foreground/70 text-[12px] font-medium">Mês Anterior</span>
+                    <span className="text-primary-foreground/50 text-xs font-medium uppercase tracking-wider">vs Mês Anterior</span>
                 </div>
             </div>
 
-            {/* Linha 2: Duas colunas para Receitas e Despesas */}
-            <div className="w-full grid grid-cols-2 gap-4 z-10 mt-1">
+            {/* Linha 2: Duas colunas - Sharp borders */}
+            <div className="w-full grid grid-cols-2 gap-[1px] bg-border/[0.08] p-[1px] mt-2">
                 {/* Metric: Income */}
-                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 sm:p-5 flex flex-col justify-center transition-all duration-300 hover:bg-white/15">
-                    <span className="text-primary-foreground/70 text-[11px] font-semibold uppercase tracking-wider mb-1">Receitas</span>
-                    <span className="text-xl sm:text-2xl font-bold tracking-tight mb-1">
+                <div className="bg-primary/95 p-5 flex flex-col justify-center transition-all duration-300">
+                    <span className="text-primary-foreground/50 text-[10px] font-black uppercase tracking-[0.1em] mb-2">Entradas Realizadas</span>
+                    <span className="text-2xl sm:text-3xl font-black tracking-tight text-primary-foreground mb-1">
                         {loading ? <Skeleton className="h-6 w-20 bg-white/20" /> : `R$ ${income.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`}
                     </span>
                     {!loading && (
-                        <span className="text-emerald-400 text-[11px] font-bold">+{incomeTrend}%</span>
+                        <span className={cn(
+                            "text-[11px] font-bold",
+                            incomeTrend >= 0 ? "text-accent" : "text-rose-500"
+                        )}>
+                            {incomeTrend > 0 ? '↑' : '↓'} {Math.abs(incomeTrend).toFixed(1)}%
+                        </span>
                     )}
                 </div>
 
                 {/* Metric: Expense */}
-                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 sm:p-5 flex flex-col justify-center transition-all duration-300 hover:bg-white/15">
-                    <span className="text-primary-foreground/70 text-[11px] font-semibold uppercase tracking-wider mb-1">Despesas</span>
-                    <span className="text-xl sm:text-2xl font-bold tracking-tight mb-1">
+                <div className="bg-primary/95 p-5 flex flex-col justify-center transition-all duration-300">
+                    <span className="text-primary-foreground/50 text-[10px] font-black uppercase tracking-[0.1em] mb-2">Saídas Registradas</span>
+                    <span className="text-2xl sm:text-3xl font-black tracking-tight text-primary-foreground mb-1">
                         {loading ? <Skeleton className="h-6 w-20 bg-white/20" /> : `R$ ${expense.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`}
                     </span>
                     {!loading && (
-                        <span className="text-rose-400 text-[11px] font-bold">{expenseTrend}%</span>
+                        <span className={cn(
+                            "text-[11px] font-bold",
+                            expenseTrend > 0 ? "text-rose-500" : "text-accent" // More expense is bad (red), less is good (green)
+                        )}>
+                            {expenseTrend > 0 ? '↑' : '↓'} {Math.abs(expenseTrend).toFixed(1)}%
+                        </span>
                     )}
                 </div>
             </div>
 
             {/* Linha 3: Gasto do Dia */}
-            <div className="w-full z-10 mt-1">
-                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 sm:p-5 flex items-center justify-between transition-all duration-300 hover:bg-white/15">
+            <div className="w-full z-10 mt-2">
+                <div className="bg-transparent border border-primary-foreground/10 p-4 sm:p-5 flex items-center justify-between transition-all duration-300 hover:border-primary-foreground/30">
                     <div className="flex flex-col">
-                        <span className="text-primary-foreground/70 text-[11px] font-semibold uppercase tracking-wider mb-1">Gasto do Dia</span>
-                        <span className="text-xl sm:text-2xl font-bold tracking-tight">
+                        <span className="text-primary-foreground/50 text-[10px] font-black uppercase tracking-[0.1em] mb-1">Consumo do Dia</span>
+                        <span className="text-xl sm:text-2xl font-black tracking-tight text-primary-foreground">
                             {loading ? <Skeleton className="h-6 w-20 bg-white/20" /> : `R$ ${dailyExpenses.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`}
                         </span>
                     </div>
-                    <span className="text-primary-foreground/60 text-[11px] font-medium bg-white/10 px-3 py-1.5 rounded-full">Hoje</span>
+                    <span className="text-primary-foreground text-[10px] font-bold border border-primary-foreground/20 px-3 py-1 uppercase tracking-widest">
+                        HOJE
+                    </span>
                 </div>
             </div>
         </div>
     );
 }
+
+// aria-label

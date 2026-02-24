@@ -77,7 +77,7 @@ export function RecommendationEngine() {
 
     if (loading) return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[1, 2, 3].map(i => <Skeleton key={i} className="h-[200px] w-full rounded-[32px]" />)}
+            {[1, 2, 3].map(i => <Skeleton key={i} className="h-[200px] w-full rounded-none border-2 border-border bg-muted shadow-none" />)}
         </div>
     );
 
@@ -85,12 +85,12 @@ export function RecommendationEngine() {
 
     return (
         <div className="space-y-6">
-            <div className="flex items-center gap-3 mb-2">
-                <div className="p-2 bg-amber-500/10 text-amber-500 rounded-xl">
-                    <Lightbulb className="h-5 w-5" />
+            <div className="flex items-center gap-3 mb-2 border-b-2 border-border pb-4">
+                <div className="p-3 bg-foreground text-background border-2 border-transparent">
+                    <Lightbulb className="h-5 w-5 stroke-[2.5]" />
                 </div>
                 <div>
-                    <h3 className="text-xl font-bold text-foreground tracking-tight">Estratégias Recomendadas</h3>
+                    <h3 className="text-[12px] font-black uppercase tracking-widest text-foreground">Estratégias Recomendadas</h3>
                     <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest">Ações baseadas em seu padrão de consumo</p>
                 </div>
             </div>
@@ -105,35 +105,35 @@ export function RecommendationEngine() {
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: index * 0.1 }}
-                                className="group bg-card dark:bg-white/5 p-6 rounded-[32px] border border-border shadow-sm hover:shadow-xl hover:scale-[1.02] transition-all duration-500 flex flex-col h-full"
+                                className="group bg-card p-6 rounded-none border-2 border-border shadow-none hover:border-primary/50 transition-all duration-300 flex flex-col h-full"
                             >
                                 <div className="flex items-start justify-between mb-4">
                                     <div className={cn(
-                                        "p-4 rounded-2xl",
-                                        rec.impact === 'high' ? 'bg-orange-500/10 text-orange-500' : 'bg-primary/10 text-primary'
+                                        "p-4 rounded-none border-2",
+                                        rec.impact === 'high' ? 'bg-orange-500/10 text-orange-500 border-orange-500/30' : 'bg-primary/10 text-primary border-primary/30'
                                     )}>
-                                        <Icon className="h-6 w-6" />
+                                        <Icon className="h-6 w-6 stroke-[2.5]" />
                                     </div>
                                     {rec.impact === 'high' && (
-                                        <div className="flex items-center gap-1.5 px-3 py-1 bg-destructive/10 text-destructive rounded-full">
-                                            <Flame className="h-3 w-3" />
-                                            <span className="text-[10px] font-black uppercase tracking-wider">Alto Impacto</span>
+                                        <div className="flex items-center gap-1.5 px-3 py-1 bg-destructive/10 text-destructive border-2 border-destructive/30 rounded-none">
+                                            <Flame className="h-3 w-3 stroke-[3]" />
+                                            <span className="text-[8px] font-black uppercase tracking-widest">Alto Impacto</span>
                                         </div>
                                     )}
                                 </div>
 
-                                <h4 className="text-lg font-bold text-foreground tracking-tight mb-2 group-hover:text-primary transition-colors">
+                                <h4 className="text-[12px] font-black uppercase tracking-widest text-foreground mb-2 group-hover:text-primary transition-colors">
                                     {rec.title}
                                 </h4>
-                                <p className="text-sm text-muted-foreground font-medium leading-relaxed mb-6 flex-1">
+                                <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest leading-relaxed mb-6 flex-1">
                                     {rec.description}
                                 </p>
 
                                 <Button
-                                    className="w-full h-12 rounded-2xl bg-slate-900 hover:bg-black text-white font-bold text-xs gap-2 group/btn transition-all active:scale-95"
+                                    className="w-full h-[42px] rounded-none bg-foreground hover:bg-foreground/90 text-background font-black text-[10px] uppercase tracking-widest gap-2 group/btn transition-all active:scale-95 border-2 border-foreground shadow-none"
                                 >
                                     {rec.actionLabel}
-                                    <ArrowRight className="h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
+                                    <ArrowRight className="h-4 w-4 stroke-[3] group-hover/btn:translate-x-1 transition-transform" />
                                 </Button>
                             </motion.div>
                         );
@@ -143,3 +143,5 @@ export function RecommendationEngine() {
         </div>
     );
 }
+
+// aria-label

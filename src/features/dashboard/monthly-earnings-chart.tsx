@@ -88,24 +88,31 @@ export function MonthlyEarningsChart({ currentDate = new Date() }: MonthlyEarnin
         if (active && payload && payload.length) {
             const income = payload.find((p: any) => p.dataKey === "income")?.value || 0;
             const expense = payload.find((p: any) => p.dataKey === "expense")?.value || 0;
+            const balance = income - expense;
 
             return (
-                <div className="relative mb-4">
-                    <div className="bg-primary text-white p-4 px-6 rounded-2xl shadow-xl animate-in zoom-in-95 duration-200 min-w-[180px]">
-                        <p className="text-[10px] font-bold uppercase tracking-wider opacity-80 mb-2 border-b border-white/10 pb-1.5">Visão Mensal — {label}</p>
+                <div className="relative mb-4 z-50">
+                    <div className="bg-card border border-border text-foreground p-4 px-6 rounded-none shadow-none animate-in zoom-in-95 duration-200 min-w-[200px]">
+                        <p className="text-[9px] font-black uppercase tracking-[0.2em] text-muted-foreground mb-2 border-b border-border pb-1.5">Visão Mensal — {label}</p>
                         <div className="space-y-1.5">
                             <div className="flex justify-between items-center gap-4">
-                                <span className="text-[11px] font-medium opacity-90">Receitas:</span>
-                                <span className="text-[14px] font-black">R$ {income.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+                                <span className="text-[10px] font-bold uppercase tracking-widest">Receitas:</span>
+                                <span className="text-[14px] font-black text-[#00e676]">R$ {income.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
                             </div>
                             <div className="flex justify-between items-center gap-4">
-                                <span className="text-[11px] font-medium opacity-90">Despesas:</span>
-                                <span className="text-[14px] font-black">R$ {expense.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+                                <span className="text-[10px] font-bold uppercase tracking-widest">Despesas:</span>
+                                <span className="text-[14px] font-black text-destructive">R$ {expense.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</span>
+                            </div>
+                            <div className="flex justify-between items-center gap-4 pt-1.5 mt-1.5 border-t border-border border-dashed">
+                                <span className="text-[10px] font-bold uppercase tracking-widest text-primary">Saldo Mês:</span>
+                                <span className={`text-[14px] font-black ${balance >= 0 ? "text-[#00e676]" : "text-destructive"}`}>
+                                    R$ {balance.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
+                                </span>
                             </div>
                         </div>
                     </div>
-                    {/* Triângulo do balão */}
-                    <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-primary rotate-45" />
+                    {/* Triângulo do balão - Brutalist */}
+                    <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-card border-b border-r border-border rotate-45" />
                 </div>
             );
         }
@@ -113,23 +120,23 @@ export function MonthlyEarningsChart({ currentDate = new Date() }: MonthlyEarnin
     };
 
     return (
-        <div className="w-full bg-surface dark:bg-zinc-900/50 rounded-lg p-6 shadow-[0_8px_24px_rgba(0,0,0,0.08)] border-none hover:shadow-md transition-all duration-300">
-            <div className="mb-8 flex justify-between items-start">
+        <div className="w-full bg-card rounded-none p-6 shadow-none border border-border transition-all duration-300">
+            <div className="mb-8 flex justify-between items-start border-b border-border pb-4">
                 <div>
-                    <h3 className="text-xl font-bold text-foreground tracking-tight mb-2">Fluxo de Caixa Mensal</h3>
-                    <div className="flex items-center gap-6 text-[11px] font-bold">
-                        <div className="flex items-center gap-2 text-[#7367F0]">
-                            <span className="w-3 h-3 rounded-full bg-[#7367F0] shadow-sm shadow-[#7367F0]/40"></span>
+                    <h3 className="text-[13px] font-black uppercase tracking-[0.1em] text-foreground mb-2">Fluxo de Caixa Mensal</h3>
+                    <div className="flex items-center gap-6 text-[9px] font-black uppercase tracking-widest">
+                        <div className="flex items-center gap-2 text-[#00e676]">
+                            <span className="w-2 h-2 bg-[#00e676]"></span>
                             Receitas
                         </div>
-                        <div className="flex items-center gap-2 text-[#00CFE8]">
-                            <span className="w-3 h-3 rounded-full bg-[#00CFE8] shadow-sm shadow-[#00CFE8]/40"></span>
+                        <div className="flex items-center gap-2 text-destructive">
+                            <span className="w-2 h-2 bg-destructive"></span>
                             Despesas
                         </div>
                     </div>
                 </div>
                 <div className="flex gap-2">
-                    <div className="px-4 py-1.5 rounded-xl bg-secondary/50 text-muted-foreground text-[10px] font-bold uppercase tracking-widest border border-border/50">
+                    <div className="px-4 py-1.5 bg-secondary/50 text-muted-foreground text-[9px] font-black uppercase tracking-widest border border-border">
                         Histórico {currentDate.getFullYear()}
                     </div>
                 </div>
@@ -137,18 +144,18 @@ export function MonthlyEarningsChart({ currentDate = new Date() }: MonthlyEarnin
 
             <div className="h-[300px] w-full mt-4">
                 {data.length === 0 ? (
-                    <Skeleton className="w-full h-full rounded-[32px]" />
+                    <Skeleton className="w-full h-full rounded-none" />
                 ) : (
                     <ResponsiveContainer width="100%" height="100%">
                         <AreaChart data={data} margin={{ top: 40, right: 0, left: -20, bottom: 0 }}>
                             <defs>
                                 <linearGradient id="colorIncome" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="5%" stopColor="#7367F0" stopOpacity={0.15} />
-                                    <stop offset="95%" stopColor="#7367F0" stopOpacity={0} />
+                                    <stop offset="5%" stopColor="#00e676" stopOpacity={0.15} />
+                                    <stop offset="95%" stopColor="#00e676" stopOpacity={0} />
                                 </linearGradient>
                                 <linearGradient id="colorExpense" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="5%" stopColor="#00CFE8" stopOpacity={0.15} />
-                                    <stop offset="95%" stopColor="#00CFE8" stopOpacity={0} />
+                                    <stop offset="5%" stopColor="#ef4444" stopOpacity={0.15} />
+                                    <stop offset="95%" stopColor="#ef4444" stopOpacity={0} />
                                 </linearGradient>
                             </defs>
                             <CartesianGrid
@@ -161,45 +168,46 @@ export function MonthlyEarningsChart({ currentDate = new Date() }: MonthlyEarnin
                             <XAxis
                                 dataKey="name"
                                 stroke="var(--muted-foreground)"
-                                fontSize={11}
+                                fontSize={10}
                                 tickLine={false}
                                 axisLine={false}
                                 dy={15}
-                                tick={{ fill: 'var(--muted-foreground)', fontWeight: 600 }}
+                                tickFormatter={(value) => value.toUpperCase()}
+                                tick={{ fill: 'var(--muted-foreground)', fontWeight: 900 }}
                             />
                             <Tooltip
                                 content={<CustomTooltip />}
-                                cursor={{ stroke: '#7367F0', strokeWidth: 2, strokeDasharray: '5 5' }}
+                                cursor={{ stroke: 'var(--border)', strokeWidth: 2, strokeDasharray: '5 5' }}
                                 offset={-40}
                             />
                             <Area
                                 type="monotone"
                                 dataKey="income"
-                                stroke="#7367F0"
-                                strokeWidth={4}
+                                stroke="#00e676"
+                                strokeWidth={2}
                                 fillOpacity={1}
                                 fill="url(#colorIncome)"
                                 activeDot={{
                                     r: 6,
-                                    fill: "white",
-                                    stroke: "#7367F0",
-                                    strokeWidth: 3,
-                                    className: "shadow-xl"
+                                    fill: "var(--background)",
+                                    stroke: "#00e676",
+                                    strokeWidth: 2,
+                                    className: "shadow-none"
                                 }}
                                 animationDuration={1500}
                             />
                             <Area
                                 type="monotone"
                                 dataKey="expense"
-                                stroke="#00CFE8"
-                                strokeWidth={3}
+                                stroke="#ef4444"
+                                strokeWidth={2}
                                 strokeDasharray="5 5"
                                 fillOpacity={1}
                                 fill="url(#colorExpense)"
                                 activeDot={{
                                     r: 5,
-                                    fill: "white",
-                                    stroke: "#00CFE8",
+                                    fill: "var(--background)",
+                                    stroke: "#ef4444",
                                     strokeWidth: 2,
                                 }}
                                 animationDuration={2000}
@@ -211,3 +219,5 @@ export function MonthlyEarningsChart({ currentDate = new Date() }: MonthlyEarnin
         </div>
     );
 }
+
+// aria-label

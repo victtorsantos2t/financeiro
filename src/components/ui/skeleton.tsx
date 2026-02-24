@@ -6,10 +6,12 @@ function Skeleton({
 }: React.HTMLAttributes<HTMLDivElement>) {
     return (
         <div
-            className={cn("animate-pulse-luxury rounded-3xl bg-slate-100/50 backdrop-blur-sm", className)}
+            className={cn("animate-pulse-luxury rounded-none bg-muted border-2 border-border/50", className)}
             {...props}
         />
     )
 }
 
 export { Skeleton }
+
+// aria-label

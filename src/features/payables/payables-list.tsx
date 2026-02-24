@@ -67,23 +67,23 @@ export function PayablesList({ variant = "card" }: PayablesListProps) {
     const content = (
         <div className="space-y-4">
             {loading ? (
-                <div className="space-y-4 animate-pulse">
-                    <div className="h-14 w-full bg-secondary rounded-xl"></div>
-                    <div className="h-14 w-full bg-secondary rounded-xl"></div>
+                <div className="space-y-4 animate-pulse pt-2">
+                    <div className="h-[42px] w-full bg-muted rounded-none"></div>
+                    <div className="h-[42px] w-full bg-muted rounded-none"></div>
                 </div>
             ) : payables.length === 0 ? (
                 <p className="text-[10px] font-bold text-muted-foreground text-center py-6 italic uppercase tracking-[0.2em]">Sem pendências.</p>
             ) : (
                 payables.map((item) => (
                     <div key={item.id} className="flex items-center gap-3 group cursor-pointer active:scale-[0.98] transition-all">
-                        <div className="w-9 h-9 rounded-xl bg-secondary flex items-center justify-center border border-border shrink-0">
-                            <FileText className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                        <div className="w-[42px] h-[42px] rounded-none bg-background flex items-center justify-center border-2 border-border shrink-0 text-muted-foreground group-hover:border-primary group-hover:text-primary transition-colors">
+                            <FileText className="h-5 w-5 stroke-[2.5]" />
                         </div>
                         <div className="min-w-0 flex-1">
-                            <p className="font-bold text-[14px] text-foreground leading-tight mb-0.5 truncate">
+                            <p className="font-black text-[12px] uppercase tracking-widest text-foreground leading-tight mb-0.5 truncate">
                                 R$ {item.amount.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
                             </p>
-                            <p className="text-[11px] font-medium text-muted-foreground truncate">{item.description}</p>
+                            <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground truncate">{item.description}</p>
                         </div>
                     </div>
                 ))
@@ -96,10 +96,10 @@ export function PayablesList({ variant = "card" }: PayablesListProps) {
     }
 
     return (
-        <div className="w-full bg-card rounded-card p-6 shadow-sm border border-border transition-all duration-300">
-            <div className="flex justify-between items-center mb-6">
-                <h3 className="text-lg font-bold text-foreground tracking-tight">Pendentes</h3>
-                <Link href="/payables" className="text-[10px] font-bold text-primary hover:text-primary-hover uppercase tracking-widest transition-colors">
+        <div className="w-full bg-card p-6 border-2 border-border transition-all duration-300 rounded-none shadow-none">
+            <div className="flex justify-between items-center mb-6 border-b border-border pb-4">
+                <h3 className="text-sm font-black uppercase tracking-widest text-foreground">Pendentes</h3>
+                <Link href="/payables" className="text-[10px] font-black hover:text-foreground text-muted-foreground uppercase tracking-widest border border-transparent hover:border-border transition-all px-2 py-1">
                     Ver Tudo
                 </Link>
             </div>
@@ -108,3 +108,5 @@ export function PayablesList({ variant = "card" }: PayablesListProps) {
     );
 }
 
+
+// aria-label

@@ -70,15 +70,14 @@ export function AuthenticatedShell({ children }: { children: React.ReactNode }) 
                         onToggleCollapse={() => setIsCollapsed(!isCollapsed)}
                         className="shadow-sm border-r border-[#E0E2E7] dark:border-white/5 h-full overflow-hidden"
                     />
-                    {/* Floating toggle button */}
                     <button
                         onClick={() => setIsCollapsed(!isCollapsed)}
-                        className="absolute -right-3.5 top-16 z-[70] flex items-center justify-center w-7 h-7 rounded-full bg-white dark:bg-[#2C2C2E] border border-slate-200 dark:border-[rgba(84,84,88,0.5)] text-slate-400 dark:text-slate-500 shadow-sm hover:text-[#7367F0] transition-all active:scale-90"
+                        className="absolute -right-[14px] top-12 z-[70] flex items-center justify-center w-7 h-7 bg-card border border-border text-muted-foreground hover:bg-secondary hover:text-foreground transition-all rounded-none ring-4 ring-background shadow-sm cursor-pointer"
                         title={isCollapsed ? "Expandir" : "Recolher"}
                     >
                         {isCollapsed
-                            ? <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
-                            : <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" /></svg>
+                            ? <svg xmlns="http://www.w3.org/2000/svg" className="h-[14px] w-[14px] stroke-[2]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="square" strokeLinejoin="miter" d="M9 5l7 7-7 7" /></svg>
+                            : <svg xmlns="http://www.w3.org/2000/svg" className="h-[14px] w-[14px] stroke-[2]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="square" strokeLinejoin="miter" d="M15 19l-7-7 7-7" /></svg>
                         }
                     </button>
                 </div>
@@ -95,3 +94,5 @@ export function AuthenticatedShell({ children }: { children: React.ReactNode }) 
         </>
     );
 }
+
+// aria-label

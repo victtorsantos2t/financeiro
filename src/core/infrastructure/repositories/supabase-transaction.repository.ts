@@ -45,9 +45,11 @@ export class SupabaseTransactionRepository implements ITransactionRepository {
             p_wallet_id: data.wallet_id,
             p_payment_method: data.payment_method,
             p_status: data.status,
-            p_is_recurring: data.is_recurring,
-            p_recurrence_interval: data.recurrence_interval,
-            p_destination_wallet_id: data.destination_wallet_id
+            p_is_recurring: data.is_recurring ?? false,
+            p_recurrence_interval: data.recurrence_interval ?? null,
+            p_destination_wallet_id: data.destination_wallet_id ?? null,
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            p_recurrence_end_date: (data as any).recurrence_end_date ?? null,
         });
 
         if (error) throw error;

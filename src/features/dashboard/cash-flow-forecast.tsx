@@ -77,28 +77,28 @@ export function CashFlowForecast() {
         setLoading(false);
     };
 
-    if (loading) return <Skeleton className="h-[350px] w-full rounded-[40px]" />;
+    if (loading) return <Skeleton className="h-[350px] w-full rounded-none border-2 border-border shadow-none" />;
 
     return (
-        <div className="w-full bg-card dark:bg-white/5 rounded-[40px] p-8 shadow-[0_8px_30px_rgb(0,0,0,0.02)] border border-border transition-all duration-700 relative overflow-hidden">
-            <div className="mb-10 flex justify-between items-start relative z-10">
+        <div className="w-full bg-card rounded-none p-8 shadow-none border-2 border-border transition-all duration-700 relative overflow-hidden">
+            <div className="mb-10 flex justify-between items-start relative z-10 border-b-2 border-border pb-4">
                 <div>
-                    <h3 className="text-2xl font-semibold text-foreground tracking-tight flex items-center gap-3">
-                        Projeção Preditiva <BrainCircuit className="h-5 w-5 text-primary" strokeWidth={2.5} />
+                    <h3 className="text-[14px] font-black uppercase tracking-widest text-foreground flex items-center gap-3">
+                        Projeção Preditiva <BrainCircuit className="h-5 w-5 text-primary stroke-[2.5]" />
                     </h3>
                     <div className="flex items-center gap-2 mt-2">
-                        <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">Fluxo de Caixa / 6 Meses</p>
-                        <span className="h-1 w-1 rounded-full bg-border" />
+                        <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Fluxo de Caixa / 6 Meses</p>
+                        <span className="h-2 w-2 rounded-none bg-border" />
                         <div className={cn(
                             "flex items-center gap-1 text-[10px] font-black uppercase tracking-wider",
                             riskLevel === 'high' ? 'text-rose-600' : riskLevel === 'medium' ? 'text-amber-600' : 'text-emerald-600'
                         )}>
-                            {riskLevel === 'high' ? <AlertTriangle className="h-3 w-3" /> : <ShieldCheck className="h-3 w-3" />}
+                            {riskLevel === 'high' ? <AlertTriangle className="h-4 w-4 stroke-[2.5]" /> : <ShieldCheck className="h-4 w-4 stroke-[2.5]" />}
                             Risco: {riskLevel === 'high' ? 'Alto' : riskLevel === 'medium' ? 'Médio' : 'Baixo'}
                         </div>
                     </div>
                 </div>
-                <div className="px-5 py-2 rounded-2xl bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-widest border border-primary/20 backdrop-blur-sm">
+                <div className="px-5 py-2 rounded-none bg-primary/10 text-primary text-[10px] font-black uppercase tracking-widest border-2 border-primary/20 backdrop-blur-sm shadow-none">
                     Cérebro Ativo
                 </div>
             </div>
@@ -128,11 +128,11 @@ export function CashFlowForecast() {
                         />
                         <Tooltip
                             contentStyle={{
-                                borderRadius: "24px",
-                                border: "none",
-                                boxShadow: "0 20px 40px rgba(0,0,0,0.12)",
-                                backgroundColor: "var(--popover)",
-                                backdropFilter: "blur(8px)",
+                                borderRadius: "0",
+                                border: "2px solid var(--border)",
+                                boxShadow: "none",
+                                backgroundColor: "var(--card)",
+                                backdropFilter: "none",
                                 padding: "16px 20px"
                             }}
                             cursor={{ stroke: 'var(--primary)', strokeWidth: 2, strokeDasharray: '4 4' }}
@@ -210,10 +210,10 @@ export function CashFlowForecast() {
                 <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="mt-6 p-4 bg-rose-50 rounded-2xl border border-rose-100 flex items-center gap-3"
+                    className="mt-6 p-4 bg-rose-500/10 rounded-none border-2 border-rose-500 flex items-center gap-3"
                 >
-                    <AlertTriangle className="h-5 w-5 text-rose-600" />
-                    <p className="text-xs font-bold text-rose-700">
+                    <AlertTriangle className="h-5 w-5 stroke-[3] text-rose-500" />
+                    <p className="text-[10px] uppercase tracking-widest font-black text-rose-500">
                         Cuidado: Sua reserva pode se esgotar em 4 meses se mantiver o padrão de gastos atual.
                     </p>
                 </motion.div>
@@ -222,3 +222,5 @@ export function CashFlowForecast() {
     );
 }
 
+
+// aria-label

@@ -101,20 +101,20 @@ export function WalletTypeManager() {
     return (
         <div className="space-y-8">
             {/* 1. ADD NEW TYPE SECTION */}
-            <div className="bg-card dark:bg-white/5 rounded-[32px] p-8 border border-border shadow-sm space-y-8">
+            <div className="bg-card rounded-none p-8 border-2 border-border shadow-none space-y-8">
                 <div className="flex items-center gap-3">
-                    <div className="p-3 bg-foreground text-background rounded-[18px]">
-                        <Landmark className="h-5 w-5" />
+                    <div className="p-3 bg-foreground text-background border-2 border-transparent">
+                        <Landmark className="h-5 w-5 stroke-[2.5]" />
                     </div>
                     <div className="space-y-0.5">
-                        <h3 className="text-xl font-bold text-foreground tracking-tight">Tipos de Conta</h3>
-                        <p className="text-muted-foreground text-sm font-medium">Cadastre novas categorias para suas instituições.</p>
+                        <h3 className="text-sm font-black text-foreground uppercase tracking-widest">Tipos de Conta</h3>
+                        <p className="text-muted-foreground text-[10px] font-bold uppercase tracking-widest">Cadastre novas categorias para suas instituições.</p>
                     </div>
                 </div>
 
                 <div className="flex flex-col lg:flex-row gap-6 items-end">
                     <div className="space-y-4 flex-1 w-full">
-                        <Label htmlFor="new-type" className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.15em] ml-1">
+                        <Label htmlFor="new-type" className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">
                             Nome do Tipo de Conta
                         </Label>
                         <Input
@@ -123,25 +123,25 @@ export function WalletTypeManager() {
                             value={newName}
                             onChange={(e) => setNewName(e.target.value)}
                             onKeyDown={(e) => e.key === "Enter" && handleAdd()}
-                            className="h-16 rounded-[22px] bg-secondary/50 border-transparent focus:bg-background focus:border-foreground focus:ring-0 transition-all font-semibold text-foreground px-8 text-base shadow-inner group hover:border-border"
+                            className="h-[42px] rounded-none bg-background border-2 border-border focus:border-primary focus:ring-0 transition-all font-black text-[10px] uppercase tracking-widest text-foreground px-4 shadow-none hover:border-primary/50"
                         />
                     </div>
                     <Button
                         onClick={handleAdd}
                         disabled={loading || !newName.trim()}
-                        className="h-16 px-10 rounded-[22px] bg-foreground text-background font-bold shadow-xl shadow-foreground/10 hover:shadow-foreground/20 active:scale-95 transition-all text-base w-full lg:w-auto"
+                        className="h-[42px] px-8 rounded-none bg-primary text-primary-foreground font-black text-[10px] uppercase tracking-widest shadow-none hover:bg-primary/90 active:scale-95 transition-all w-full lg:w-auto border border-primary"
                     >
-                        {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Plus className="h-5 w-5 mr-2" />}
+                        {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Plus className="h-4 w-4 mr-2 stroke-[3]" />}
                         Adicionar
                     </Button>
                 </div>
             </div>
 
             {/* 2. EXISTING TYPES LIST */}
-            <div className="bg-card dark:bg-white/5 rounded-[32px] p-8 border border-border shadow-sm space-y-8">
-                <div className="space-y-1">
-                    <h3 className="text-xl font-bold text-foreground tracking-tight">Suas Classificações</h3>
-                    <p className="text-muted-foreground text-sm font-medium">Tipos de conta disponíveis para uso.</p>
+            <div className="bg-card rounded-none p-8 border-2 border-border shadow-none space-y-8">
+                <div className="space-y-1 border-b border-border pb-4">
+                    <h3 className="text-sm font-black text-foreground uppercase tracking-widest">Suas Classificações</h3>
+                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Tipos de conta disponíveis para uso.</p>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -162,36 +162,36 @@ export function WalletTypeManager() {
                                     initial={{ opacity: 0, scale: 0.95 }}
                                     animate={{ opacity: 1, scale: 1 }}
                                     exit={{ opacity: 0, scale: 0.95 }}
-                                    className="group flex items-center justify-between p-5 rounded-[24px] border border-border bg-secondary/20 hover:bg-secondary hover:border-primary/30 hover:shadow-md transition-all duration-300"
+                                    className="group flex items-center justify-between p-4 rounded-none border-2 border-border bg-background hover:bg-secondary hover:border-primary/50 hover:shadow-none transition-all duration-300"
                                 >
                                     <div className="flex items-center gap-4">
-                                        <div className="p-3 bg-secondary rounded-2xl shadow-sm border border-border transition-transform group-hover:scale-110">
-                                            {index % 2 === 0 ? <CreditCard className="h-5 w-5 text-muted-foreground" /> : <Coins className="h-5 w-5 text-muted-foreground" />}
+                                        <div className="p-3 bg-secondary border border-border transition-transform group-hover:scale-110">
+                                            {index % 2 === 0 ? <CreditCard className="h-5 w-5 text-muted-foreground stroke-[2.5]" /> : <Coins className="h-5 w-5 text-muted-foreground stroke-[2.5]" />}
                                         </div>
-                                        <span className="font-bold text-foreground text-sm tracking-tight">{type.name}</span>
+                                        <span className="font-black text-foreground text-[10px] uppercase tracking-widest">{type.name}</span>
                                     </div>
                                     <AlertDialog>
                                         <AlertDialogTrigger asChild>
                                             <Button
-                                                variant="ghost"
+                                                variant="outline"
                                                 size="icon"
-                                                className="h-10 w-10 text-muted-foreground/30 hover:text-destructive hover:bg-destructive/10 rounded-full transition-all group-hover:opacity-100 group-hover:translate-x-0 sm:opacity-0 sm:translate-x-2"
+                                                className="h-[30px] w-[30px] text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded-none border-border transition-all group-hover:opacity-100 group-hover:translate-x-0 sm:opacity-0 sm:translate-x-2"
                                             >
-                                                <Trash2 className="h-4 w-4" />
+                                                <Trash2 className="h-4 w-4 stroke-[3]" />
                                             </Button>
                                         </AlertDialogTrigger>
-                                        <AlertDialogContent className="rounded-[32px] border-border shadow-2xl bg-popover/95 backdrop-blur-xl">
+                                        <AlertDialogContent className="rounded-none border-2 border-border shadow-none bg-card">
                                             <AlertDialogHeader>
-                                                <AlertDialogTitle className="text-xl font-bold text-foreground">Excluir Tipo de Conta?</AlertDialogTitle>
-                                                <AlertDialogDescription className="text-muted-foreground font-medium">
+                                                <AlertDialogTitle className="text-[12px] font-black uppercase tracking-widest text-foreground">Excluir Tipo de Conta?</AlertDialogTitle>
+                                                <AlertDialogDescription className="text-muted-foreground text-[10px] font-bold uppercase tracking-widest mt-2">
                                                     Esta ação removerá este tipo de conta permanentemente. Verifique se ele não está sendo usado em nenhuma carteira ativa.
                                                 </AlertDialogDescription>
                                             </AlertDialogHeader>
                                             <AlertDialogFooter className="gap-3 mt-6">
-                                                <AlertDialogCancel className="rounded-2xl border-border font-bold text-muted-foreground hover:bg-secondary h-12">Cancelar</AlertDialogCancel>
+                                                <AlertDialogCancel className="rounded-none border-2 border-border font-black text-foreground hover:bg-secondary h-[42px] uppercase tracking-widest text-[10px]">Cancelar</AlertDialogCancel>
                                                 <AlertDialogAction
                                                     onClick={() => handleDelete(type.id)}
-                                                    className="rounded-2xl bg-destructive hover:bg-destructive/90 font-bold text-destructive-foreground h-12 px-6"
+                                                    className="rounded-none bg-destructive hover:bg-destructive/90 font-black text-destructive-foreground h-[42px] px-6 uppercase tracking-widest text-[10px] border border-destructive shadow-none"
                                                 >
                                                     Confirmar Exclusão
                                                 </AlertDialogAction>
@@ -207,3 +207,5 @@ export function WalletTypeManager() {
         </div>
     );
 }
+
+// aria-label
