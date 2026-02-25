@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/client";
 import { CategoryManager } from "@/features/categories/category-manager";
 import { WalletTypeManager } from "@/features/wallets/wallet-type-manager";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Loader2, Camera, ShieldCheck, ChevronRight, Sun, Moon, Globe, Mail, User, Pencil } from "lucide-react";
+import { Loader2, Camera, ShieldCheck, Sun, Moon, Globe, Mail, User, Pencil, Check } from "lucide-react";
 import { toast } from "sonner";
 import { useTheme } from "next-themes";
 import { motion, AnimatePresence } from "framer-motion";
@@ -13,53 +13,29 @@ import { cn } from "@/lib/utils";
 
 type TabValue = "profile" | "categories" | "wallet-types" | "preferences";
 
-// ─── iOS Segmented Control ───────────────────────────────────────────────────
-function IOSSegmentedControl({
-    tabs, active, onChange
-}: {
-    tabs: { value: TabValue; label: string }[];
-    active: TabValue;
-    onChange: (v: TabValue) => void;
-}) {
+function BrutalistCard({ children, className }: { children: React.ReactNode; className?: string }) {
     return (
         <div
-            className="flex items-center p-[3px] rounded-[10px] overflow-x-auto scrollbar-hide"
-            style={{
-                background: 'var(--ios-segment-bg)',
-                gap: '2px',
-                fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui",
-            }}
+            className={cn(
+                "bg-card overflow-hidden transition-all duration-300",
+                "rounded-none border-2 border-foreground shadow-[4px_4px_0_0_rgba(15,23,42,1)] dark:shadow-[4px_4px_0_0_rgba(255,255,255,0.2)]",
+                className
+            )}
         >
-            {tabs.map((tab) => {
-                const isActive = active === tab.value;
-                return (
-                    <button
-                        key={tab.value}
-                        onClick={() => onChange(tab.value)}
-                        className="relative flex-1 min-w-[72px] py-[6px] px-3 rounded-[8px] transition-none"
-                        style={{
-                            background: isActive ? 'var(--ios-segment-active)' : 'transparent',
-                            boxShadow: isActive
-                                ? '0 2px 6px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08)'
-                                : 'none',
-                            color: isActive ? 'var(--ios-label)' : 'var(--ios-label2)',
-                            fontSize: '13px',
-                            fontWeight: isActive ? 600 : 400,
-                            letterSpacing: '-0.1px',
-                            whiteSpace: 'nowrap',
-                            transition: 'background 0.15s, box-shadow 0.15s',
-                        }}
-                    >
-                        {tab.label}
-                    </button>
-                );
-            })}
+            {children}
         </div>
     );
 }
 
-// ─── iOS Row (lista agrupada) ─────────────────────────────────────────────────
-function IOSRow({
+function SectionHeader({ label }: { label: string }) {
+    return (
+        <h2 className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-muted-foreground mb-3 px-1 border-l-4 border-accent pl-3 py-1">
+            {label}
+        </h2>
+    );
+}
+
+function BrutalistRow({
     icon, label, value, disabled, onChange, placeholder,
 }: {
     icon: React.ReactNode;
@@ -70,98 +46,65 @@ function IOSRow({
     placeholder?: string;
 }) {
     return (
-        <div
-            className="flex items-center gap-3 px-4 py-3"
-            style={{ minHeight: '52px' }}
-        >
-            {/* Ícone com cor primária do sistema */}
-            <div className="shrink-0 flex items-center justify-center w-[26px]" style={{ color: '#3B82F6' }}>
+        <div className="flex items-center gap-4 px-4 py-4 min-h-[56px] border-b-2 border-foreground last:border-b-0 bg-background group transition-colors focus-within:bg-muted/30 hover:bg-muted/10">
+            <div className="shrink-0 flex items-center justify-center w-[28px] text-foreground group-hover:text-accent transition-colors">
                 {icon}
             </div>
 
-            <div className="flex-1 min-w-0">
-                <span
-                    className="block text-[15px] truncate"
-                    style={{ fontWeight: 400, color: 'var(--ios-label)' }}
-                >
+            <div className="flex-[0_0_80px] sm:flex-[0_0_120px] min-w-0">
+                <span className="block text-xs sm:text-sm font-black uppercase tracking-wider truncate text-foreground group-hover:text-accent transition-colors">
                     {label}
                 </span>
             </div>
 
-            {/* Valor / campo editável */}
             {onChange ? (
                 <input
                     type="text"
                     value={value}
                     onChange={(e) => onChange(e.target.value)}
                     placeholder={placeholder}
-                    className="flex-1 bg-transparent text-right outline-none placeholder:text-[#8E8E93]/50 focus:caret-primary"
-                    style={{
-                        color: 'var(--ios-label2, #3C3C43)',
-                        fontSize: '15px',
-                        fontWeight: 400,
-                        fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui",
-                    }}
+                    className="flex-1 bg-transparent text-right outline-none placeholder:text-muted-foreground/30 focus:caret-accent text-sm sm:text-base font-bold appearance-none"
+                    disabled={disabled}
                 />
             ) : (
-                <span style={{ color: 'var(--ios-label3, #8E8E93)', fontSize: '15px', fontWeight: 400, maxWidth: 160, textAlign: 'right', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                <span className="flex-1 text-sm sm:text-base font-bold text-muted-foreground text-right overflow-hidden text-ellipsis whitespace-nowrap">
                     {value || placeholder || '—'}
                 </span>
             )}
-
-            {disabled && (
-                <ChevronRight size={14} className="shrink-0 ml-1" style={{ color: 'var(--ios-separator-opaque, #C7C7CC)' }} />
-            )}
         </div>
     );
 }
 
-
-// ─── iOS Grouped Card ────────────────────────────────────────────────────────
-function IOSCard({ children, className }: { children: React.ReactNode; className?: string }) {
-    const { theme } = useTheme();
+function BrutalistTabs({
+    tabs, active, onChange
+}: {
+    tabs: { value: TabValue; label: string }[];
+    active: TabValue;
+    onChange: (v: TabValue) => void;
+}) {
     return (
-        <div
-            className={cn("bg-white dark:bg-zinc-900/50 overflow-hidden transition-all duration-300", className)}
-            style={{
-                borderRadius: 20,
-                boxShadow: theme === 'dark' ? 'none' : '0 8px 30px rgba(0,0,0,0.04)',
-                border: '1px solid var(--ios-separator)',
-            }}
-        >
-            {children}
+        <div className="flex flex-wrap lg:flex-nowrap items-center p-1 bg-background border-2 border-foreground shadow-[4px_4px_0_0_rgba(15,23,42,1)] dark:shadow-[4px_4px_0_0_rgba(255,255,255,0.2)] gap-1 mb-8 rounded-none w-full">
+            {tabs.map((tab) => {
+                const isActive = active === tab.value;
+                return (
+                    <button
+                        key={tab.value}
+                        onClick={() => onChange(tab.value)}
+                        className={cn(
+                            "flex-1 min-w-[70px] py-3 sm:py-4 px-2 transition-all duration-200 uppercase tracking-widest text-[10px] sm:text-[11px] font-black focus:outline-none rounded-none",
+                            isActive
+                                ? "bg-foreground text-background scale-[0.98] border-2 border-transparent"
+                                : "bg-transparent text-foreground hover:bg-muted border-2 border-transparent hover:border-foreground/20"
+                        )}
+                    >
+                        {tab.label}
+                    </button>
+                );
+            })}
         </div>
     );
 }
 
-// ─── Section Header ───────────────────────────────────────────────────────────
-function SectionHeader({ label }: { label: string }) {
-    return (
-        <h2
-            style={{
-                fontSize: '13px',
-                fontWeight: 400,
-                color: 'var(--ios-label3, #8E8E93)',
-                textTransform: 'uppercase',
-                letterSpacing: '0.04em',
-                paddingLeft: 16,
-                paddingBottom: 6,
-                fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui",
-            }}
-        >
-            {label}
-        </h2>
-    );
-}
-
-// ─── Separator iOS ────────────────────────────────────────────────────────────
-function IOSSeparator() {
-    return (
-        <div style={{ marginLeft: 56, height: '0.5px', background: 'var(--ios-separator, rgba(60,60,67,0.12))' }} />
-    );
-}
-
-// ─── Main Page ────────────────────────────────────────────────────────────────
 export default function SettingsPage() {
     const [activeTab, setActiveTab] = useState<TabValue>("profile");
     const [loading, setLoading] = useState(false);
@@ -210,8 +153,9 @@ export default function SettingsPage() {
             });
             if (error) throw error;
             toast.success("Perfil atualizado", { description: "Suas informações foram salvas." });
-        } catch (error: any) {
-            toast.error("Erro", { description: error.message || "Não foi possível salvar." });
+        } catch (error: unknown) {
+            const message = error instanceof Error ? error.message : "Não foi possível salvar.";
+            toast.error("Erro", { description: message });
         } finally { setLoading(false); }
     }
 
@@ -234,276 +178,240 @@ export default function SettingsPage() {
         { value: "profile", label: "Perfil" },
         { value: "categories", label: "Categorias" },
         { value: "wallet-types", label: "Contas" },
-        { value: "preferences", label: "Ajustes" },
+        { value: "preferences", label: "Preferências" },
     ];
 
-    const iOSFont = "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif";
-
     return (
-        <div
-            className="min-h-screen pb-40 transition-colors duration-300 bg-[var(--ios-bg)] md:bg-transparent font-sans md:px-6"
-            style={{ fontFamily: iOSFont }}
-        >
-            {/* ── Large Title (iOS Navigation Bar) - Mobile Only ──────────── */}
-            <div
-                className="md:hidden sticky top-0 z-40 px-4 pb-4"
-                style={{
-                    background: 'var(--ios-header-blur)',
-                    backdropFilter: 'blur(20px) saturate(180%)',
-                    WebkitBackdropFilter: 'blur(20px) saturate(180%)',
-                    borderBottom: '0.5px solid var(--ios-separator)',
-                    paddingTop: 'max(env(safe-area-inset-top), 56px)',
-                }}
-            >
-                <h2 style={{ fontSize: 34, fontWeight: 700, letterSpacing: '-0.5px', color: 'var(--ios-label)', lineHeight: 1.1 }}>
-                    Configurações
-                </h2>
-            </div>
+        <div className="min-h-screen pb-40 bg-background px-4 sm:px-6 pt-6 sm:pt-10 max-w-4xl mx-auto selection:bg-accent selection:text-foreground">
 
-            {/* ── Desktop Title ────────────────────────────────────────────── */}
-            <div className="hidden md:block pt-4 pb-8 max-w-2xl mx-auto px-4">
-                <h1 className="text-3xl font-bold tracking-tight text-foreground">
-                    Configurações
+            {/* ── Title ────────────────────────────────────────────── */}
+            <div className="mb-6 sm:mb-10 flex flex-col items-start relative z-10 px-1">
+                <h1 className="text-4xl sm:text-5xl md:text-7xl font-black uppercase tracking-[0.05em] text-foreground leading-[0.8]">
+                    SISTEMA.<br />
+                    <span className="text-muted-foreground/50">CONF.</span>
                 </h1>
+                <div className="h-3 w-32 bg-accent mt-4 border-2 border-foreground shadow-[2px_2px_0_0_#09090b] dark:shadow-[2px_2px_0_0_rgba(255,255,255,0.2)]" />
             </div>
 
-            <div className="px-4 md:px-0 pt-6 md:pt-0 space-y-5 max-w-2xl mx-auto">
+            {/* ── Profile Hero Card ─────────────────────────────────────── */}
+            <BrutalistCard className="mb-8 p-0 border-4">
+                <div className="flex flex-col sm:flex-row items-center sm:items-start gap-6 p-6 sm:p-10 relative bg-background">
+                    {/* Background Pattern */}
+                    <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, currentColor 1px, transparent 0)', backgroundSize: '16px 16px' }}></div>
 
-                {/* ── Profile Hero Card ─────────────────────────────────────── */}
-                <IOSCard>
-                    <div className="flex items-center gap-4 px-4 py-4">
-                        <div className="relative shrink-0">
-                            <Avatar className="h-[60px] w-[60px]">
-                                <AvatarImage src={avatarUrl || ""} />
-                                <AvatarFallback
-                                    style={{ background: 'var(--primary)', color: 'white', fontSize: 24, fontWeight: 600 }}
-                                >
-                                    {fullName?.charAt(0) || email?.charAt(0) || "U"}
-                                </AvatarFallback>
-                            </Avatar>
-                            <label
-                                htmlFor="avatar-upload-ios"
-                                className="absolute -bottom-1 -right-1 flex items-center justify-center rounded-full cursor-pointer active:opacity-60"
-                                style={{
-                                    width: 22, height: 22,
-                                    background: '#636366',
-                                    border: '2px solid var(--ios-bg2)',
-                                }}
-                            >
-                                {uploading
-                                    ? <Loader2 size={10} className="animate-spin text-white" />
-                                    : <Camera size={10} className="text-white" />
-                                }
-                                <input id="avatar-upload-ios" type="file" className="hidden" onChange={uploadAvatar} accept="image/*" disabled={uploading} />
-                            </label>
-                        </div>
-                        <div className="flex-1 min-w-0">
-                            <p style={{ fontSize: 17, fontWeight: 600, color: 'var(--ios-label)', lineHeight: 1.2 }}>
-                                {fullName || "Usuário"}
-                            </p>
-                            <p style={{ fontSize: 13, color: 'var(--ios-label3)', marginTop: 2 }}>
-                                {occupation || "Sua bio profissional"}
-                            </p>
-                            <div className="flex items-center gap-1 mt-2">
-                                <ShieldCheck size={11} style={{ color: '#34C759' }} />
-                                <span style={{ fontSize: 11, color: '#34C759', fontWeight: 500, letterSpacing: '0.03em' }}>
-                                    PERFIL INTEGRADO
-                                </span>
-                            </div>
-                        </div>
-                        <ChevronRight size={18} style={{ color: 'var(--ios-separator-opaque)' }} />
-                    </div>
-                </IOSCard>
-
-                {/* ── Segmented Control ─────────────────────────────────────── */}
-                <IOSSegmentedControl tabs={tabs} active={activeTab} onChange={setActiveTab} />
-
-                {/* ── Tab Content ───────────────────────────────────────────── */}
-                <AnimatePresence mode="wait">
-                    <motion.div
-                        key={activeTab}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.15 }}
-                        className="space-y-5"
-                    >
-                        {/* PERFIL ─────────────────────────────────────────── */}
-                        {activeTab === "profile" && (
-                            <>
-                                <div className="space-y-2">
-                                    <SectionHeader label="Conta de Acesso" />
-                                    <IOSCard>
-                                        <IOSRow
-                                            icon={<Mail size={16} />}
-                                            label="E-mail"
-                                            value={email}
-                                            disabled
-                                        />
-                                    </IOSCard>
-                                </div>
-
-                                <div className="space-y-2">
-                                    <SectionHeader label="Informações Pessoais" />
-                                    <IOSCard>
-                                        <IOSRow
-                                            icon={<User size={16} />}
-                                            label="Nome"
-                                            value={fullName}
-                                            onChange={setFullName}
-                                            placeholder="Seu nome"
-                                        />
-                                        <IOSSeparator />
-                                        <IOSRow
-                                            icon={<Pencil size={16} />}
-                                            label="Bio"
-                                            value={occupation}
-                                            onChange={setOccupation}
-                                            placeholder="Cargo ou profissão"
-                                        />
-                                    </IOSCard>
-                                </div>
-                            </>
-                        )}
-
-                        {/* CATEGORIAS ──────────────────────────────────────── */}
-                        {activeTab === "categories" && (
-                            <div className="space-y-2">
-                                <SectionHeader label="Gerenciar Categorias" />
-                                <IOSCard>
-                                    <div className="p-4">
-                                        <CategoryManager />
-                                    </div>
-                                </IOSCard>
-                            </div>
-                        )}
-
-                        {/* CONTAS ──────────────────────────────────────────── */}
-                        {activeTab === "wallet-types" && (
-                            <div className="space-y-2">
-                                <SectionHeader label="Tipos de Conta" />
-                                <IOSCard>
-                                    <div className="p-4">
-                                        <WalletTypeManager />
-                                    </div>
-                                </IOSCard>
-                            </div>
-                        )}
-
-                        {/* AJUSTES ──────────────────────────────────────────── */}
-                        {activeTab === "preferences" && (
-                            <>
-                                <div className="space-y-2">
-                                    <SectionHeader label="Aparência" />
-                                    <IOSCard>
-                                        {/* Tema Claro */}
-                                        <button
-                                            onClick={() => setTheme("light")}
-                                            className="w-full flex items-center gap-3 px-4 py-3 active:opacity-60 transition-opacity"
-                                        >
-                                            <div className="shrink-0 w-[26px] flex items-center justify-center" style={{ color: 'var(--primary)' }}>
-                                                <Sun size={16} />
-                                            </div>
-                                            <span style={{ flex: 1, textAlign: 'left', fontSize: 15, color: 'var(--ios-label)' }}>Modo Claro</span>
-                                            {theme === "light" && (
-                                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                                    <path d="M4 10.5L8 14.5L16 6.5" stroke="var(--primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                                </svg>
-                                            )}
-                                        </button>
-                                        <IOSSeparator />
-                                        {/* Tema Escuro */}
-                                        <button
-                                            onClick={() => setTheme("dark")}
-                                            className="w-full flex items-center gap-3 px-4 py-3 active:opacity-60 transition-opacity"
-                                        >
-                                            <div className="shrink-0 w-[26px] flex items-center justify-center" style={{ color: 'var(--primary)' }}>
-                                                <Moon size={16} />
-                                            </div>
-                                            <span style={{ flex: 1, textAlign: 'left', fontSize: 15, color: 'var(--ios-label)' }}>Modo Escuro</span>
-                                            {theme === "dark" && (
-                                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                                    <path d="M4 10.5L8 14.5L16 6.5" stroke="var(--primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                                </svg>
-                                            )}
-                                        </button>
-                                    </IOSCard>
-                                </div>
-
-                                <div className="space-y-2">
-                                    <SectionHeader label="Região e Moeda" />
-                                    <IOSCard>
-                                        {[
-                                            { value: "BRL", label: "Real Brasileiro (R$)", flag: "🇧🇷" },
-                                            { value: "USD", label: "Dólar Americano ($)", flag: "🇺🇸" },
-                                            { value: "EUR", label: "Euro (€)", flag: "🇪🇺" },
-                                        ].map((opt, i, arr) => (
-                                            <div key={opt.value}>
-                                                <button
-                                                    onClick={() => setCurrency(opt.value)}
-                                                    className="w-full flex items-center gap-3 px-4 py-3 active:opacity-60 transition-opacity"
-                                                >
-                                                    <div className="shrink-0 w-[26px] flex items-center justify-center" style={{ color: 'var(--primary)' }}>
-                                                        <Globe size={16} />
-                                                    </div>
-                                                    <span style={{ flex: 1, textAlign: 'left', fontSize: 15, color: 'var(--ios-label)' }}>
-                                                        {opt.flag} {opt.label}
-                                                    </span>
-                                                    {currency === opt.value && (
-                                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                                            <path d="M4 10.5L8 14.5L16 6.5" stroke="var(--primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                                        </svg>
-                                                    )}
-                                                </button>
-                                                {i < arr.length - 1 && <IOSSeparator />}
-                                            </div>
-                                        ))}
-                                    </IOSCard>
-                                </div>
-                            </>
-                        )}
-                    </motion.div>
-                </AnimatePresence>
-
-                {/* ── iOS Save Button (integrado ao fluxo) ─────────────────── */}
-                <AnimatePresence>
-                    {(activeTab === "profile" || activeTab === "preferences") && (
-                        <motion.div
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: 10 }}
-                            transition={{ duration: 0.2 }}
-                            className="pt-8 pb-10"
+                    <div className="relative shrink-0 mx-auto sm:mx-0 z-10 group">
+                        <Avatar className="h-28 w-28 sm:h-36 sm:w-36 rounded-none border-4 border-foreground shadow-[6px_6px_0_0_rgba(15,23,42,1)] dark:shadow-[6px_6px_0_0_rgba(255,255,255,0.2)] transition-transform group-hover:-translate-y-1">
+                            <AvatarImage src={avatarUrl || ""} className="object-cover" />
+                            <AvatarFallback className="rounded-none bg-foreground text-background text-5xl font-black uppercase">
+                                {fullName?.charAt(0) || email?.charAt(0) || "U"}
+                            </AvatarFallback>
+                        </Avatar>
+                        <label
+                            htmlFor="avatar-upload-desktop"
+                            className="absolute -bottom-4 -right-4 flex items-center justify-center w-12 h-12 cursor-pointer bg-accent border-4 border-foreground transition-all hover:scale-110 hover:-rotate-12 hover:shadow-[4px_4px_0_0_rgba(15,23,42,1)] dark:hover:shadow-[4px_4px_0_0_rgba(255,255,255,0.2)] active:scale-95"
                         >
-                            <button
-                                onClick={updateProfile}
-                                disabled={loading}
-                                className="w-full flex items-center justify-center active:opacity-80 transition-opacity shadow-[0_12px_32px_-8px_rgba(115,103,240,0.4)]"
-                                style={{
-                                    height: 54,
-                                    borderRadius: 18,
-                                    background: 'var(--primary)',
-                                    color: 'white',
-                                    fontSize: 17,
-                                    fontWeight: 600,
-                                    letterSpacing: '-0.2px',
-                                    fontFamily: iOSFont,
-                                    border: 'none',
-                                    cursor: loading ? 'not-allowed' : 'pointer',
-                                    opacity: loading ? 0.7 : 1,
-                                }}
-                            >
-                                {loading
-                                    ? <Loader2 size={20} className="animate-spin" />
-                                    : activeTab === "preferences" ? "Aplicar Preferências" : "Salvar Alterações"
-                                }
-                            </button>
-                        </motion.div>
+                            {uploading
+                                ? <Loader2 size={20} className="animate-spin text-foreground" />
+                                : <Camera size={20} className="text-foreground" />
+                            }
+                            <input id="avatar-upload-desktop" type="file" className="hidden" onChange={uploadAvatar} accept="image/*" disabled={uploading} />
+                        </label>
+                    </div>
+
+                    <div className="flex-1 min-w-0 text-center sm:text-left z-10 mt-2 sm:mt-0 flex flex-col justify-center h-full sm:py-2">
+                        <p className="text-2xl sm:text-4xl font-black text-foreground truncate uppercase tracking-tighter leading-none mb-2">
+                            {fullName || "OPERADOR(A)"}
+                        </p>
+                        <p className="text-xs sm:text-sm font-bold text-muted-foreground truncate tracking-widest uppercase pb-4">
+                            {occupation || "NÍVEL DE ACESSO: INDEFINIDO"}
+                        </p>
+                        <div className="flex items-center justify-center sm:justify-start gap-2 mt-auto pt-4 border-t-4 border-muted/50 w-full">
+                            <ShieldCheck size={18} className="text-accent flex-shrink-0" />
+                            <span className="text-xs sm:text-[10px] uppercase font-black tracking-[0.2em] text-foreground">
+                                SISTEMA SINCRONIZADO
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </BrutalistCard>
+
+            {/* ── Segmented Control ─────────────────────────────────────── */}
+            <BrutalistTabs tabs={tabs} active={activeTab} onChange={setActiveTab} />
+
+            {/* ── Tab Content ───────────────────────────────────────────── */}
+            <AnimatePresence mode="wait">
+                <motion.div
+                    key={activeTab}
+                    initial={{ opacity: 0, scale: 0.98, filter: "blur(2px)" }}
+                    animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+                    exit={{ opacity: 0, scale: 0.98, filter: "blur(2px)" }}
+                    transition={{ duration: 0.2, ease: "easeOut" }}
+                    className="space-y-8"
+                >
+                    {/* PERFIL ─────────────────────────────────────────── */}
+                    {activeTab === "profile" && (
+                        <>
+                            <div className="space-y-3">
+                                <SectionHeader label="Credenciais de Acesso" />
+                                <BrutalistCard>
+                                    <BrutalistRow
+                                        icon={<Mail size={22} />}
+                                        label="Endereço (ID)"
+                                        value={email}
+                                        disabled
+                                    />
+                                </BrutalistCard>
+                            </div>
+
+                            <div className="space-y-3">
+                                <SectionHeader label="Identidade Física" />
+                                <BrutalistCard>
+                                    <BrutalistRow
+                                        icon={<User size={22} />}
+                                        label="Designação"
+                                        value={fullName}
+                                        onChange={setFullName}
+                                        placeholder="Nome"
+                                    />
+                                    <BrutalistRow
+                                        icon={<Pencil size={22} />}
+                                        label="Atuação"
+                                        value={occupation}
+                                        onChange={setOccupation}
+                                        placeholder="Função"
+                                    />
+                                </BrutalistCard>
+                            </div>
+                        </>
                     )}
-                </AnimatePresence>
-            </div>
+
+                    {/* CATEGORIAS ──────────────────────────────────────── */}
+                    {activeTab === "categories" && (
+                        <div className="space-y-3">
+                            <SectionHeader label="Estrutura de Categorias" />
+                            <BrutalistCard>
+                                <div className="p-4 sm:p-6 bg-background min-h-[400px]">
+                                    <CategoryManager />
+                                </div>
+                            </BrutalistCard>
+                        </div>
+                    )}
+
+                    {/* CONTAS ──────────────────────────────────────────── */}
+                    {activeTab === "wallet-types" && (
+                        <div className="space-y-3">
+                            <SectionHeader label="Fontes Financeiras" />
+                            <BrutalistCard>
+                                <div className="p-4 sm:p-6 bg-background min-h-[400px]">
+                                    <WalletTypeManager />
+                                </div>
+                            </BrutalistCard>
+                        </div>
+                    )}
+
+                    {/* AJUSTES ──────────────────────────────────────────── */}
+                    {activeTab === "preferences" && (
+                        <>
+                            <div className="space-y-3">
+                                <SectionHeader label="Motor de Iluminação (Tema)" />
+                                <BrutalistCard>
+                                    {/* Tema Claro */}
+                                    <button
+                                        onClick={() => setTheme("light")}
+                                        className="w-full flex items-center gap-4 px-4 sm:px-6 py-6 active:scale-[0.98] transition-all bg-background border-b-2 border-foreground hover:bg-muted/30 focus-visible:bg-muted/30 outline-none group"
+                                    >
+                                        <div className="shrink-0 w-[32px] flex items-center justify-center text-foreground group-hover:text-accent font-black transition-colors">
+                                            <Sun size={24} />
+                                        </div>
+                                        <span className="flex-1 text-left text-sm sm:text-base font-black uppercase tracking-widest text-foreground group-hover:text-accent transition-colors">Fotônico (Claro)</span>
+                                        {theme === "light" && (
+                                            <Check size={24} className="text-accent stroke-[4]" />
+                                        )}
+                                    </button>
+                                    {/* Tema Escuro */}
+                                    <button
+                                        onClick={() => setTheme("dark")}
+                                        className="w-full flex items-center gap-4 px-4 sm:px-6 py-6 active:scale-[0.98] transition-all bg-background hover:bg-muted/30 focus-visible:bg-muted/30 outline-none group"
+                                    >
+                                        <div className="shrink-0 w-[32px] flex items-center justify-center text-foreground group-hover:text-accent font-black transition-colors">
+                                            <Moon size={24} />
+                                        </div>
+                                        <span className="flex-1 text-left text-sm sm:text-base font-black uppercase tracking-widest text-foreground group-hover:text-accent transition-colors">Gênesis (Escuro)</span>
+                                        {theme === "dark" && (
+                                            <Check size={24} className="text-accent stroke-[4]" />
+                                        )}
+                                    </button>
+                                </BrutalistCard>
+                            </div>
+
+                            <div className="space-y-3">
+                                <SectionHeader label="Padrão Financeiro Mundial" />
+                                <BrutalistCard>
+                                    {[
+                                        { value: "BRL", label: "Real (R$)", flag: "BR" },
+                                        { value: "USD", label: "Dólar ($)", flag: "US" },
+                                        { value: "EUR", label: "Euro (€)", flag: "EU" },
+                                    ].map((opt, i, arr) => (
+                                        <button
+                                            key={opt.value}
+                                            onClick={() => setCurrency(opt.value)}
+                                            className={cn(
+                                                "w-full flex items-center gap-4 px-4 sm:px-6 py-5 active:scale-[0.98] transition-all bg-background hover:bg-muted/30 focus-visible:bg-muted/30 outline-none group",
+                                                i < arr.length - 1 ? "border-b-2 border-foreground" : ""
+                                            )}
+                                        >
+                                            <div className="shrink-0 w-[32px] flex items-center justify-center text-foreground font-black text-xs sm:text-sm tracking-tighter bg-foreground/10 py-1.5 border border-foreground/30">
+                                                {opt.flag}
+                                            </div>
+                                            <span className="flex-1 text-left text-sm sm:text-base font-black uppercase tracking-widest text-foreground group-hover:text-accent transition-colors">
+                                                {opt.label}
+                                            </span>
+                                            {currency === opt.value && (
+                                                <Check size={24} className="text-accent stroke-[4]" />
+                                            )}
+                                        </button>
+                                    ))}
+                                </BrutalistCard>
+                            </div>
+                        </>
+                    )}
+                </motion.div>
+            </AnimatePresence>
+
+            {/* ── Brutalist Save Button ─────────────────── */}
+            <AnimatePresence>
+                {(activeTab === "profile" || activeTab === "preferences") && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 20 }}
+                        transition={{ duration: 0.3, type: "spring", stiffness: 300, damping: 25 }}
+                        className="pt-10 pb-12 w-full mt-auto"
+                    >
+                        <button
+                            onClick={updateProfile}
+                            disabled={loading}
+                            className={cn(
+                                "w-full flex items-center justify-center transition-all",
+                                "h-16 sm:h-20 rounded-none",
+                                "bg-foreground text-background font-black uppercase tracking-[0.2em] sm:tracking-[0.3em] text-[13px] sm:text-base",
+                                "border-4 border-transparent hover:border-accent hover:text-accent",
+                                "shadow-[8px_8px_0_0_#00E676] hover:shadow-[3px_3px_0_0_#00E676] hover:translate-x-[5px] hover:translate-y-[5px]",
+                                "active:shadow-none active:translate-x-[8px] active:translate-y-[8px]",
+                                loading && "opacity-70 pointer-events-none"
+                            )}
+                        >
+                            {loading
+                                ? <Loader2 size={32} className="animate-spin" />
+                                : activeTab === "preferences" ? "Aplicar Metadados" : "GRAVAR NOVO PERFIL"
+                            }
+                        </button>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     );
 }
 
+// aria-label
 // aria-label

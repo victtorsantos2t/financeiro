@@ -59,6 +59,7 @@
   --primary-active: #27272A;
   --primary-foreground: #FAFAFA;
   --accent: #00E676;
+  --accent-foreground: #09090B;
   /* aria-label */
   /* Acid Green / Money Accent */
 
@@ -122,6 +123,7 @@
   --primary-active: #D4D4D8;
   --primary-foreground: #000000;
   --accent: #00E676;
+  --accent-foreground: #09090B;
   /* Vital Acid Green */
 
   /* Secondary */
@@ -144,10 +146,10 @@
   /* Status */
   --success: #00E676;
   --success-bg: rgba(0, 230, 118, 0.1);
-  --success-foreground: #00E676;
+  --success-foreground: #00AE59;
   --destructive: #FF3333;
   --destructive-bg: rgba(255, 51, 51, 0.1);
-  --destructive-foreground: #FF3333;
+  --destructive-foreground: #FAFAFA;
 
   --sidebar-border: #27272A;
   --sidebar-ring: #FAFAFA;
